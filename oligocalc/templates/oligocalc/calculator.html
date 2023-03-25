@@ -1,0 +1,204 @@
+{% extends "layout/basic.html" %}
+
+{% block title %}OligoShell Calculator{% endblock %}
+
+{% block content %}
+
+<form method="POST" action=".">
+{% csrf_token %}
+
+<div class="row">
+    <div class="col-xl">
+      <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Enter Sequence:</h5>
+        </div>
+        <div class="card-body">
+
+                <div class="row mb-2">
+                    <div class="col-xl">
+                        {{form.sequence}}
+                    </div>
+                </div>
+
+                {% if form.sequence.errors %}
+                    <div>{{ form.sequence.errors }}</div>
+                {% endif %}
+
+            <button type="submit" class="m-1 btn btn-sm btn-primary submit">Calculate!</button>
+
+
+
+        </div>
+      </div>
+    </div>
+</div>
+
+{% if sequence %}
+
+
+<h6 class="pb-1 mb-3 text-muted">Sequence properties</h6>
+      <div class="row">
+
+        <div class="col-md-6 col-lg-4 mb-3">
+          <div class="card">
+            <div class="card-body">
+              <p class="card-text">
+                  <strong>Sequence Length:</strong> &emsp; {{ length }} <span class="text-muted">nt</span>
+              </p>
+              <p class="card-text">
+                  <strong>GC content:</strong> &emsp; TBD <span class="text-muted">%</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4 mb-3">
+          <div class="card">
+            <div class="card-body">
+                <p class="card-text">
+                    <strong>&epsilon;<sub>260</sub>: </strong> &emsp; {{ epsilon260 }}
+                    <span class="text-muted">L&middot;mol<sup>-1</sup>&middot;cm<sup>-1</sup></span>
+                </p>
+                <p>
+                    <strong>OD<sub>260</sub>:</strong> &emsp;
+                        {% if absorbance260 %}
+                            {{ absorbance260 }}
+                            <span class="text-muted">(&times;{{ dilution_factor }})</span>
+                        {% else %}
+                            -
+                        {% endif %}
+                </p>
+                <p>
+                    <strong>Volume:</strong> &emsp;
+                        {% if volume %}
+                            {{ volume }} <span class="text-muted">mL</span>
+                        {% else %}
+                            -
+                        {% endif %}
+                </p>
+                <p>
+                    <strong>OD<sub>260</sub> Units:</strong> &emsp;
+                        {% if odu260 %}
+                            {{ odu260 }}
+                        {% else %}
+                            -
+                        {% endif %}
+                </p>
+                <p>
+                    <strong>Concentration: </strong> &emsp;
+                        {% if concentration_molar %}
+                            {{ concentration_molar }} <span class="text-muted">&mu;M</span>
+                            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            {{ concentration_mass }} <span class="text-muted">&mu;g/mL</span></p>
+                        {% else %}
+                            -
+                        {% endif %}
+                </p>
+                <p>
+                    <strong>Quantity:</strong> &emsp;
+                        {% if quantity %}
+                            {{ quantity }} <span class="text-muted">nmol</span>
+                        {% else %}
+                            -
+                        {% endif %}
+                </p>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-md-6 col-lg-4 mb-3">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Enter:</h5>
+
+                  <label for="{{ form.absorbance260.id_for_label }}"><small>Absorbance at 260 nm</small></label>
+                  {{ form.absorbance260 }}
+                  <label class="mt-2" for="{{ form.dilution_factor.id_for_label }}"><small>Dilution Factor</small></label>
+                  {{ form.dilution_factor }}
+                  <label class="mt-2" for="{{ form.volume.id_for_label }}"><small>Volume, mL</small></label>
+                  {{ form.volume }}
+
+                  <button type="submit" class="mt-3 btn btn-sm btn-primary submit"> Quantify! </button>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+<h6 class="pb-1 mb-3 text-muted">Molecular Weight and ESI series</h6>
+      <div class="row mb-4">
+          <div class="col-xl">
+             <div class="card">
+                <div class="card-body">
+
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover">
+                            <thead>
+                                 <tr>
+                                    <th></th>
+                                    <th><span class="fw-semibold">Monoisotopic MW (DMT-OFF)</span></th>
+                                    <th><span class="fw-semibold">Average MW (DMT-OFF)</span></th>
+                                    <th><span class="fw-semibold">Monoisotopic MW (DMT-ON)</span></th>
+                                    <th><span class="fw-semibold">Average MW (DMT-ON)</span></th>
+                                 </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td><strong>
+                                        {% if mass_monoisotopic %}
+                                            {{ mass_monoisotopic }}
+                                        {% endif %}
+                                    </strong></td>
+                                    <td><strong>
+                                        {% if mass_average %}
+                                            {{mass_average}}
+                                        {% endif %}
+                                    </strong></td>
+                                    <td><strong>
+                                        {% if mass_monoisotopic_dmt_on %}
+                                            {{mass_monoisotopic_dmt_on}}
+                                        {% endif %}
+                                    </strong></td>
+                                    <td><strong>
+                                        {% if mass_average_dmt_on %}
+                                            {{mass_average_dmt_on}}
+                                        {% endif %}
+                                    </strong></td>
+                                </tr>
+
+                                {% for z, esi_avg_off, esi_avg_on, esi_mono_off, esi_mono_on in esi_series %}
+                                    <tr>
+                                        <td><strong>z-{{z}}</strong></td>
+                                        <td>
+                                            {% if esi_mono_off %}
+                                                {{esi_mono_off}}
+                                            {% endif %}
+                                        </td>
+                                        <td>{{esi_avg_off}}</td>
+                                        <td>
+                                            {% if esi_mono_on %}
+                                                {{esi_mono_on}}
+                                            {% endif %}
+                                        </td>
+                                        <td>{{esi_avg_on}}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+             </div>
+          </div>
+      </div>
+
+{% endif %}
+
+</form>
+
+{% endblock %}

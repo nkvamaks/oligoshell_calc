@@ -4,6 +4,7 @@
 
 {% block content %}
 
+
 <form method="POST" action=".">
 {% csrf_token %}
 
@@ -46,9 +47,11 @@
               <p class="card-text">
                   <strong>Sequence Length:</strong> &emsp; {{ length }} <span class="text-muted">nt</span>
               </p>
+                {%comment%}
               <p class="card-text">
                   <strong>GC content:</strong> &emsp; TBD <span class="text-muted">%</span>
               </p>
+                {%endcomment%}
             </div>
           </div>
         </div>

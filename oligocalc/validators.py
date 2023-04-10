@@ -35,9 +35,9 @@ def validate_seq(sequence):
             if sequence_spl[i] not in set( utils.modification_int_position +
                                            utils.modification_phosphorus +
                                            utils.nucleotide_any_position ):
-                modification_error.append("Internal modification does not exist: " + sequence_spl[i] + " at position " + str(i))
+                modification_error.append("Internal modification does not exist: " + sequence_spl[i] + " at position " + str(i+1))
             if (sequence_spl[i] in utils.modification_phosphorus) and (sequence_spl[i+1] in utils.modification_phosphorus):
-                modification_error.append("Two phosphate residues at positions " + str(i) + " and " + str(i+1) + " cannot be nearby")
+                modification_error.append("Two phosphate residues at positions " + str(i+1) + " and " + str(i+2) + " cannot be nearby")
     if modification_error:
         raise ValidationError(modification_error)
     else:

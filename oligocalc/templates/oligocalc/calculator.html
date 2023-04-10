@@ -1,4 +1,5 @@
 {% extends "layout/basic.html" %}
+{% load static %}
 
 {% block title %}OligoShell Calculator{% endblock %}
 
@@ -37,168 +38,397 @@
 
 {% if sequence %}
 
+<div class="row">
+    <div class="col-xl">
+      <div class="nav-align-top mb-4">
+        <ul class="nav nav-pills mb-3" role="tablist">
+          <li class="nav-item">
+            <button
+              type="button"
+              class="nav-link active"
+              role="tab"
+              data-bs-toggle="tab"
+              data-bs-target="#navs-pills-top-properties"
+              aria-controls="navs-pills-top-properties"
+              aria-selected="true"
+            >
+              Sequence properties
+            </button>
+          </li>
+          <li class="nav-item">
+            <button
+              type="button"
+              class="nav-link"
+              role="tab"
+              data-bs-toggle="tab"
+              data-bs-target="#navs-pills-top-ms"
+              aria-controls="navs-pills-top-ms"
+              aria-selected="false"
+            >
+              Molecular Weight and ESI series
+            </button>
+          </li>
+          <li class="nav-item">
+            <button
+              type="button"
+              class="nav-link"
+              role="tab"
+              data-bs-toggle="tab"
+              data-bs-target="#navs-pills-top-ms2"
+              aria-controls="navs-pills-top-ms2"
+              aria-selected="false"
+            >
+              MS/MS Fragments
+            </button>
+          </li>
+        </ul>
 
-<h6 class="pb-1 mb-3 text-muted">Sequence properties</h6>
-      <div class="row">
+        <div class="tab-content">
+          <div class="tab-pane fade show active" id="navs-pills-top-properties" role="tabpanel">
+             <div class="row">
+                <div class="col-md-6 col-lg-4 mb-3">
+                  <div class="card">
+                    <div class="card-body">
+                      <p class="card-text">
+                          <strong>Sequence Length:</strong> &emsp; {{ length }} <span class="text-muted">nt</span>
+                      </p>
+                        {%comment%}
 
-        <div class="col-md-6 col-lg-4 mb-3">
-          <div class="card">
-            <div class="card-body">
-              <p class="card-text">
-                  <strong>Sequence Length:</strong> &emsp; {{ length }} <span class="text-muted">nt</span>
-              </p>
-                {%comment%}
-              <p class="card-text">
-                  <strong>GC content:</strong> &emsp; TBD <span class="text-muted">%</span>
-              </p>
-                {%endcomment%}
-            </div>
-          </div>
-        </div>
+                        Formula
+                        Tmelt
+                        Quantity of degenerate sequences
 
-        <div class="col-md-6 col-lg-4 mb-3">
-          <div class="card">
-            <div class="card-body">
-                <p class="card-text">
-                    <strong>&epsilon;<sub>260</sub>: </strong> &emsp; {{ epsilon260 }}
-                    <span class="text-muted">L&middot;mol<sup>-1</sup>&middot;cm<sup>-1</sup></span>
-                </p>
-                <p>
-                    <strong>OD<sub>260</sub>:</strong> &emsp;
-                        {% if absorbance260 %}
-                            {{ absorbance260 }}
-                            <span class="text-muted">(&times;{{ dilution_factor }})</span>
-                        {% else %}
-                            -
-                        {% endif %}
-                </p>
-                <p>
-                    <strong>Volume:</strong> &emsp;
-                        {% if volume %}
-                            {{ volume }} <span class="text-muted">mL</span>
-                        {% else %}
-                            -
-                        {% endif %}
-                </p>
-                <p>
-                    <strong>OD<sub>260</sub> Units:</strong> &emsp;
-                        {% if odu260 %}
-                            {{ odu260 }}
-                        {% else %}
-                            -
-                        {% endif %}
-                </p>
-                <p>
-                    <strong>Concentration: </strong> &emsp;
-                        {% if concentration_molar %}
-                            {{ concentration_molar }} <span class="text-muted">&mu;M</span>
-                            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            {{ concentration_mass }} <span class="text-muted">&mu;g/mL</span></p>
-                        {% else %}
-                            -
-                        {% endif %}
-                </p>
-                <p>
-                    <strong>Quantity:</strong> &emsp;
-                        {% if quantity %}
-                            {{ quantity }} <span class="text-muted">nmol</span>
-                        {% else %}
-                            -
-                        {% endif %}
-                </p>
-            </div>
-          </div>
-        </div>
-
-
-        <div class="col-md-6 col-lg-4 mb-3">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Enter:</h5>
-
-                  <label for="{{ form.absorbance260.id_for_label }}"><small>Absorbance at 260 nm</small></label>
-                  {{ form.absorbance260 }}
-                  <label class="mt-2" for="{{ form.dilution_factor.id_for_label }}"><small>Dilution Factor</small></label>
-                  {{ form.dilution_factor }}
-                  <label class="mt-2" for="{{ form.volume.id_for_label }}"><small>Volume, mL</small></label>
-                  {{ form.volume }}
-
-                  <button type="submit" class="mt-3 btn btn-sm btn-primary submit"> Quantify! </button>
-
-            </div>
-          </div>
-        </div>
-      </div>
-
-<h6 class="pb-1 mb-3 text-muted">Molecular Weight and ESI series</h6>
-      <div class="row mb-4">
-          <div class="col-xl">
-             <div class="card">
-                <div class="card-body">
-
-                    <div class="table-responsive">
-                        <table class="table table-sm table-hover">
-                            <thead>
-                                 <tr>
-                                    <th></th>
-                                    <th><span class="fw-semibold">Monoisotopic MW (DMT-OFF)</span></th>
-                                    <th><span class="fw-semibold">Average MW (DMT-OFF)</span></th>
-                                    <th><span class="fw-semibold">Monoisotopic MW (DMT-ON)</span></th>
-                                    <th><span class="fw-semibold">Average MW (DMT-ON)</span></th>
-                                 </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td><strong>
-                                        {% if mass_monoisotopic %}
-                                            {{ mass_monoisotopic }}
-                                        {% endif %}
-                                    </strong></td>
-                                    <td><strong>
-                                        {% if mass_average %}
-                                            {{mass_average}}
-                                        {% endif %}
-                                    </strong></td>
-                                    <td><strong>
-                                        {% if mass_monoisotopic_dmt_on %}
-                                            {{mass_monoisotopic_dmt_on}}
-                                        {% endif %}
-                                    </strong></td>
-                                    <td><strong>
-                                        {% if mass_average_dmt_on %}
-                                            {{mass_average_dmt_on}}
-                                        {% endif %}
-                                    </strong></td>
-                                </tr>
-
-                                {% for z, esi_avg_off, esi_avg_on, esi_mono_off, esi_mono_on in esi_series %}
-                                    <tr>
-                                        <td><strong>z-{{z}}</strong></td>
-                                        <td>
-                                            {% if esi_mono_off %}
-                                                {{esi_mono_off}}
-                                            {% endif %}
-                                        </td>
-                                        <td>{{esi_avg_off}}</td>
-                                        <td>
-                                            {% if esi_mono_on %}
-                                                {{esi_mono_on}}
-                                            {% endif %}
-                                        </td>
-                                        <td>{{esi_avg_on}}</td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                      <p class="card-text">
+                          <strong>GC content:</strong> &emsp; TBD <span class="text-muted">%</span>
+                      </p>
+                        {%endcomment%}
                     </div>
-
+                  </div>
                 </div>
+
+                <div class="col-md-6 col-lg-4 mb-3">
+                  <div class="card">
+                    <div class="card-body">
+                        <p class="card-text">
+                            <strong>&epsilon;<sub>260</sub>: </strong> &emsp; {{ epsilon260 }}
+                            <span class="text-muted">L&middot;mol<sup>-1</sup>&middot;cm<sup>-1</sup></span>
+                        </p>
+                        <p>
+                            <strong>OD<sub>260</sub>:</strong> &emsp;
+                                {% if absorbance260 %}
+                                    {{ absorbance260 }}
+                                    <span class="text-muted">(&times;{{ dilution_factor }})</span>
+                                {% else %}
+                                    -
+                                {% endif %}
+                        </p>
+                        <p>
+                            <strong>Volume:</strong> &emsp;
+                                {% if volume %}
+                                    {{ volume }} <span class="text-muted">mL</span>
+                                {% else %}
+                                    -
+                                {% endif %}
+                        </p>
+                        <p>
+                            <strong>OD<sub>260</sub> Units:</strong> &emsp;
+                                {% if odu260 %}
+                                    {{ odu260 }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                        </p>
+                        <p>
+                            <strong>Concentration: </strong> &emsp;
+                                {% if concentration_molar %}
+                                    {{ concentration_molar }} <span class="text-muted">&mu;M</span>
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    {{ concentration_mass }} <span class="text-muted">&mu;g/mL</span></p>
+                                {% else %}
+                                    -
+                                {% endif %}
+                        </p>
+                        <p>
+                            <strong>Quantity:</strong> &emsp;
+                                {% if quantity %}
+                                    {{ quantity }} <span class="text-muted">nmol</span>
+                                {% else %}
+                                    -
+                                {% endif %}
+                        </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4 mb-3">
+                  <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">Enter:</h5>
+
+                          <label for="{{ form.absorbance260.id_for_label }}"><small>Absorbance at 260 nm</small></label>
+                          {{ form.absorbance260 }}
+                          <label class="mt-2" for="{{ form.dilution_factor.id_for_label }}"><small>Dilution Factor</small></label>
+                          {{ form.dilution_factor }}
+                          <label class="mt-2" for="{{ form.volume.id_for_label }}"><small>Volume, mL</small></label>
+                          {{ form.volume }}
+
+                          <button type="submit" class="mt-3 btn btn-sm btn-primary submit"> Quantify! </button>
+                    </div>
+                  </div>
+                </div>
+
              </div>
           </div>
+
+          <div class="tab-pane fade" id="navs-pills-top-ms" role="tabpanel">
+              <div class="row mb-4">
+                  <div class="col-xl">
+                     <div class="card">
+                        <div class="card-body">
+
+                            <div class="table-responsive">
+                                <table class="table table-sm table-hover">
+                                    <thead>
+                                         <tr>
+                                            <th></th>
+                                            <th><span class="fw-semibold">Monoisotopic MW (DMT-OFF)</span></th>
+                                            <th><span class="fw-semibold">Average MW (DMT-OFF)</span></th>
+                                            <th><span class="fw-semibold">Monoisotopic MW (DMT-ON)</span></th>
+                                            <th><span class="fw-semibold">Average MW (DMT-ON)</span></th>
+                                         </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td></td>
+                                            <td><strong>
+                                                {% if mass_monoisotopic %}
+                                                    {{ mass_monoisotopic }}
+                                                {% endif %}
+                                            </strong></td>
+                                            <td><strong>
+                                                {% if mass_average %}
+                                                    {{mass_average}}
+                                                {% endif %}
+                                            </strong></td>
+                                            <td><strong>
+                                                {% if mass_monoisotopic_dmt_on %}
+                                                    {{mass_monoisotopic_dmt_on}}
+                                                {% endif %}
+                                            </strong></td>
+                                            <td><strong>
+                                                {% if mass_average_dmt_on %}
+                                                    {{mass_average_dmt_on}}
+                                                {% endif %}
+                                            </strong></td>
+                                        </tr>
+
+                                        {% for z, esi_avg_off, esi_avg_on, esi_mono_off, esi_mono_on in esi_series %}
+                                            <tr>
+                                                <td><strong>z-{{z}}</strong></td>
+                                                <td>
+                                                    {% if esi_mono_off %}
+                                                        {{esi_mono_off}}
+                                                    {% endif %}
+                                                </td>
+                                                <td>{{esi_avg_off}}</td>
+                                                <td>
+                                                    {% if esi_mono_on %}
+                                                        {{esi_mono_on}}
+                                                    {% endif %}
+                                                </td>
+                                                <td>{{esi_avg_on}}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                     </div>
+                  </div>
+              </div>
+          </div>
+
+          <div class="tab-pane fade" id="navs-pills-top-ms2" role="tabpanel">
+             <div class="row">
+                <div class="col-xl">
+                  <div class="nav-align-top mb-4">
+                    <ul class="nav nav-tabs" role="tablist">
+
+                          <li class="nav-item">
+                            <button
+                              type="button"
+                              class="nav-link active"
+                              role="tab"
+                              data-bs-toggle="tab"
+                              data-bs-target="#navs-justified-home"
+                              aria-controls="navs-justified-home"
+                              aria-selected="true"
+                            >
+                              MS/MS Fragments
+                            </button>
+                          </li>
+
+                    {% for i in charge %}
+                        {% if i <= 10 %}
+
+                          <li class="nav-item">
+                            <button
+                              type="button"
+                              class="nav-link"
+                              role="tab"
+                              data-bs-toggle="tab"
+                              data-bs-target="#navs-top-{{i}}"
+                              aria-controls="navs-top-{{i}}"
+                              aria-selected="false"
+                            >
+                              z-{{i}}
+                            </button>
+                          </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    </ul>
+
+                      <div class="tab-content" style="background: #fff;">
+                        <div class="tab-pane fade show active" id="navs-justified-home" role="tabpanel">
+                            <p>
+                              <img src="{% static 'ms_ms_fragmentation.png' %}" >
+                            </p>
+                        </div>
+                        {% for charge_array in mass_fragments_array %}
+                            {% if forloop.counter <= 10 %}
+                                <div class="tab-pane fade" id="navs-top-{{forloop.counter}}" role="tabpanel">
+                                    <p>
+                                        <div class="table-responsive">
+                                            <table class="table table-sm table-hover">
+                                                <thead>
+                                                     <tr>
+                                                        <th><span class="fw-semibold" style="text-transform: none;">d</span></th>
+                                                        <th><span class="fw-semibold" style="text-transform: none;">c</span></th>
+                                                        <th><span class="fw-semibold" style="text-transform: none;">b</span></th>
+                                                        <th><span class="fw-semibold" style="text-transform: none;">a</span></th>
+                                                        <th><span class="fw-semibold" style="text-transform: none;">a-B</span></th>
+                                                        <th><span class="fw-semibold" style="text-transform: none;">5' Index</span></th>
+                                                        <th><span class="fw-semibold" style="text-transform: none;">Sequence</span></th>
+                                                        <th><span class="fw-semibold" style="text-transform: none;">3' Index</span></th>
+                                                        <th><span class="fw-semibold" style="text-transform: none;">w</span></th>
+                                                        <th><span class="fw-semibold" style="text-transform: none;">x</span></th>
+                                                        <th><span class="fw-semibold" style="text-transform: none;">y</span></th>
+                                                        <th><span class="fw-semibold" style="text-transform: none;">z</span></th>
+                                                     </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                {% for d_esi, c_esi, b_esi, a_esi, a_B_esi, seq, w_esi, x_esi, y_esi, z_esi in charge_array %}
+                                                    <tr>
+                                                        <td>
+                                                            <small>
+                                                                {% if d_esi >= 0 %}
+                                                                    {{d_esi}}
+                                                                {% else %}
+                                                                    -
+                                                                {% endif %}
+                                                            </small>
+                                                        </td>
+                                                        <td>
+                                                            <small>
+                                                                {% if c_esi >= 0 %}
+                                                                    {{c_esi}}
+                                                                {% else %}
+                                                                    -
+                                                                {% endif %}
+                                                            </small>
+                                                        </td>
+                                                        <td>
+                                                            <small>
+                                                                {% if b_esi >= 0 %}
+                                                                    {{b_esi}}
+                                                                {% else %}
+                                                                    -
+                                                                {% endif %}
+                                                            </small>
+                                                        </td>
+                                                        <td>
+                                                            <small>
+                                                                {% if a_esi >= 0 %}
+                                                                    {{a_esi}}
+                                                                {% else %}
+                                                                    -
+                                                                {% endif %}
+                                                            </small>
+                                                        </td>
+                                                        <td>
+                                                            <small>
+                                                                {% if a_B_esi >= 0 %}
+                                                                    {{a_B_esi}}
+                                                                {% else %}
+                                                                    -
+                                                                {% endif %}
+                                                            </small>
+                                                        </td>
+                                                        <td>{{forloop.counter}}</td>
+                                                        <td><strong>{{seq}}</strong></td>
+                                                        <td>{{forloop.revcounter}}</td>
+                                                        <td>
+                                                            <small>
+                                                                {% if w_esi >= 0 %}
+                                                                    {{w_esi}}
+                                                                {% else %}
+                                                                    -
+                                                                {% endif %}
+                                                            </small>
+                                                        </td>
+                                                        <td>
+                                                            <small>
+                                                                {% if x_esi >= 0 %}
+                                                                    {{x_esi}}
+                                                                {% else %}
+                                                                    -
+                                                                {% endif %}
+                                                            </small>
+                                                        </td>
+                                                        <td>
+                                                            <small>
+                                                                {% if y_esi >= 0 %}
+                                                                    {{y_esi}}
+                                                                {% else %}
+                                                                    -
+                                                                {% endif %}
+                                                            </small>
+                                                        </td>
+                                                        <td>
+                                                            <small>
+                                                                {% if z_esi >= 0 %}
+                                                                    {{z_esi}}
+                                                                {% else %}
+                                                                    -
+                                                                {% endif %}
+                                                            </small>
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </p>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                      </div>
+
+                  </div>
+                </div>
+              </div>
+          </div>
+
+        </div>
       </div>
+    </div>
+</div>
+
+
 
 {% endif %}
 

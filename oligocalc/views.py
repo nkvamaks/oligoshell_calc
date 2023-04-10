@@ -21,6 +21,8 @@ def calc_view(request):
     mass_average = 0
     mass_average_dmt_on = 0
     esi_series = []
+    seq_wo_phosph_tup = ()
+    mass_fragments_array = []
 
     if form.is_valid():
         sequence = form.cleaned_data['sequence']
@@ -56,10 +58,31 @@ def calc_view(request):
         if concentration_molar and volume:
             quantity = round(concentration_molar * volume, 1)
 
+        if not utils.contain_degenerate_nucleotide(sequence):
+            seq_wo_phosph_tup = utils.sequence_split(utils.sequence_explicit(sequence))[::2]
+            a_esi, a_B_esi, b_esi, c_esi, d_esi, w_esi, x_esi, y_esi, z_esi = map(utils.get_ms_fragments_esi_series, utils.get_ms_fragments(sequence))
+
+            for charge in range(1, length):
+                mass_fragments_array.append(
+                    [
+                        (d_esi[seq_ind][charge-1],
+                         c_esi[seq_ind][charge-1],
+                         b_esi[seq_ind][charge-1],
+                         a_esi[seq_ind][charge-1],
+                         a_B_esi[seq_ind][charge-1],
+                         seq_wo_phosph_tup[seq_ind-1],
+                         w_esi[seq_ind][charge-1],
+                         x_esi[seq_ind][charge-1],
+                         y_esi[seq_ind][charge-1],
+                         z_esi[seq_ind][charge-1]) for seq_ind in range(1, length+1)
+                    ]
+                )
+
     return render(request, 'oligocalc/calculator.html', {
         'form': form,
         'sequence': sequence,
         'length': length,
+        'charge': range(1, length),
         'epsilon260': epsilon260,
         'absorbance260': absorbance260,
         'dilution_factor': dilution_factor,
@@ -73,4 +96,7 @@ def calc_view(request):
         'mass_monoisotopic_dmt_on': mass_monoisotopic_dmt_on,
         'mass_average_dmt_on': mass_average_dmt_on,
         'esi_series': esi_series,
+        'seq_wo_phosph_tup': seq_wo_phosph_tup,
+        'mass_fragments_array': mass_fragments_array,
+
     })

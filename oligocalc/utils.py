@@ -60,6 +60,15 @@ map_nucleoside = {
     'moeA': 'A', 'moeCm': 'C', 'moeG': 'G', 'moeT': 'T',
 }
 
+map_nucleobase = {
+    'dA': 'baseA', 'dC': 'baseC', 'dG': 'baseG', 'dT': 'baseT', 'dCm': 'baseCm', 'dU': 'baseU',
+    'rA': 'baseA', 'rC': 'baseC', 'rG': 'baseG', 'rU': 'baseU',
+    'fA': 'baseA', 'fC': 'baseC', 'fG': 'baseG', 'fU': 'baseU',
+    'mA': 'baseA', 'mC': 'baseC', 'mG': 'baseG', 'mU': 'baseU',
+    '+A': 'baseA', '+Cm': 'baseCm', '+G': 'baseG', '+T': 'baseT',
+    'moeA': 'baseA', 'moeCm': 'baseCm', 'moeG': 'baseG', 'moeT': 'baseT',
+}
+
 
 # 'Alfabet' of nucleosides. Can be at any position
 # d -     deoxy
@@ -138,6 +147,13 @@ formula = {
     'Cy5': {'C': 47, 'H': 64, 'N': 7, 'O': 3},
     'BHQ1': {'C': 25, 'H': 28, 'N': 6, 'O': 5},
     'BHQ2': {'C': 24, 'H': 26, 'N': 6, 'O': 6},
+
+    'baseA': {'C': 5, 'H': 5, 'N': 5},
+    'baseC': {'C': 4, 'H': 5, 'N': 3, 'O': 1},
+    'baseCm': {'C': 5, 'H': 7, 'N': 3, 'O': 1},
+    'baseG': {'C': 5, 'H': 5, 'N': 5, 'O': 1},
+    'baseT': {'C': 5, 'H': 6, 'N': 2, 'O': 2},
+    'baseU': {'C': 4, 'H': 4, 'N': 2, 'O': 2},
 
     'po': {'H': 3, 'O': 4, 'P': 1},
     'ps': {'H': 3, 'O': 3, 'P': 1, 'S': 1},
@@ -246,7 +262,7 @@ def get_mass_monoisotopic(sequence):
     """
     sequence_full = sequence_explicit(sequence)
     m_mono = 0
-    if get_length(sequence) == 1:
+    if len(sequence_split(sequence)) == 1:
         for atom in formula[sequence]:
             m_mono += mass_mono[atom] * formula[sequence][atom]
         return round(m_mono, 5)
@@ -266,3 +282,67 @@ def contain_degenerate_nucleotide(sequence):
         if nt in degenerate_nucleotide:
             return True
     return False
+
+
+def get_ms_fragments(sequence):
+    """
+    Takes a sequence as a string, returns theoretical masses of several charge states of the following ions:
+    d, c, b, a, a-B, w, x, y, z
+    """
+    d = {}
+    c = {}
+    b = {}
+    a = {}
+    a_B = {}
+    w = {}
+    x = {}
+    y = {}
+    z = {}
+    seq_full_tup = sequence_split(sequence_explicit(sequence))
+    mass = get_mass_monoisotopic(sequence)
+
+    for index in range(len(seq_full_tup)):
+        if index % 2 == 0 and index < len(seq_full_tup)-1:
+            seq_part_tup = seq_full_tup[:index + 1]
+            seq_part = ' '.join(seq_full_tup[:index+1])
+            b[(index+2)//2] = get_mass_monoisotopic(seq_part)
+            a[(index+2)//2] = round(b[(index+2)//2] - mass_mono['H2O'], 4)
+            x[(index+4)//2] = round(mass - b[(index+2)//2], 4)
+            w[(index+4)//2] = round(x[(index+4)//2] + mass_mono['H2O'], 4)
+            if seq_part_tup[-1] in map_nucleobase:
+                a_B[(index+2)//2] = round(a[(index+2)//2] - get_mass_monoisotopic(map_nucleobase[seq_part_tup[-1]]), 4)
+            else:
+                a_B[(index+2)//2] = 0
+
+            seq_part = ' '.join(seq_full_tup[:index + 2])
+            d[(index+2)//2] = get_mass_monoisotopic(seq_part)
+            c[(index+2)//2] = round(d[(index+2)//2] - mass_mono['H2O'], 4)
+            y[(index+4)//2] = round(mass - c[(index+2)//2], 4)
+            z[(index+4)//2] = round(y[(index+4)//2] - mass_mono['H2O'], 4)
+
+        if index == len(seq_full_tup) - 1:
+            a[(index + 2) // 2] = 0
+            a_B[(index + 2) // 2] = 0
+            b[(index + 2) // 2] = 0
+            c[(index + 2) // 2] = 0
+            d[(index + 2) // 2] = 0
+            w[1] = 0
+            x[1] = 0
+            y[1] = 0
+            z[1] = 0
+
+    return a, a_B, b, c, d, w, x, y, z
+
+
+def get_ms_fragments_esi_series(frag_dict):
+    """
+    Takes dictionary containing mass fragments and creates another dict containing esi series of fragments,
+    up to half-charged states.
+    """
+    frag_dict_esi = {}
+    for index, mass in frag_dict.items():
+        mass_esi = ()
+        for charge_state in range(1, len(frag_dict)):
+            mass_esi += (round((mass - charge_state * mass_mono['H']) / charge_state, 3), )
+        frag_dict_esi[index] = mass_esi
+    return frag_dict_esi

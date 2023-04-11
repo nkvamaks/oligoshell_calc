@@ -23,6 +23,7 @@ nucleotide_extinction_260 = {'dA': 15400, 'dC': 7400,  'dG': 11500, 'dT': 8700, 
                              '+A': 15400, '+Cm': 7200, '+G': 11500, '+T': 8700,
                              'moeA': 15400, 'moeCm': 7200, 'moeG': 11500, 'moeT': 8700,
                              'A': 15400, 'C': 7400, 'G': 11500, 'T': 8700, 'U': 9900,
+
                              }
 
 # Extinction coefficients of dinucleotides:
@@ -47,6 +48,8 @@ modification_extinction_260 = {
 
     'BHQ1': 8000, 'BHQ2': 8000,
     'YakYel': 23700, 'TexRd': 14400, 'IaBk': 44510,
+
+    'iTest': 10000,
 
     'po': 0, 'ps': 0, '*': 0,
 }
@@ -94,7 +97,7 @@ modification_5_position = ('Alkyne', 'FAM', 'TAMRA', 'Cy5',)
 modification_3_position = ('BHQ1', 'BHQ2',)
 
 # Modifications available only at internal position
-modification_int_position = ()
+modification_int_position = ('iTest', )
 
 all_nucleotide = nucleotide_any_position + modification_5_position + modification_3_position + modification_int_position
 
@@ -154,6 +157,8 @@ formula = {
     'baseG': {'C': 5, 'H': 5, 'N': 5, 'O': 1},
     'baseT': {'C': 5, 'H': 6, 'N': 2, 'O': 2},
     'baseU': {'C': 4, 'H': 4, 'N': 2, 'O': 2},
+
+    'iTest': {'C': 1, 'H': 1, 'N': 1, 'O': 1},
 
     'po': {'H': 3, 'O': 4, 'P': 1},
     'ps': {'H': 3, 'O': 3, 'P': 1, 'S': 1},

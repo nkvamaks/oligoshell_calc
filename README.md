@@ -58,5 +58,5 @@ Examples:
 mU * fA * mG fA mU fC mU fU mU fU mG fG mC fC mU fA mU * dC * dT
 </p>
 <p>
-<b>OligoShell Calculator</b> is available online at <a href="www.oligoshell.com">www.oligoshell.com</a>
+<b>OligoShell Calculator</b> is available online at <a href="http://www.oligoshell.com">www.oligoshell.com</a>
 </p>

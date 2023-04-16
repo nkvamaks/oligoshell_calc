@@ -13,7 +13,39 @@
     <div class="col-xl">
       <div class="card mb-4">
         <div class="card-header d-flex justify-content-between align-items-center">
-          <h5 class="mb-0">Enter Sequence:</h5>
+          <h5 class="mb-0 ms-0"> Enter Sequence:
+
+              <svg data-bs-toggle="tooltip"
+                   data-bs-offset="0,5"
+                   data-bs-placement="right"
+                   data-bs-html="true"
+                   title="<span>
+                            <p>
+                                Sequences are 5'&rarr;3' left to right. Every nucleotide has a specific designation and should be separated by 'space' from the next nucleotide or phosphate entity. Case-sensitive.
+                            </p>
+                            <p><strong>Alphabet available now:</strong></p>
+                            <ul>
+                                <li>Deoxynucleotides: dA, dC, dG, dT, dU, dCm</li>
+                                <li>Ribonucleotides: rA, rC, rG, rU</li>
+                                <li>2'-OMe nucleotides: mA, mC, mG, mU</li>
+                                <li>2'-F nucleotides: fA, fC, fG, fU</li>
+                                <li>2'-MOE nucleotides: moeA, moeCm, moeG, moeT</li>
+                                <li>LNA nucleotides: +A, +Cm, +G, +T</li>
+                                <sub>* <b>Cm</b> stands for 5-methylcytosine and <b>T</b> for 5-methyluracil</sub>
+                            </ul>
+                            <p>
+                                On default it is assumed that two nucleotides separated with space have phosphodiester linkage. Use ' * ' as a separator to designate phosphorothioate linkage.
+                            </p>
+
+                          </span>"
+                   xmlns="http://www.w3.org/2000/svg"
+                   width="22"
+                   height="22"
+                   viewBox="0 0 24 24">
+                  <path fill="currentColor" d="M13 9h-2V7h2m0 10h-2v-6h2m-1-9A10 10 0 0 0 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10A10 10 0 0 0 12 2Z"/>
+              </svg>
+
+          </h5>
         </div>
         <div class="card-body">
 
@@ -27,7 +59,7 @@
                     <div>{{ form.sequence.errors }}</div>
                 {% endif %}
 
-            <button type="submit" class="m-1 btn btn-sm btn-primary submit">Calculate!</button>
+            <button type="submit" class="ms-0 mt-2 btn btn-primary submit">Calculate!</button>
 
 
 
@@ -266,7 +298,7 @@
                               aria-controls="navs-justified-home"
                               aria-selected="true"
                             >
-                              MS/MS Fragments
+                              Fragmentation Scheme
                             </button>
                           </li>
 

@@ -1,29 +1,29 @@
 # OligoShell Calculator
 <p>
-Is a separate part of OligoShell web application aimed to calculate properties of natural, modified and therapeutic oligonucleotides on-the-fly without saving the results in database.
+It is a separate part of OligoShell web application aimed to calculate properties of natural, modified and therapeutic oligonucleotides without saving results in database.
 </p>
 <p>
-Now it can calculate:
+Now it calculates:
 </p>
 <ul>
     <li>
         Extinction coefficient (nearest neighbours model)
     </li>
     <li>
-        Monoisotopic and average molecular weight
+        Monoisotopic and average molecular weight, and charge states
     </li>
     <li>
         Theoretical masses of fragments in MS/MS experiments
     </li>
 </ul>
 <p>
-It also can quantify oligonucleotide based on user input of measured <strong>absorbanse at 260 nm</strong>, its <strong>volume</strong> and <strong>dilution factor</strong> of oligonucleotide solution.
+It also can quantify oligonucleotide based on user input of measured <strong>absorbanse at 260 nm</strong>, <strong>volume</strong> and <strong>dilution factor</strong> of oligonucleotide solution.
 </p>
-<p><strong><u>How to input a sequence:</u></strong></p>
+<p><strong>How to input a sequence:</strong></p>
 <p>
 Sequences are 5'-->3' left to right. Every nucleotide has a specific designation and should be separated by 'space' from the next nucleotide or phosphate entity. Case-sensitive.
 </p>
-<p><strong><u>Alphabet available now:</u></strong></p>
+<p><strong>Alphabet available now:</strong></p>
 <ul>
     <li>
         Deoxynucleotides: dA, dC, dG, dT, dU, dCm

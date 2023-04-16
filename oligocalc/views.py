@@ -100,3 +100,6 @@ def calc_view(request):
         'mass_fragments_array': mass_fragments_array,
 
     })
+
+def about(request):
+    return render(request, 'oligocalc/about.html')

@@ -8,6 +8,7 @@ app_name = 'oligocalc'
 
 urlpatterns = [
     path('', views.calc_view, name='calculator'),
+    path('about/', views.about, name='about'),
 
 ]
 

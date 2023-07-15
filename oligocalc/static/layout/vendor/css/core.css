@@ -7397,8 +7397,6 @@ button:focus {
   background-clip: padding-box;
 
 }
-#box-shadow: 0 2px 6px 0 rgba(67, 89, 113, 0.12);
-#background: #fff;
 
 .nav-align-top :not(.nav-pills) ~ .tab-content {
   border-radius: 0 0 0.375rem 0.375rem;

@@ -1,27 +1,27 @@
 # OligoShell Calculator
 <p>
-It is a separate part of OligoShell web application aimed to calculate properties of natural, modified and therapeutic oligonucleotides without saving results in database.
+This is a web application aimed to calculate properties of natural, modified and therapeutic oligonucleotides.
 </p>
 <p>
-Now it calculates:
+<strong>It can calculate:</strong>
 </p>
 <ul>
     <li>
         Extinction coefficient (nearest neighbours model)
     </li>
     <li>
-        Monoisotopic and average molecular weight, and charge states
+        Monoisotopic and average molecular weight and charge states
     </li>
     <li>
         Theoretical masses of fragments in MS/MS experiments
     </li>
 </ul>
 <p>
-It also can quantify oligonucleotide based on user input of measured <strong>absorbanse at 260 nm</strong>, <strong>volume</strong> and <strong>dilution factor</strong> of oligonucleotide solution.
+It can also quantify oligonucleotide based on user input of measured <strong>absorbanse at 260 nm</strong>, <strong>volume</strong> and <strong>dilution factor</strong> of oligonucleotide solution.
 </p>
 <p><strong>How to input a sequence:</strong></p>
 <p>
-Sequences are 5'-->3' left to right. Every nucleotide has a specific designation and should be separated by 'space' from the next nucleotide or phosphate entity. Case-sensitive.
+Sequences are 5'&rarr;3' left to right. Every nucleotide has a specific designation and should be separated with 'space' from the next nucleotide or phosphate entity. Case-sensitive.
 </p>
 <p><strong>Alphabet available now:</strong></p>
 <ul>
@@ -46,10 +46,10 @@ Sequences are 5'-->3' left to right. Every nucleotide has a specific designation
     <sub>* <b>Cm</b> stands for 5-methylcytosine and <b>T</b> for 5-methyluracil</sub>
 </ul>
 <p>
-On default it is assumed that two nucleotides separated with space have phosphodiester linkage. Use ' * ' as a separator to designate phosphorothioate linkage.
+On default it is assumed that two nucleotides separated with 'space' have phosphodiester linkage. Use ' * ' as a separator to designate phosphorothioate linkage.
 </p>
 <p>
-Examples:
+<strong>Examples:</strong>
 </p>
 <p>
 +A * +Cm * +T * +G * dT * mG * dG * dG * dC * dC * dT * dT * dA * dA * +A * +Cm * +T * +G  

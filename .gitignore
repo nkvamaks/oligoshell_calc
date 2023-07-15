@@ -107,4 +107,4 @@ venv.bak/
 .idea/
 .tox/
 .gitignore/
-oligoshell/migrations/
+oligocalc/migrations/

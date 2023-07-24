@@ -1,0 +1,65 @@
+{% extends "layout/basic.html" %}
+{% load static %}
+
+{% block title %}Contact Form{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-xl">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0"><strong>Contact Form</strong></h4>
+                <div class="mt-1">
+                    <em>If you have any query then feel free to ask us anything you want!</em>
+                </div>
+            </div>
+            <div class="card-body">
+
+                <form method="post" action=".">
+                    {% csrf_token %}
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{form.name}}
+                                {% if form.name.errors %}
+                                    <div>{{ form.name.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{form.reply_to}}
+                                {% if form.reply_to.errors %}
+                                    <div>{{ form.reply_to.errors }}</div>
+                                {% endif %}
+                                <div class="form-text">Your email address will not be published. Input if you would like us to contact you.</div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl mb-3">
+                                {{form.subject}}
+                                {% if form.subject.errors %}
+                                    <div>{{ form.subject.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl mb-3">
+                                {{form.message}}
+                                {% if form.message.errors %}
+                                    <div>{{ form.message.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    <button type="submit" class="btn btn-primary submit">Send message</button>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

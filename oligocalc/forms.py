@@ -14,3 +14,22 @@ class CalcForm(forms.ModelForm):
                    'dilution_factor': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
                    'volume': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
                    }
+
+
+class ContactForm(forms.Form):
+    subject = forms.CharField(required=False,
+                              max_length=200,
+                              widget=forms.TextInput(attrs={'placeholder': 'Subject',
+                                                            'class': 'form-control'}))
+    name = forms.CharField(required=False,
+                           max_length=100,
+                           widget=forms.TextInput(attrs={'placeholder': 'Your Name',
+                                                         'class': 'form-control'}))
+    reply_to = forms.EmailField(required=False,
+                                widget=forms.TextInput(attrs={'placeholder': 'Your Email',
+                                                              'class': 'form-control'}))
+    message = forms.CharField(required=True,
+                              widget=forms.Textarea(attrs={'rows': 4,
+                                                           'placeholder': 'Your message (Required)',
+                                                           'class': 'form-control'
+                                                           }))

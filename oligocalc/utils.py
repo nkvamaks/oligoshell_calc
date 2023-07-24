@@ -53,6 +53,8 @@ modification_extinction_260 = {
 
     'YakYel': 23700, 'TexRd': 14400, 'IaBk': 44510,
 
+    'GALNAC-PRO': 0, 'CHOL-PRO': 0,
+
     'po': 0, 'ps': 0, '*': 0,
 }
 
@@ -96,10 +98,12 @@ nucleotide_any_position = (
 modification_5_position = ('Alkyne',
                            'FAM', 'TET', 'HEX', 'JOE', 'VIC',
                            'TMR-ACH', 'R6G', 'R6G-ACH', 'ROX-CLK',
-                            'Cy5-CLK')
+                            'Cy5-CLK',
+                           'CHOL-PRO', 'GALNAC-PRO',)
 
 # Modifications available only at 3'-position
-modification_3_position = ('BHQ1', 'BHQ2', 'MGB', 'MGB-Eclipse', 'Eclipse')
+modification_3_position = ('BHQ1', 'BHQ2', 'MGB', 'MGB-Eclipse', 'Eclipse',
+                           'CHOL-PRO', 'GALNAC-PRO',)
 
 # Modifications available only at internal position
 modification_int_position = ('BHQ1', 'BHQ2', 'Eclipse')
@@ -166,6 +170,9 @@ formula = {
     'MGB': {'C': 44, 'H': 47, 'N': 7, 'O': 6},
     'MGB-Eclipse': {'C': 57, 'H': 56, 'Cl': 1, 'N': 11, 'O': 8},
     'Eclipse': {'C': 22, 'H': 26, 'Cl': 1, 'N': 5, 'O': 5},
+
+    'CHOL-PRO': {'C': 39, 'H': 66, 'N': 2, 'O': 5},
+    'GALNAC-PRO': {'C': 24, 'H': 43, 'N': 3, 'O': 10},
 
     'baseA': {'C': 5, 'H': 5, 'N': 5},
     'baseC': {'C': 4, 'H': 5, 'N': 3, 'O': 1},

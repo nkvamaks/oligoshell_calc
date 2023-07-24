@@ -1,4 +1,8 @@
 from django.shortcuts import render
+from django.core.mail import EmailMessage
+from django.conf import settings
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 from . import forms
 from . import utils
@@ -101,5 +105,36 @@ def calc_view(request):
 
     })
 
+
 def about(request):
     return render(request, 'oligocalc/about.html')
+
+
+def contact(request):
+    if request.method == "POST":
+        form = forms.ContactForm(request.POST)
+        if form.is_valid():
+            subject = form.cleaned_data['subject']
+            message = form.cleaned_data['message']
+            name = form.cleaned_data['name']
+            reply_to = form.cleaned_data['reply_to']
+
+            body = 'From:\t{}\nEmail:\t{}\nMessage:\t\t\n\n{}\n'.format(name, reply_to, message)
+
+            email = EmailMessage(
+                subject=subject,
+                body=body,
+                from_email='OligoShell App',
+                to=[settings.EMAIL_HOST_USER, ],
+                reply_to=[reply_to, ],
+            )
+            email.send()
+            return HttpResponseRedirect(reverse('oligocalc:success'))
+
+    else:
+        form = forms.ContactForm()
+    return render(request, 'oligocalc/contact.html', {"form": form})
+
+
+def success(request):
+    return render(request, 'oligocalc/successfully_sent.html')

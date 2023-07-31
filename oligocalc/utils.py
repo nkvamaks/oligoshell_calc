@@ -45,13 +45,13 @@ modification_extinction_260 = {
     'FAM': 21000, 'TET': 16300, 'HEX': 31600, 'JOE': 12000, 'VIC': 7200,
     'TMR-ACH': 32300, 'R6G': 18000, 'R6G-ACH': 18000, 'ROX-CLK': 22600,
 
-    'Cy3': 4930, 'Cy3.5': 24000, 'Cy5-CLK': 10000, 'Cy5.5': 28800,
-    'Alkyne': 0,
+    'CY3': 4930, 'CY3.5': 24000, 'CY5-CLK': 10000, 'CY5.5': 28800,
+    'ALKYNE': 0,
 
     'DABCYL': 11100, 'BHQ0': 7700, 'BHQ1': 8000, 'BHQ2': 8000, 'BHQ3': 13000,
-    'MGB': 37900, 'MGB-Eclipse': 44500, 'Eclipse': 6600,
+    'MGB': 37900, 'MGB-ECLIPSE': 44500, 'ECLIPSE': 6600,
 
-    'YakYel': 23700, 'TexRd': 14400, 'IaBk': 44510,
+    'YAKYEL': 23700, 'TEXRD': 14400, 'IABK': 44510,
 
     'GALNAC-PRO': 0, 'CHOL-PRO': 0,
 
@@ -95,18 +95,18 @@ nucleotide_any_position = (
 )
 
 # Modifications available only at 5'-position
-modification_5_position = ('Alkyne',
+modification_5_position = ('ALKYNE',
                            'FAM', 'TET', 'HEX', 'JOE', 'VIC',
                            'TMR-ACH', 'R6G', 'R6G-ACH', 'ROX-CLK',
-                            'Cy5-CLK',
+                           'CY5-CLK',
                            'CHOL-PRO', 'GALNAC-PRO',)
 
 # Modifications available only at 3'-position
-modification_3_position = ('BHQ1', 'BHQ2', 'MGB', 'MGB-Eclipse', 'Eclipse',
+modification_3_position = ('BHQ1', 'BHQ2', 'MGB', 'MGB-ECLIPSE', 'ECLIPSE',
                            'CHOL-PRO', 'GALNAC-PRO',)
 
 # Modifications available only at internal position
-modification_int_position = ('BHQ1', 'BHQ2', 'Eclipse')
+modification_int_position = ('BHQ1', 'BHQ2', 'ECLIPSE', 'GALNAC-PRO')
 
 all_nucleotide = nucleotide_any_position + modification_5_position + modification_3_position + modification_int_position
 
@@ -153,10 +153,10 @@ formula = {
     'moeCm': {'C': 13, 'H': 21, 'N': 3, 'O': 6},
     'moeG': {'C': 13, 'H': 19, 'N': 5, 'O': 6},
     'moeT': {'C': 13, 'H': 20, 'N': 2, 'O': 7},
-    'Alkyne': {'C': 12, 'H': 19, 'N': 1, 'O': 2},
+    'ALKYNE': {'C': 12, 'H': 19, 'N': 1, 'O': 2},
     'FAM': {'C': 27, 'H': 25, 'N': 1, 'O': 7},
     'TMR-ACH': {'C': 31, 'H': 33, 'N': 3, 'O': 5},
-    'Cy5-CLK': {'C': 47, 'H': 64, 'N': 7, 'O': 3},
+    'CY5-CLK': {'C': 47, 'H': 64, 'N': 7, 'O': 3},
     'VIC': {'C': 33, 'H': 26, 'Cl': 3, 'N': 1, 'O': 7},
     'TET': {'C': 27, 'H': 21, 'Cl': 4, 'N': 1, 'O': 7},
     'HEX': {'C': 27, 'H': 19, 'Cl': 6, 'N': 1, 'O': 7},
@@ -168,8 +168,8 @@ formula = {
     'BHQ1': {'C': 25, 'H': 28, 'N': 6, 'O': 5},
     'BHQ2': {'C': 24, 'H': 26, 'N': 6, 'O': 6},
     'MGB': {'C': 44, 'H': 47, 'N': 7, 'O': 6},
-    'MGB-Eclipse': {'C': 57, 'H': 56, 'Cl': 1, 'N': 11, 'O': 8},
-    'Eclipse': {'C': 22, 'H': 26, 'Cl': 1, 'N': 5, 'O': 5},
+    'MGB-ECLIPSE': {'C': 57, 'H': 56, 'Cl': 1, 'N': 11, 'O': 8},
+    'ECLIPSE': {'C': 22, 'H': 26, 'Cl': 1, 'N': 5, 'O': 5},
 
     'CHOL-PRO': {'C': 39, 'H': 66, 'N': 2, 'O': 5},
     'GALNAC-PRO': {'C': 24, 'H': 43, 'N': 3, 'O': 10},

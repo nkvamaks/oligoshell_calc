@@ -10,9 +10,9 @@ class CalcForm(forms.ModelForm):
         widgets = {'sequence': forms.Textarea(attrs={'rows': 4,
                                                      'placeholder': '+T * +A * +G dA dT dC dT rG rC rA rC moeG * moeCm * moeT',
                                                      'class': 'form-control'}),
-                   'absorbance260': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
-                   'dilution_factor': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
-                   'volume': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
+                   'absorbance260': forms.NumberInput(attrs={'class': 'form-control form-control-sm'}),
+                   'dilution_factor': forms.NumberInput(attrs={'class': 'form-control form-control-sm'}),
+                   'volume': forms.NumberInput(attrs={'class': 'form-control form-control-sm'}),
                    }
 
 

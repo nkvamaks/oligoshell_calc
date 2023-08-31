@@ -36,14 +36,41 @@
                 <strong>How to input a sequence:</strong>
             </p>
             <p>
-                Sequences are 5'&rarr;3' left to right. Every nucleotide has a specific designation and should be separated with 'space' from the next nucleotide or phosphate entity. Case-sensitive.
+                Sequences are 5'&rarr;3' left to right. You may choose one of two input styles: 'DNA' and 'Therapeutic.
+                On default it is assumed that two nucleotides have phosphodiester linkage. Use ' * ' as a separator to designate phosphorothioate linkage.
             </p>
+            <ul>
+                <li>
+                    <strong>DNA input style</strong>
+                    <p>
+                        Four deoxynucleotides (A, C, G, T) as well as eleven degenerate deoxynucleotides (W, S, M, K, R, Y, B, D, H, V, N) can be used with a single letter code. All other nucleotides with different sugar moieties as well as modifications have several letter codes and should be surrounded by square brackets, e.g. [FAM] or [BHQ1].
+                    </p>
+                    <p>Examples:</p>
+                    <p>ACGTACGTGGCAGGCA</p>
+                    <p>[VIC]CCGGCGCGNTTSCGTC[MGB-ECLIPSE]</p>
+                    <p>[+Cm]*[+G]*[+T]*A*A*C*C*T*G*A*C*C*G*[+A]*[+G]*[+A]</p>
+                </li>
+                <li>
+                    <strong>Therapeutic input style</strong>
+                    <p>
+                        Every nucleotide, degenerate nucleotide or modification has a specific designation and should be separated with 'space' from the next nucleotide or phosphate entity.
+                    </p>
+                    <p>Examples:</p>
+                    <p>dA dC dG dT dA dC dG dT dG dG dC dA dG dG dC dA</p>
+                    <p>VIC dC dC dG dG dC dG dC dG dN dT dT dS dC dG dT dC MGB-ECLIPSE</p>
+                    <p>+Cm * +G * +T * dA * dA * dC * dC * dT * dG * dA * dC * dC * dG * +A * +G * +A</p>
+
+                </li>
+            </ul>
             <p>
-                <strong>Alphabet available now:</strong>
+                <strong>Available alphabet:</strong>
             </p>
             <ul>
                 <li>
                     Deoxynucleotides: dA, dC, dG, dT, dU, dCm
+                </li>
+                <li>
+                    Degenerate deoxinucleotides: dW, dS, dM, dK, dR, dY, dB, dD, dH, dV, dN
                 </li>
                 <li>
                     Ribonucleotides: rA, rC, rG, rU
@@ -63,17 +90,19 @@
                 <sub>* <b>Cm</b> stands for 5-methylcytosine and <b>T</b> for 5-methyluracil</sub>
             </ul>
             <p>
-                On default it is assumed that two nucleotides separated with 'space' have phosphodiester linkage. Use ' * ' as a separator to designate phosphorothioate linkage.
+                <strong>Available modifications:</strong>
             </p>
-            <p>
-                <strong>Examples:</strong>
-            </p>
-            <p>
-                +A * +Cm * +T * +G * dT * mG * dG * dG * dC * dC * dT * dT * dA * dA * +A * +Cm * +T * +G
-            </p>
-            <p>
-                mU * fA * mG fA mU fC mU fU mU fU mG fG mC fC mU fA mU * dC * dT
-            </p>
+            <ul>
+                <li>
+                    5': ALKYNE, FAM, TET, HEX, JOE, VIC, TMR-ACH, R6G, R6G-ACH, ROX-CLK, CY5-CLK, CHOL-PRO, GALNAC-PRO
+                </li>
+                <li>
+                    3': BHQ1, BHQ2, MGB, MGB-ECLIPSE, ECLIPSE, CHOL-PRO, GALNAC-PRO, GALNAC3-ALN
+                </li>
+                <li>
+                    Internal: BHQ1, BHQ2, ECLIPSE, GALNAC-PRO
+                </li>
+            </ul>
 
         </div>
       </div>

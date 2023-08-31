@@ -1,4 +1,8 @@
-#Monoisotopic and average masses of elements and some molecules
+# degeneration_pattern = r'[wWsSmMkKrRyYbBdDhHvVnN]'
+# modification_pattern = r'\[[-\._a-zA-Z0-9]+\]'
+
+
+# Monoisotopic and average masses of elements and some molecules
 mass_mono = {
     'H': 1.007825035, 'Li': 7.016003, 'B': 11.0093055, 'C': 12, 'N': 14.003074, 'O': 15.99491463,
     'F': 18.99840322, 'Na': 22.9897677, 'P': 30.973762, 'S': 31.9720707, 'Cl': 34.96885272, 'K': 38.9637074,
@@ -52,7 +56,7 @@ modification_extinction_260 = {
 
     'YAKYEL': 23700, 'TEXRD': 14400, 'IABK': 44510,
 
-    'GALNAC-PRO': 0, 'CHOL-PRO': 0,
+    'GALNAC-PRO': 0, 'CHOL-PRO': 0, 'GALNAC3-ALN': 0,
 
     'po': 0, 'ps': 0, '*': 0,
 }
@@ -75,6 +79,21 @@ map_nucleobase = {
     'moeA': 'baseA', 'moeCm': 'baseCm', 'moeG': 'baseG', 'moeT': 'baseT',
 }
 
+map_dna2mix = {
+    'A': 'dA', 'C': 'dC', 'G': 'dG', 'T': 'dT',
+    'W': 'dW', 'S': 'dS', 'M': 'dM', 'K': 'dK', 'R': 'dR', 'Y': 'dY', 'B': 'dB', 'D': 'dD', 'H': 'dH', 'V': 'dV', 'N': 'dN',
+    '[dCm]': 'dCm', '[dU]': 'dU',
+    '[rA]': 'rA', '[rC]': 'rC', '[rG]': 'rG', '[rU]': 'rU',
+    '[fA]': 'fA', '[fC]': 'fC', '[fG]': 'fG', '[fU]': 'fU',
+    '[mA]': 'mA', '[mC]': 'mC', '[mG]': 'mG', '[mU]': 'mU',
+    '[+A]': '+A', '[+Cm]': '+Cm', '[+G]': '+G', '[+T]': '+T',
+    '[moeA]': 'moeA', '[moeCm]': 'moeCm', '[moeG]': 'moeG', '[moeT]': 'moeT',
+    '[ALKYNE]': 'ALKYNE', '[FAM]': 'FAM', '[TET]': 'TET', '[HEX]': 'HEX', '[JOE]': 'JOE', '[VIC]': 'VIC',
+    '[TMR-ACH]': 'TMR-ACH', '[R6G]': 'R6G', '[R6G-ACH]': 'R6G-ACH', '[ROX-CLK]': 'ROX-CLK',
+    '[CY5-CLK]': 'CY5-CLK', '[CHOL-PRO]': 'CHOL-PRO', '[GALNAC-PRO]': 'GALNAC-PRO', '[GALNAC3-ALN]': 'GALNAC3-ALN',
+    '[BHQ1]': 'BHQ1', '[BHQ2]': 'BHQ2', '[MGB]': 'MGB', '[MGB-ECLIPSE]': 'MGB-ECLIPSE', '[ECLIPSE]': 'ECLIPSE',
+    '*': '*',
+}
 
 # 'Alfabet' of nucleosides. Can be at any position
 # d -     deoxy
@@ -102,7 +121,7 @@ modification_5_position = ('ALKYNE',
 
 # Modifications available only at 3'-position
 modification_3_position = ('BHQ1', 'BHQ2', 'MGB', 'MGB-ECLIPSE', 'ECLIPSE',
-                           'CHOL-PRO', 'GALNAC-PRO',)
+                           'CHOL-PRO', 'GALNAC-PRO', 'GALNAC3-ALN')
 
 # Modifications available only at internal position
 modification_int_position = ('BHQ1', 'BHQ2', 'ECLIPSE', 'GALNAC-PRO')
@@ -172,6 +191,7 @@ formula = {
 
     'CHOL-PRO': {'C': 39, 'H': 66, 'N': 2, 'O': 5},
     'GALNAC-PRO': {'C': 24, 'H': 43, 'N': 3, 'O': 10},
+    'GALNAC3-ALN': {'C': 78, 'H': 139, 'N': 11, 'O': 31},
 
     'baseA': {'C': 5, 'H': 5, 'N': 5},
     'baseC': {'C': 4, 'H': 5, 'N': 3, 'O': 1},
@@ -188,11 +208,12 @@ formula = {
 
 def sequence_split(sequence):
     """
-    The function takes raw sequence as a string and converts it into a tuple:
-    e.g. VinylP-A dC fT ps rA Spacer-18 moeG rU lG ps Cy3 is converted to
-    ('VinylP-A' 'dC' 'fT' 'ps' 'rA' 'Spacer-18' 'moeG' 'rU' 'lG' 'ps' 'Cy3')
+    The function takes a sequence as a string and converts it into a tuple:
+    e.g. FAM dC fT * rA +T moeG rU +G * CY3 is converted to
+    ('FAM', 'dC', 'fT', '*', 'rA', '+T', 'moeG', 'rU', '+G', '*', 'CY3')
     """
     return tuple(sequence.strip().split())
+
 
 def get_length(sequence):
     """
@@ -371,3 +392,33 @@ def get_ms_fragments_esi_series(frag_dict):
             mass_esi += (round((mass - charge_state * mass_mono['H']) / charge_state, 3), )
         frag_dict_esi[index] = mass_esi
     return frag_dict_esi
+
+
+def dna2mix(sequence):
+    seq_tup = sequence2tuple(sequence)
+    seq_mix = [map_dna2mix[nt] for nt in seq_tup]
+    return ' '.join(seq_mix)
+
+
+def sequence2tuple(sequence):
+    """The function takes a sequence as a string and converts it into a tuple:
+        e.g. NN[6FAM]AACTNRG[BHQ1dT]TTACGTC[DABCYL]TT is converted to
+        ('N','N','[6FAM], ... ,'[DABCYL]','T','T')
+        """
+    sequence_tuple = ()
+    mod_str = ''
+    mod = False
+
+    for nt in sequence:
+        if nt == '[' or mod is True:
+            mod = True
+            if nt !=' ':
+                mod_str += nt
+            if nt == ']':
+                sequence_tuple += (mod_str,)
+                mod = False
+                mod_str = ''
+            continue
+        if nt != ' ':
+            sequence_tuple += (nt,)
+    return sequence_tuple

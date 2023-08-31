@@ -29,12 +29,18 @@ def calc_view(request):
     mass_fragments_array = []
 
     if form.is_valid():
-        sequence = form.cleaned_data['sequence']
+        input_style = form.cleaned_data['input_style']
+        if input_style == 'dna':
+            sequence = utils.dna2mix(form.cleaned_data['sequence'])
+        elif input_style == 'mix':
+            sequence = form.cleaned_data['sequence']
+
         volume = form.cleaned_data['volume']
         absorbance260 = form.cleaned_data['absorbance260']
         dilution_factor = form.cleaned_data['dilution_factor']
         length = utils.get_length(sequence)
         epsilon260 = utils.get_extinction(sequence)
+
         if not utils.contain_degenerate_nucleotide(sequence):
             mass_monoisotopic = utils.get_mass_monoisotopic(sequence)
             mass_monoisotopic_dmt_on = round(mass_monoisotopic + utils.mass_mono['DMT'] - utils.mass_mono['H'], 4)
@@ -138,3 +144,8 @@ def contact(request):
 
 def success(request):
     return render(request, 'oligocalc/successfully_sent.html')
+
+
+def modifications(request):
+    return render(request, 'oligocalc/modifications.html')
+

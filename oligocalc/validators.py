@@ -46,8 +46,8 @@ def validate_seq_mix(sequence):
 
 
 def validate_seq_dna_regex(sequence):
-    sequence_pattern = r'^(((\[[-+\._a-zA-Z0-9 ]+\])*?[aAcCgGtTwWsSmMkKrRyYbBdDhHvVnN* ]*?)*?)$'
-    message = ('Sequence should contain A/C/G/T, degenerated bases W/S/M/K/R/Y/B/D/H/V/N,'
+    sequence_pattern = r'^(((\[[-+\._a-zA-Z0-9 ]+\])*?[ACGTWSMKRYBDHVN* ]*?)*?)$'
+    message = ('Sequence should contain A/C/G/T, degenerate bases W/S/M/K/R/Y/B/D/H/V/N, phosphorothioate linkage *'
                ' and modifications e.g. [FAM], [BHQ1] etc.')
     if not re.match(sequence_pattern, sequence):
         raise ValidationError(message)

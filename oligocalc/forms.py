@@ -25,7 +25,7 @@ class CalcForm(forms.ModelForm):
         model = models.Sequence
         fields = ('sequence', 'absorbance260', 'dilution_factor', 'volume')
         widgets = {'sequence': forms.Textarea(attrs={'rows': 4,
-                                                     'placeholder': 'DNA style:    [FAM]AC*TGKCGATTA[+Cm]GCC*G[BHQ1]\n\nTherapeutic style:    +T * +A * +G dA dT dC dT rG rC rA rC moeCm * moeT * GALNAC3-ALN',
+                                                     'placeholder': 'DNA style:  [VIC]CAAGAGGAAGAGAGAGACC[MGB-ECLIPSE]\n\nTherapeutic style:  +A * +G * +A * dT * dT * dC * dA * dG * dT * dG * dT * dG * dG * +T * +G * dG',
                                                      'class': 'form-control'}),
                    'absorbance260': forms.NumberInput(attrs={'class': 'form-control form-control-sm'}),
                    'dilution_factor': forms.NumberInput(attrs={'class': 'form-control form-control-sm'}),

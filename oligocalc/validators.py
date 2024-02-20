@@ -79,3 +79,35 @@ def validate_seq_dna(sequence):
         raise ValidationError(modification_errors)
     else:
         return ' '.join(seq_mix_list)
+
+
+def validate_dna_conc(value):
+    message = 'The oligo concentration is invalid, it must be within the range 0.0001 - 5000 uM.'
+    if 0.0001 < value < 5000:
+        return value
+    else:
+        raise ValidationError(message)
+
+
+def validate_mv_conc(value):
+    message = 'The Na+ concentration is invalid, it must be within the range 2 - 3000 mM.'
+    if 2 <= value <= 3000:
+        return value
+    else:
+        raise ValidationError(message)
+
+
+def validate_dv_conc(value):
+    message = 'The Mg2+ concentration is invalid, it must be within the range 0 - 600 mM.'
+    if 0 <= value <= 600:
+        return value
+    else:
+        raise ValidationError(message)
+
+
+def validate_dntp_conc(dntp_value, dv_value):
+    message = 'The dNTP concentration is invalid, it must be within the range 0 - ' + str(round(dv_value * 1.2, 2)) + ' mM (20% higher than Mg2+).'
+    if 0 <= dntp_value <= dv_value * 1.2:
+        return dntp_value
+    else:
+        raise ValidationError(message)

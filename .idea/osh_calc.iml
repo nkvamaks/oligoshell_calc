@@ -4,8 +4,9 @@
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/venv" />
       <excludeFolder url="file://$MODULE_DIR$/oligocalc/migrations" />
+      <excludeFolder url="file://$MODULE_DIR$/oligocalc/static/param_vienna" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.9 (osh_calc)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.11 (osh_calc)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="PyDocumentationSettings">

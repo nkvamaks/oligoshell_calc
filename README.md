@@ -1,11 +1,15 @@
-# OligoShell Calculator
+<h4 class="mb-4"> About OligoShell Calculator: </h4>
 <p>
-This is a web application aimed to calculate properties of natural, modified and therapeutic oligonucleotides.
+This web application is aimed to calculate properties of natural, modified and therapeutic oligonucleotides.
 </p>
 <p>
 <strong>It can calculate:</strong>
 </p>
 <ul>
+    <li>
+        <sup><strong>NEW!</strong></sup>
+        Melting temperature of DNA oligonucleotide with DNA target
+    </li>
     <li>
         Extinction coefficient (nearest neighbours model)
     </li>
@@ -13,11 +17,14 @@ This is a web application aimed to calculate properties of natural, modified and
         Monoisotopic and average molecular weight and charge states
     </li>
     <li>
+        Molecular formula of oligonucleotide
+    </li>
+    <li>
         Theoretical masses of fragments in MS/MS experiments
     </li>
 </ul>
 <p>
-It can also quantify oligonucleotide based on user input of measured <strong>absorbanse at 260 nm</strong>, <strong>volume</strong> and <strong>dilution factor</strong> of oligonucleotide solution.
+It can also quantify oligonucleotide based on user input of measured <strong>absorbanse at 260 nm</strong> and <strong>volume</strong> of oligonucleotide solution.
 </p>
 <p>
 <strong>How to input a sequence:</strong>
@@ -76,7 +83,8 @@ It can also quantify oligonucleotide based on user input of measured <strong>abs
 <p><strong>Available modifications:</strong></p>
 <ul>
     <li>
-        5': ALKYNE, FAM, TET, HEX, JOE, VIC, TMR-ACH, R6G, R6G-ACH, ROX-CLK, CY5-CLK, CHOL-PRO, GALNAC-PRO
+        5': ALKYNE, FAM, TET, HEX, JOE, VIC, TMR-ACH, R6G, R6G-ACH, ROX-CLK, TR-CLK, AF594-CLK, 
+        CY3-ACH, CY5-CLK, CHOL-PRO, GALNAC-PRO
     </li>
     <li>
         3': BHQ1, BHQ2, MGB, MGB-ECLIPSE, ECLIPSE, CHOL-PRO, GALNAC-PRO, GALNAC3-ALN

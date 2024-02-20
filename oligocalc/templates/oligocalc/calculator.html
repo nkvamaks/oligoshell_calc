@@ -13,69 +13,105 @@
     <div class="col-xl">
       <div class="card mb-4">
         <div class="card-header d-flex justify-content-between align-items-center">
-          <h5 class="col-md-6 mb-0 ms-0"> Enter Oligonucleotide Sequence:
-
-              <svg data-bs-toggle="tooltip"
-                   data-bs-offset="0,5"
-                   data-bs-placement="right"
-                   data-bs-html="true"
-                   title="<span>
-                            <p>
-                                Sequences are 5'&rarr;3' left to right. You may choose one of two input styles: 'DNA' and 'Therapeutic'.
-                                On default it is assumed that two nucleotides have phosphodiester linkage. Use ' * ' as a separator to designate phosphorothioate linkage.
-                            </p>
-                            <ul>
-                                <li>
-                                    <strong>DNA input style</strong>
-                                    <p>
-                                        Four deoxynucleotides (A, C, G, T) as well as eleven degenerate deoxynucleotides (W, S, M, K, R, Y, B, D, H, V, N) can be used with a single letter code. All other nucleotides with different sugar moieties as well as modifications have several letter codes and should be surrounded by square brackets, e.g. [FAM] or [BHQ1].
-                                    </p>
-                                </li>
-                                <li>
-                                    <strong>Therapeutic input style</strong>
-                                    <p>
-                                        Every nucleotide, degenerate nucleotide or modification has a specific designation and should be separated with 'space' from the next nucleotide or phosphate entity.
-                                    </p>
-                                </li>
-                            </ul>
-
-                          </span>"
-                   xmlns="http://www.w3.org/2000/svg"
-                   width="22"
-                   height="22"
-                   viewBox="0 0 24 24">
-                  <path fill="currentColor" d="M13 9h-2V7h2m0 10h-2v-6h2m-1-9A10 10 0 0 0 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10A10 10 0 0 0 12 2Z"/>
-              </svg>
-
-          </h5>
-            <a href="{% url 'oligocalc:modifications' %}" target="_blank" type="button" class="btn btn-outline-info col-md-4 mb-0 ms-0">
-                Available nucleotides and modifications
-            </a>
-            <div class="col-md-2 mb-0 ms-0"></div>
+          <h5 class="col-md-4 mb-0 ms-0"> Enter Oligonucleotide Sequence:</h5>
+          <h5 class="col-md-4 mb-0 ms-0 text-center"> Parameter sets: </h5>
         </div>
         <div class="card-body">
-
-                <div class="row mb-2">
-                    <div class="col-md-10">
-                        {{form.sequence}}
-                    </div>
-                    <div class="col-md-2">
-                        <label for="{{ form.input_style.id_for_label }}">Input Style</label>
-                        <div class="mt-2">
-                            {{form.input_style}}
-                        </div>
+            <div class="row mb-1">
+                <div class="col-md-5">
+                    <span>
+                        Input style:&nbsp;
+                        <svg data-bs-toggle="tooltip"
+                             data-bs-offset="0,5"
+                             data-bs-placement="right"
+                             data-bs-html="true"
+                             title="<span>
+                                 <p>
+                                     Sequences are 5'&rarr;3' left to right. You may choose one of two input styles: 'DNA' and 'Therapeutic'.
+                                     Use ' * ' as a separator to designate phosphorothioate linkage.
+                                 </p>
+                                 <ul>
+                                     <li>
+                                         <strong>DNA input style</strong>
+                                         <p>
+                                             Four deoxynucleotides (A, C, G, T) as well as eleven degenerate deoxynucleotides (W, S, M, K, R, Y, B, D, H, V, N) can be used with a single letter code. All other nucleotides with different sugar moieties as well as modifications have several letter codes and should be surrounded by square brackets, e.g. [FAM] or [BHQ1].
+                                         </p>
+                                     </li>
+                                     <li>
+                                         <strong>Therapeutic input style</strong>
+                                         <p>
+                                             Every nucleotide, degenerate nucleotide or modification has a specific designation and should be separated with 'space' from the next nucleotide or phosphate entity.
+                                         </p>
+                                     </li>
+                                 </ul>
+                                    </span>"
+                             xmlns="http://www.w3.org/2000/svg"
+                             width="22"
+                             height="22"
+                             viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M13 9h-2V7h2m0 10h-2v-6h2m-1-9A10 10 0 0 0 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10A10 10 0 0 0 12 2Z"/>
+                        </svg>&nbsp;
+                    </span>
+                    <div class="btn-group btn-group-sm" role="group" aria-label="Radio toggle button group">
+                        <input type="radio" class="btn-check" name="btnradio" id="id_btnradio_0" value="dna" {% if form.btnradio.value == "dna" %}checked{% endif %} />
+                        <label class="btn btn-outline-primary" for="id_btnradio_0">DNA</label>
+                        <input type="radio" class="btn-check" name="btnradio" id="id_btnradio_1" value="mix" {% if form.btnradio.value == "mix" %}checked{% endif %} />
+                        <label class="btn btn-outline-primary" for="id_btnradio_1">Therapeutic</label>
                     </div>
                 </div>
+                <div class="col-md-4">
+                    <a href="{% url 'oligocalc:modifications' %}" target="_blank" type="button" class="btn btn-sm btn-outline-dark mb-1 ms-0">
+                        Available nucleotides and modifications
+                    </a>
+                </div>
+                <div class="col-md-2">
+                    {{form.param_set}}
+                </div>
+            </div>
 
-                {% if form.errors %}
-                    {% for field_error, error in form.errors.items %}
-                        <div>{{ error }}</div>
-                    {% endfor %}
-                {% endif %}
+                <div class="row mb-1 mt-1">
+                    <div class="col-md-8">
+                        {{form.sequence}}
+                    </div>
+                    <div class="col-md-4">
+                        <table>
+                            <tr>
+                                <td style="text-align: right;" width="50%">Target type&nbsp;</td>
+                                <td width="25%">{{form.target}}</td>
+                                <td width="25%"></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;" width="50%">Oligo Conc&nbsp;</td>
+                                <td width="25%">{{form.dna_conc}}</td>
+                                <td width="25%">&nbsp;&mu;M</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">Na<sup>+</sup> Conc&nbsp;</td>
+                                <td>{{form.mv_conc}}</td>
+                                <td>&nbsp;mM</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">Mg<sup>2+</sup> Conc&nbsp;</td>
+                                <td>{{form.dv_conc}}</td>
+                                <td>&nbsp;mM</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">dNTPs Conc&nbsp;</td>
+                                <td>{{form.dntp_conc}}</td>
+                                <td>&nbsp;mM</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    {% if form.errors %}
+                        {% for field_error, error in form.errors.items %}
+                            <div>{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
 
-            <button type="submit" class="ms-0 mt-2 btn btn-primary submit">Calculate!</button>
-
-
+            <button type="submit" class="ms-0 mt-0 btn btn-primary submit">Calculate!</button>
 
         </div>
       </div>
@@ -132,116 +168,156 @@
         <div class="tab-content">
           <div class="tab-pane fade show active" id="navs-pills-top-properties" role="tabpanel">
              <div class="row">
-                <div class="col-md-6 col-lg-4 mb-3">
+                <!--Sequence properties                 -->
+                <div class="col-md-9 mb-3">
                   <div class="card">
                     <div class="card-body">
-                      <p class="card-text">
-                          <strong>Sequence Length:</strong> &emsp; {{ length }} <span class="text-muted">nt</span>
-                      </p>
-                        {%comment%}
+                        <div class="table-responsive">
+                            <table class="table table-sm table-borderless table-hover" style="table-layout: fixed; width: 100%">
+                                <tr>
+                                    <td width="30%"><strong>Sequence 5'&rarr;3':</strong></td>
+                                    <td style="word-wrap:break-word"> {{ sequence_dna }} </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Reverse Complement 5'&rarr;3':</strong></td>
+                                    <td style="word-wrap:break-word"> {{ sequence_dna_rev_compl }} </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Sequence Length:</strong></td>
+                                    <td>{{ length }} <span class="text-muted">nt</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>GC content:</strong></td>
+                                    <td>
+                                        {% if gc_content >= 0 %}
+                                            {{ gc_content }} <span class="text-muted">%</span>
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Melt Temp:</strong></td>
+                                    <td>
+                                        {% if melting_t > 0 %}
+                                            {{ melting_t }} <span class="text-muted">&deg;C</span>
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Molecular Formula:</strong></td>
+                                    <td><span class="formula">{{ brutto_formula }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Monoisotopic Mass:</strong></td>
+                                    <td>
+                                        {% if mass_monoisotopic %}
+                                            {{ mass_monoisotopic }} <span class="text-muted">Da</span>
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Molecular Weight:</strong></td>
+                                    <td>
+                                        {{mass_average}} <span class="text-muted">Da</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Extinction Coefficient, &epsilon;<sub>260</sub>: </strong></td>
+                                    <td>
+                                        {{ epsilon260 }} <span class="text-muted">L&middot;mol<sup>-1</sup>&middot;cm<sup>-1</sup></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>nmol/OD<sub>260</sub>: </strong></td>
+                                    <td>
+                                        {{ nmol_OD260 }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>&micro;g/OD<sub>260</sub>: </strong></td>
+                                    <td>
+                                        {{ ug_OD260 }}
+                                    </td>
+                                </tr>
+                            </table>
+                            {%comment%}
+                            <table class="table table-sm table-borderless table-hover">
+                                <tr>
+                                    <td width="9%"> {{ form.absorbance260 }} </td>
+                                    <td width="15%"> OD260 dissolved in </td>
+                                    <td width="9%"> {{ form.volume }} </td>
+                                    <td> mL </td>
+                                    <td> contains </td>
+                                    <td> {{ quantity }} nmol</td>
+                                    <td> oligo with conc </td>
+                                    <td> {{ concentration_molar }} </td>
+                                </tr>
+                            </table>
+                            {%endcomment%}
+                        </div>
 
-                        Formula
-                        Tmelt
-                        Quantity of degenerate sequences
+            {%comment%}
+            Quantity of degenerate sequences
+            {%endcomment%}
 
-                      <p class="card-text">
-                          <strong>GC content:</strong> &emsp; TBD <span class="text-muted">%</span>
-                      </p>
-                        {%endcomment%}
                     </div>
                   </div>
                 </div>
+                <!--End of Sequence properties     -->
 
-                <div class="col-md-6 col-lg-4 mb-3">
+                <!--Quantification  -->
+                <div class="col-md-3">
                   <div class="card">
                     <div class="card-body">
-                        <p class="card-text">
-                            <strong>&epsilon;<sub>260</sub>: </strong> &emsp; {{ epsilon260 }}
-                            <span class="text-muted">L&middot;mol<sup>-1</sup>&middot;cm<sup>-1</sup></span>
-                        </p>
-                        <p>
-                            <strong>OD<sub>260</sub>:</strong> &emsp;
-                                {% if absorbance260 %}
-                                    {{ absorbance260 }}
-                                    <span class="text-muted">(&times;{{ dilution_factor }})</span>
-                                {% else %}
+                        <div class="mb-2"><strong>Quantification</strong></div>
+                        <label for="{{ form.absorbance260.id_for_label }}">
+                            <small>OD<sub>260</sub> (10 mm) </small>
+                        </label>
+                        <div>{{ form.absorbance260 }}</div>
+                        <label class="mt-2" for="{{ form.volume.id_for_label }}">
+                            <small>Volume, mL</small>
+                        </label>
+                        <div>{{ form.volume }}</div>
+
+                        <div class="mt-3 mb-2"><strong>Quantity:</strong></div>
+                        <div>
+                            {% if quantity %}
+                                {{ quantity }} <span class="text-muted">nmol</span>
+                            {% else %}
+                                -
+                            {% endif %}
+                        </div>
+                        <div class="mt-3 mb-2"><strong>Concentration:</strong></div>
+                        <div>
+                            {% if concentration_molar %}
+                                <div class="mb-2">
+                                    {{ concentration_molar }} <span class="text-muted">&mu;M (pmol/&mu;L)</span>
+                                </div>
+                                <div>
+                                    {{ concentration_mass }} <span class="text-muted">&mu;g/mL</span>
+                                </div>
+                            {% else %}
                                     -
                                 {% endif %}
-                        </p>
-                        <p>
-                            <strong>Volume:</strong> &emsp;
-                                {% if volume %}
-                                    {{ volume }} <span class="text-muted">mL</span>
-                                {% else %}
-                                    -
-                                {% endif %}
-                        </p>
-                        <p>
-                            <strong>OD<sub>260</sub> Units:</strong> &emsp;
-                                {% if odu260 %}
-                                    {{ odu260 }}
-                                {% else %}
-                                    -
-                                {% endif %}
-                        </p>
-                        <p>
-                            <strong>Concentration: </strong> &emsp;
-                                {% if concentration_molar %}
-                                    {{ concentration_molar }} <span class="text-muted">&mu;M</span>
-                        {% comment %}
-                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    {{ concentration_mass }} <span class="text-muted">&mu;g/mL</span></p>
-                        {% endcomment %}
-                                {% else %}
-                                    -
-                                {% endif %}
-                        </p>
-                        <p>
-                            <strong>Quantity:</strong> &emsp;
-                                {% if quantity %}
-                                    {{ quantity }} <span class="text-muted">nmol</span>
-                                {% else %}
-                                    -
-                                {% endif %}
-                        </p>
+                        </div>
+
+                        <button type="submit" class="mt-3 btn btn-sm btn-primary submit"> Quantify! </button>
                     </div>
                   </div>
                 </div>
-
-                <div class="col-md-6 col-lg-4 mb-3">
-                  <div class="card">
-                    <div class="card-body">
-                      <h5 class="card-title">Enter:</h5>
-
-                          <label for="{{ form.absorbance260.id_for_label }}"><small>Absorbance at 260 nm</small></label>
-                          {{ form.absorbance260 }}
-                          {% if form.absorbance260.errors %}
-                              <div>{{ form.absorbance260.errors }}</div>
-                          {% endif %}
-                          <label class="mt-2" for="{{ form.dilution_factor.id_for_label }}"><small>Dilution Factor</small></label>
-                          {{ form.dilution_factor }}
-                          {% if form.dilution_factor.errors %}
-                              <div>{{ form.dilution_factor.errors }}</div>
-                          {% endif %}
-                          <label class="mt-2" for="{{ form.volume.id_for_label }}"><small>Volume, mL</small></label>
-                          {{ form.volume }}
-                          {% if form.volume.errors %}
-                              <div>{{ form.volume.errors }}</div>
-                          {% endif %}
-
-                          <button type="submit" class="mt-3 btn btn-sm btn-primary submit"> Quantify! </button>
-                    </div>
-                  </div>
-                </div>
+                <!--End of quantification-->
 
              </div>
           </div>
 
           <div class="tab-pane fade" id="navs-pills-top-ms" role="tabpanel">
               <div class="row mb-4">
-                  <div class="col-xl">
+                  <div class="col-md-6">
                      <div class="card">
                         <div class="card-body">
 
@@ -250,10 +326,8 @@
                                     <thead>
                                          <tr>
                                             <th><span class="fw-semibold">Charge State</span></th>
-                                            <th><span class="fw-semibold">Monoisotopic MW (DMT-OFF)</span></th>
-                                            <th><span class="fw-semibold">Average MW (DMT-OFF)</span></th>
-                                            <th><span class="fw-semibold">Monoisotopic MW (DMT-ON)</span></th>
-                                            <th><span class="fw-semibold">Average MW (DMT-ON)</span></th>
+                                            <th><span class="fw-semibold">Monoisotopic MW </span></th>
+                                            <th><span class="fw-semibold">Average MW </span></th>
                                          </tr>
                                     </thead>
                                     <tbody>
@@ -269,33 +343,17 @@
                                                     {{mass_average}}
                                                 {% endif %}
                                             </strong></td>
-                                            <td><strong>
-                                                {% if mass_monoisotopic_dmt_on %}
-                                                    {{mass_monoisotopic_dmt_on}}
-                                                {% endif %}
-                                            </strong></td>
-                                            <td><strong>
-                                                {% if mass_average_dmt_on %}
-                                                    {{mass_average_dmt_on}}
-                                                {% endif %}
-                                            </strong></td>
                                         </tr>
 
-                                        {% for z, esi_avg_off, esi_avg_on, esi_mono_off, esi_mono_on in esi_series %}
+                                        {% for z, esi_avg_off, esi_mono_off in esi_series %}
                                             <tr>
-                                                <td><strong>z-{{z}}</strong></td>
+                                                <td><strong>-{{z}}</strong></td>
                                                 <td>
                                                     {% if esi_mono_off %}
                                                         {{esi_mono_off}}
                                                     {% endif %}
                                                 </td>
                                                 <td>{{esi_avg_off}}</td>
-                                                <td>
-                                                    {% if esi_mono_on %}
-                                                        {{esi_mono_on}}
-                                                    {% endif %}
-                                                </td>
-                                                <td>{{esi_avg_on}}</td>
                                             </tr>
                                         {% endfor %}
                                     </tbody>
@@ -340,7 +398,7 @@
                               aria-controls="navs-top-{{i}}"
                               aria-selected="false"
                             >
-                              z-{{i}}
+                              -{{i}}
                             </button>
                           </li>
                         {% endif %}
@@ -484,8 +542,6 @@
       </div>
     </div>
 </div>
-
-
 
 {% endif %}
 

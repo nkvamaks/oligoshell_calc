@@ -48,17 +48,22 @@ modification_extinction_260 = {
     'FAM': 21000, 'TET': 16300, 'HEX': 31600, 'JOE': 12000, 'VIC': 7200,
     'TMR-ACH': 32300, 'R6G': 18000, 'R6G-ACH': 18000, 'ROX-CLK': 22600,
 
-    'CY3': 4930, 'CY3.5': 24000, 'CY5-CLK': 10000, 'CY5.5': 28800,
+    'CY3-ACH': 4930, 'CY3.5': 24000, 'CY5-CLK': 10000, 'CY5.5': 28800,
     'ALKYNE': 0,
 
     'DABCYL': 11100, 'BHQ0': 7700, 'BHQ1': 8000, 'BHQ2': 8000, 'BHQ3': 13000,
     'MGB': 37900, 'MGB-ECLIPSE': 44500, 'ECLIPSE': 6600,
 
-    'YAKYEL': 23700, 'TEXRD': 14400, 'IABK': 44510,
+    'YAKYEL': 23700, 'TR-CLK': 14400, 'IABK': 44510, 'AF594-CLK': 29400,
 
     'GALNAC-PRO': 0, 'CHOL-PRO': 0, 'GALNAC3-ALN': 0,
 
     'po': 0, 'ps': 0, '*': 0,
+}
+
+map_compl = {
+    'A': 'T', 'C': 'G', 'G': 'C', 'T': 'A', 'U': 'A',
+    'W': 'W', 'S': 'S', 'M': 'K', 'K': 'M', 'R': 'Y', 'Y': 'R', 'B': 'V', 'D': 'H', 'H': 'D', 'V': 'B', 'N': 'N',
 }
 
 map_nucleoside = {
@@ -68,6 +73,11 @@ map_nucleoside = {
     'mA': 'A', 'mC': 'C', 'mG': 'G', 'mU': 'U',
     '+A': 'A', '+Cm': 'C', '+G': 'G', '+T': 'T',
     'moeA': 'A', 'moeCm': 'C', 'moeG': 'G', 'moeT': 'T',
+}
+
+map_deg_nucleoside = {
+    'dW': 'W', 'dS': 'S', 'dM': 'M', 'dK': 'K', 'dR': 'R', 'dY': 'Y',
+    'dB': 'B', 'dD': 'D', 'dH': 'H', 'dV': 'V', 'dN': 'N',
 }
 
 map_nucleobase = {
@@ -89,8 +99,9 @@ map_dna2mix = {
     '[+A]': '+A', '[+Cm]': '+Cm', '[+G]': '+G', '[+T]': '+T',
     '[moeA]': 'moeA', '[moeCm]': 'moeCm', '[moeG]': 'moeG', '[moeT]': 'moeT',
     '[ALKYNE]': 'ALKYNE', '[FAM]': 'FAM', '[TET]': 'TET', '[HEX]': 'HEX', '[JOE]': 'JOE', '[VIC]': 'VIC',
-    '[TMR-ACH]': 'TMR-ACH', '[R6G]': 'R6G', '[R6G-ACH]': 'R6G-ACH', '[ROX-CLK]': 'ROX-CLK',
+    '[TMR-ACH]': 'TMR-ACH', '[R6G]': 'R6G', '[R6G-ACH]': 'R6G-ACH', '[ROX-CLK]': 'ROX-CLK', '[CY3-ACH]': 'CY3-ACH',
     '[CY5-CLK]': 'CY5-CLK', '[CHOL-PRO]': 'CHOL-PRO', '[GALNAC-PRO]': 'GALNAC-PRO', '[GALNAC3-ALN]': 'GALNAC3-ALN',
+    '[TR-CLK]': 'TR-CLK', '[AF594-CLK]': 'AF594-CLK',
     '[BHQ1]': 'BHQ1', '[BHQ2]': 'BHQ2', '[MGB]': 'MGB', '[MGB-ECLIPSE]': 'MGB-ECLIPSE', '[ECLIPSE]': 'ECLIPSE',
     '*': '*',
 }
@@ -115,8 +126,8 @@ nucleotide_any_position = (
 # Modifications available only at 5'-position
 modification_5_position = ('ALKYNE',
                            'FAM', 'TET', 'HEX', 'JOE', 'VIC',
-                           'TMR-ACH', 'R6G', 'R6G-ACH', 'ROX-CLK',
-                           'CY5-CLK',
+                           'TMR-ACH', 'R6G', 'R6G-ACH', 'ROX-CLK', 'TR-CLK', 'AF594-CLK',
+                           'CY3-ACH', 'CY5-CLK',
                            'CHOL-PRO', 'GALNAC-PRO',)
 
 # Modifications available only at 3'-position
@@ -133,6 +144,8 @@ modification_phosphorus = ('po', 'ps', '*')
 
 degenerate_nucleotide = ('dW', 'dS', 'dM', 'dK', 'dR', 'dY', 'dB', 'dD', 'dH', 'dV', 'dN',)
 
+dna_nucleotides = ('dA', 'dC', 'dG', 'dT', 'dCm', 'dU',)
+
 formula = {
     'dA': {'C': 10, 'H': 13, 'N': 5, 'O': 3},
     'dC': {'C': 9, 'H': 13, 'N': 3, 'O': 4},
@@ -146,10 +159,10 @@ formula = {
     'dK': {'C': 10, 'H': 13.5, 'N': 3.5, 'O': 4.5},
     'dR': {'C': 10, 'H': 13, 'N': 5, 'O': 3.5},
     'dY': {'C': 9.5, 'H': 13.5, 'N': 2.5, 'O': 4.5},
-    'dB': {'C': 9.6667, 'H': 13.3333, 'N': 3.3333, 'O': 4.3333},
-    'dD': {'C': 10, 'H': 13.3333, 'N': 4, 'O': 4},
-    'dH': {'C': 9.6667, 'H': 13.3333, 'N': 3.3333, 'O': 4},
-    'dV': {'C': 9.6667, 'H': 13, 'N': 4.3333, 'O': 3.6667},
+    'dB': {'C': 9.67, 'H': 13.33, 'N': 3.33, 'O': 4.33},
+    'dD': {'C': 10, 'H': 13.33, 'N': 4, 'O': 4},
+    'dH': {'C': 9.67, 'H': 13.33, 'N': 3.33, 'O': 4},
+    'dV': {'C': 9.67, 'H': 13, 'N': 4.33, 'O': 3.67},
     'dN': {'C': 9.75, 'H': 13.25, 'N': 3.75, 'O': 4},
     'rA': {'C': 10, 'H': 13, 'N': 5, 'O': 4},
     'rC': {'C': 9, 'H': 13, 'N': 3, 'O': 5},
@@ -174,6 +187,7 @@ formula = {
     'ALKYNE': {'C': 12, 'H': 19, 'N': 1, 'O': 2},
     'FAM': {'C': 27, 'H': 25, 'N': 1, 'O': 7},
     'TMR-ACH': {'C': 31, 'H': 33, 'N': 3, 'O': 5},
+    'CY3-ACH': {'C': 36, 'H': 48, 'N': 3, 'O': 2},
     'CY5-CLK': {'C': 47, 'H': 64, 'N': 7, 'O': 3},
     'VIC': {'C': 33, 'H': 26, 'Cl': 3, 'N': 1, 'O': 7},
     'TET': {'C': 27, 'H': 21, 'Cl': 4, 'N': 1, 'O': 7},
@@ -182,6 +196,8 @@ formula = {
     'R6G': {'C': 33, 'H': 39, 'N': 3, 'O': 5},
     'R6G-ACH': {'C': 33, 'H': 37, 'N': 3, 'O': 5},
     'ROX-CLK': {'C': 48, 'H': 55, 'N': 7, 'O': 6},
+    'TR-CLK': {'C': 46, 'H': 55, 'N': 7, 'O': 8, 'S': 2},
+    'AF594-CLK': {'C': 50, 'H': 59, 'N': 7, 'O': 12, 'S': 2},
 
     'BHQ1': {'C': 25, 'H': 28, 'N': 6, 'O': 5},
     'BHQ2': {'C': 24, 'H': 26, 'N': 6, 'O': 6},
@@ -200,10 +216,18 @@ formula = {
     'baseT': {'C': 5, 'H': 6, 'N': 2, 'O': 2},
     'baseU': {'C': 4, 'H': 4, 'N': 2, 'O': 2},
 
+    'H2O': {'H': 2, 'O': 1},
     'po': {'H': 3, 'O': 4, 'P': 1},
     'ps': {'H': 3, 'O': 3, 'P': 1, 'S': 1},
     '*': {'H': 3, 'O': 3, 'P': 1, 'S': 1},
 }
+
+
+def rev_compl(sequence):
+    """
+    Takes a cleared sequence in 'DNA' style format and returns reverse complement
+    """
+    return ''.join([map_compl[nt] for nt in sequence][::-1])
 
 
 def sequence_split(sequence):
@@ -217,7 +241,7 @@ def sequence_split(sequence):
 
 def get_length(sequence):
     """
-    Takes sequence as a string and returns length of chain (number of nucleosides)
+    Takes sequence in 'Therapeutic format' and returns length of chain (number of nucleosides)
     """
     return len([i for i in sequence_split(sequence) if i not in modification_phosphorus])
 
@@ -319,9 +343,31 @@ def get_mass_monoisotopic(sequence):
     return round(m_mono, 4)
 
 
+def get_formula(sequence):
+    """
+    Takes a sequence as a string and calculates returns it brutto formula.
+    """
+    sequence_full = sequence_explicit(sequence)
+    if len(sequence_split(sequence)) == 1:
+        brutto_formula = ''
+        for atom, number in formula[sequence].items():
+            brutto_formula += str(atom) + str(number)
+        return brutto_formula
+    brutto_formula = {}
+    brutto_formula_str = ''
+    for nt in sequence_split(sequence_full):
+        for atom, number in formula[nt].items():
+            brutto_formula[atom] = brutto_formula.get(atom, 0) + number
+    for atom, number in formula['H2O'].items():
+        brutto_formula[atom] = brutto_formula.get(atom, 0) - number * (len(sequence_split(sequence_full))-1)
+    for atom, number in brutto_formula.items():
+        brutto_formula_str += str(atom) + str(round(number, 2))
+    return brutto_formula_str
+
+
 def contain_degenerate_nucleotide(sequence):
     """
-    Takes a sequence as a string and checks whether it contains any degenerate nucleotide.
+    Takes a sequence in Therapeutic style as a string and checks whether it contains any degenerate nucleotide.
     Returns True if yes, otherwise False
     """
     for nt in sequence_split(sequence):
@@ -395,9 +441,31 @@ def get_ms_fragments_esi_series(frag_dict):
 
 
 def dna2mix(sequence):
+    """
+    Takes a sequence in 'DNA' style format, convert it in 'Therapeutic' style format
+    """
     seq_tup = sequence2tuple(sequence)
     seq_mix = [map_dna2mix[nt] for nt in seq_tup]
     return ' '.join(seq_mix)
+
+
+def mix2dna_wo_mod_degen_phosph(sequence):
+    """
+    Takes a sequence in 'Therapeutic' style format, convert it in 'DNA' style format.
+    Phosphates, modifications and degenerate nucleosides are omitted.
+    """
+    seq_dna = [map_nucleoside[nt] for nt in sequence_split(sequence) if nt in map_nucleoside]
+    return ''.join(seq_dna)
+
+
+def mix2dna_wo_mod_phosph(sequence):
+    """
+    Takes a sequence in 'Therapeutic' style format, convert it in 'DNA' style format
+    Phosphates and modifications are omitted.
+    """
+    map_nt = {**map_nucleoside, **map_deg_nucleoside}
+    seq_dna = [map_nt[nt] for nt in sequence_split(sequence) if nt in map_nt]
+    return ''.join(seq_dna)
 
 
 def sequence2tuple(sequence):
@@ -422,3 +490,22 @@ def sequence2tuple(sequence):
         if nt != ' ':
             sequence_tuple += (nt,)
     return sequence_tuple
+
+
+def wo_phosph(sequence):
+    """
+    Takes a sequence in 'Therapeutic' style format, removes all different phosphates
+    """
+    return ' '.join(nt for nt in sequence_split(sequence) if nt not in modification_phosphorus)
+
+
+def gc_content(sequence_tup):
+    """
+    Takes sequence as a tuple of nucleosides w/o phosphates and returns GC content as a fraction of 1
+    """
+    sequence_str_wo_mod = ''.join(map_nucleoside[nt] for nt in sequence_tup if nt in map_nucleoside)
+    g_c = sequence_str_wo_mod.count('G') + sequence_str_wo_mod.count('C')
+    if len(sequence_str_wo_mod):
+        return round(g_c / len(sequence_str_wo_mod), 2)
+    else:
+        return -1

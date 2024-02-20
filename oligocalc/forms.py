@@ -1,35 +1,52 @@
 from django import forms
-
 from . import models
 from . import validators
 
 
 class CalcForm(forms.ModelForm):
-    CHOICES = [('dna', 'DNA'), ('mix', 'Therapeutic')]
-    input_style = forms.ChoiceField(widget=forms.RadioSelect,
-                                    choices=CHOICES,
-                                    initial='dna')
+    STYLE_CHOICES = [('dna', 'DNA'), ('mix', 'Therapeutic')]
+    PARAM_CHOICES = [('Default', 'Default'), ('qPCR', 'qPCR')]
+    TARGET_CHOICES = [('dna', 'DNA'), ]
+
+    btnradio = forms.ChoiceField(widget=forms.RadioSelect,
+                                 choices=STYLE_CHOICES,
+                                 initial='dna')
+    param_set = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-select form-select-sm'}),
+                                  choices=PARAM_CHOICES,
+                                  initial='Default')
+    target = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-select form-select-sm'}),
+                               choices=TARGET_CHOICES,
+                               initial='dna')
 
     def clean(self):
         super().clean()
-        if self.cleaned_data['input_style'] == 'dna':
+        if self.cleaned_data['btnradio'] == 'dna':
             seq_regex_validated = validators.validate_seq_dna_regex(self.cleaned_data['sequence'])
             seq_input_validated = validators.validate_seq_dna(seq_regex_validated)
             seq_modifications_validated = validators.validate_seq_mix(seq_input_validated)
-        elif self.cleaned_data['input_style'] == 'mix':
+        elif self.cleaned_data['btnradio'] == 'mix':
             validators.validate_seq_mix(self.cleaned_data['sequence'])
         else:
             raise forms.ValidationError('Something went wrong...')
 
+        validators.validate_dna_conc(self.cleaned_data['dna_conc'])
+        validators.validate_mv_conc(self.cleaned_data['mv_conc'])
+        validators.validate_dv_conc(self.cleaned_data['dv_conc'])
+        validators.validate_dntp_conc(self.cleaned_data['dntp_conc'], self.cleaned_data['dv_conc'])
+
     class Meta:
         model = models.Sequence
-        fields = ('sequence', 'absorbance260', 'dilution_factor', 'volume')
-        widgets = {'sequence': forms.Textarea(attrs={'rows': 4,
+        fields = ('sequence', 'absorbance260', 'volume',
+                  'mv_conc', 'dv_conc', 'dntp_conc', 'dna_conc',)
+        widgets = {'sequence': forms.Textarea(attrs={'rows': 5,
                                                      'placeholder': 'DNA style:  [VIC]CAAGAGGAAGAGAGAGACC[MGB-ECLIPSE]\n\nTherapeutic style:  +A * +G * +A * dT * dT * dC * dA * dG * dT * dG * dT * dG * dG * +T * +G * dG',
                                                      'class': 'form-control'}),
                    'absorbance260': forms.NumberInput(attrs={'class': 'form-control form-control-sm'}),
-                   'dilution_factor': forms.NumberInput(attrs={'class': 'form-control form-control-sm'}),
                    'volume': forms.NumberInput(attrs={'class': 'form-control form-control-sm'}),
+                   'mv_conc': forms.NumberInput(attrs={'class': 'form-control form-control-sm'}),
+                   'dv_conc': forms.NumberInput(attrs={'class': 'form-control form-control-sm'}),
+                   'dntp_conc': forms.NumberInput(attrs={'class': 'form-control form-control-sm'}),
+                   'dna_conc': forms.NumberInput(attrs={'class': 'form-control form-control-sm'}),
                    }
 
 
@@ -50,3 +67,5 @@ class ContactForm(forms.Form):
                                                            'placeholder': 'Your message (Required)',
                                                            'class': 'form-control'
                                                            }))
+
+

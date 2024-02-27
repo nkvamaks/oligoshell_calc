@@ -6,7 +6,6 @@ from . import validators
 class CalcForm(forms.ModelForm):
     STYLE_CHOICES = [('dna', 'DNA'), ('mix', 'Therapeutic')]
     PARAM_CHOICES = [('Default', 'Default'), ('qPCR', 'qPCR')]
-    TARGET_CHOICES = [('dna', 'DNA'), ]
 
     btnradio = forms.ChoiceField(widget=forms.RadioSelect,
                                  choices=STYLE_CHOICES,
@@ -14,12 +13,8 @@ class CalcForm(forms.ModelForm):
     param_set = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-select form-select-sm'}),
                                   choices=PARAM_CHOICES,
                                   initial='Default')
-    target = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-select form-select-sm'}),
-                               choices=TARGET_CHOICES,
-                               initial='dna')
 
     def clean(self):
-        super().clean()
         if self.cleaned_data['btnradio'] == 'dna':
             seq_regex_validated = validators.validate_seq_dna_regex(self.cleaned_data['sequence'])
             seq_input_validated = validators.validate_seq_dna(seq_regex_validated)
@@ -35,12 +30,13 @@ class CalcForm(forms.ModelForm):
         validators.validate_dntp_conc(self.cleaned_data['dntp_conc'], self.cleaned_data['dv_conc'])
 
     class Meta:
-        model = models.Sequence
-        fields = ('sequence', 'absorbance260', 'volume',
+        model = models.Oligo
+        fields = ('sequence', 'target', 'absorbance260', 'volume',
                   'mv_conc', 'dv_conc', 'dntp_conc', 'dna_conc',)
         widgets = {'sequence': forms.Textarea(attrs={'rows': 5,
                                                      'placeholder': 'DNA style:  [VIC]CAAGAGGAAGAGAGAGACC[MGB-ECLIPSE]\n\nTherapeutic style:  +A * +G * +A * dT * dT * dC * dA * dG * dT * dG * dT * dG * dG * +T * +G * dG',
                                                      'class': 'form-control'}),
+                   'target': forms.Select(attrs={'class': 'form-select form-select-sm'}),
                    'absorbance260': forms.NumberInput(attrs={'class': 'form-control form-control-sm'}),
                    'volume': forms.NumberInput(attrs={'class': 'form-control form-control-sm'}),
                    'mv_conc': forms.NumberInput(attrs={'class': 'form-control form-control-sm'}),

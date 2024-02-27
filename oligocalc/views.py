@@ -15,7 +15,6 @@ def calc_view(request):
         sequence = ''
         concentration_molar = 0
         concentration_mass = 0
-        odu260 = 0
         quantity = 0
         mass_monoisotopic = 0
         esi_series = []
@@ -45,8 +44,12 @@ def calc_view(request):
             brutto_formula = utils.get_formula(sequence)
 
             mass_average = utils.get_mass_avg(sequence)
-            nmol_OD260 = round((1 / epsilon260) * 1e6, 2)
-            ug_OD260 = round((1 / epsilon260) * mass_average * 1e3, 2)
+            if epsilon260:
+                nmol_OD260 = round((1 / epsilon260) * 1e6, 2)
+                ug_OD260 = round((1 / epsilon260) * mass_average * 1e3, 2)
+            else:
+                nmol_OD260 = -1
+                ug_OD260 = -1
 
             if not utils.contain_degenerate_nucleotide(sequence):
                 mass_monoisotopic = utils.get_mass_monoisotopic(sequence)
@@ -59,12 +62,9 @@ def calc_view(request):
                     esi_series_mono_dmt_off = None
                 esi_series.append((z, esi_series_avg_dmt_off, esi_series_mono_dmt_off))
 
-            if absorbance260:
+            if absorbance260 and epsilon260:
                 concentration_molar = round(absorbance260 / epsilon260 * 1000000, 2)
                 concentration_mass = round(concentration_molar * mass_average / 1000, 2)
-
-            if absorbance260 and volume:
-                odu260 = round(absorbance260 * volume, 2)
 
             if concentration_molar and volume:
                 quantity = round(concentration_molar * volume, 1)
@@ -109,7 +109,6 @@ def calc_view(request):
                 'sequence_dna': sequence_dna,
                 'sequence_dna_rev_compl': sequence_dna_rev_compl,
                 'volume': volume,
-                'odu260': odu260,
                 'epsilon260': epsilon260,
                 'absorbance260': absorbance260,
                 'length': length,

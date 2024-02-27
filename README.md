@@ -83,11 +83,11 @@ It can also quantify oligonucleotide based on user input of measured <strong>abs
 <p><strong>Available modifications:</strong></p>
 <ul>
     <li>
-        5': ALKYNE, FAM, TET, HEX, JOE, VIC, TMR-ACH, R6G, R6G-ACH, ROX-CLK, TR-CLK, AF594-CLK, 
+        5': po (phosphate), ALKYNE, FAM, TET, HEX, JOE, VIC, TMR-ACH, R6G, R6G-ACH, ROX-CLK, TR-CLK, AF594-CLK, 
         CY3-ACH, CY5-CLK, CHOL-PRO, GALNAC-PRO
     </li>
     <li>
-        3': BHQ1, BHQ2, MGB, MGB-ECLIPSE, ECLIPSE, CHOL-PRO, GALNAC-PRO, GALNAC3-ALN
+        3': po (phosphate), BHQ1, BHQ2, MGB, MGB-ECLIPSE, ECLIPSE, CHOL-PRO, GALNAC-PRO, GALNAC3-ALN
     </li>
     <li>
         Internal: BHQ1, BHQ2, ECLIPSE, GALNAC-PRO

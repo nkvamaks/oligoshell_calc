@@ -26,19 +26,21 @@ def validate_seq_mix(sequence):
     modification_errors = []
     sequence_spl = utils.sequence_split(sequence)
 
-    if sequence_spl[0] not in set(utils.modification_5_position + utils.nucleotide_any_position):
+    if utils.get_length(sequence) == 0:
+        raise ValidationError('Zero-length sequence is not allowed')
+    if sequence_spl[0] not in {*utils.modification_5_position, *utils.nucleotide_any_position}:
         modification_errors.append("5'-Modification does not exist: " + sequence_spl[0])
-    if len(sequence_spl) > 1:
-        if sequence_spl[-1] not in set(utils.modification_3_position + utils.nucleotide_any_position):
+    if utils.get_length(sequence) > 1:
+        if sequence_spl[-1] not in {*utils.modification_3_position, *utils.nucleotide_any_position}:
             modification_errors.append("3'-Modification does not exist: " + sequence_spl[-1])
         for i in range(len(sequence_spl)-1):
-            if i == 0: continue
-            if sequence_spl[i] not in set( utils.modification_int_position +
-                                           utils.modification_phosphorus +
-                                           utils.nucleotide_any_position ):
-                modification_errors.append("Internal modification does not exist: " + sequence_spl[i] + " at position " + str(i+1))
             if (sequence_spl[i] in utils.modification_phosphorus) and (sequence_spl[i+1] in utils.modification_phosphorus):
                 modification_errors.append("Two phosphate residues at positions " + str(i+1) + " and " + str(i+2) + " cannot be nearby")
+            if i == 0: continue
+            if sequence_spl[i] not in {*utils.modification_int_position,
+                                       *utils.modification_phosphorus,
+                                       *utils.nucleotide_any_position}:
+                modification_errors.append("Internal modification does not exist: " + sequence_spl[i] + " at position " + str(i+1))
     if modification_errors:
         raise ValidationError(modification_errors)
     else:

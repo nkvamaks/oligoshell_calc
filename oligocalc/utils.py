@@ -26,8 +26,12 @@ nucleotide_extinction_260 = {'dA': 15400, 'dC': 7400,  'dG': 11500, 'dT': 8700, 
                              'mA': 15400, 'mC': 7200, 'mG': 11500, 'mU': 9900,
                              '+A': 15400, '+Cm': 7200, '+G': 11500, '+T': 8700,
                              'moeA': 15400, 'moeCm': 7200, 'moeG': 11500, 'moeT': 8700,
-                             'A': 15400, 'C': 7400, 'G': 11500, 'T': 8700, 'U': 9900,
-                             }
+                             'A': 15400, 'C': 7400, 'G': 11500, 'T': 8700, 'U': 9900}
+
+# Michael J. Cavaluzzi and Philip N. Borer. Revised UV extinction coefficients for nucleoside-5′-monophosphates
+# and unpaired DNA and RNA. Nucleic Acids Res. 2004; 32(1): e13. 10.1093/nar/gnh015
+# nucleotide_extinction_260 = {'dA': 15060, 'dC': 7100, 'dG': 12180, 'dT': 8560,
+#                              'rA': 15020, 'rC': 7070, 'rG': 12080, 'rU': 9660}
 
 # Extinction coefficients of dinucleotides:
 dinucleotide_extinction_260 = {'AA': 27400, 'AC': 21200, 'AG': 25000, 'AT': 22800,
@@ -103,7 +107,7 @@ map_dna2mix = {
     '[CY5-CLK]': 'CY5-CLK', '[CHOL-PRO]': 'CHOL-PRO', '[GALNAC-PRO]': 'GALNAC-PRO', '[GALNAC3-ALN]': 'GALNAC3-ALN',
     '[TR-CLK]': 'TR-CLK', '[AF594-CLK]': 'AF594-CLK',
     '[BHQ1]': 'BHQ1', '[BHQ2]': 'BHQ2', '[MGB]': 'MGB', '[MGB-ECLIPSE]': 'MGB-ECLIPSE', '[ECLIPSE]': 'ECLIPSE',
-    '*': '*',
+    '*': '*', '[po]': 'po',
 }
 
 # 'Alfabet' of nucleosides. Can be at any position
@@ -128,23 +132,28 @@ modification_5_position = ('ALKYNE',
                            'FAM', 'TET', 'HEX', 'JOE', 'VIC',
                            'TMR-ACH', 'R6G', 'R6G-ACH', 'ROX-CLK', 'TR-CLK', 'AF594-CLK',
                            'CY3-ACH', 'CY5-CLK',
-                           'CHOL-PRO', 'GALNAC-PRO',)
+                           'CHOL-PRO', 'GALNAC-PRO',
+                           'po')
 
 # Modifications available only at 3'-position
 modification_3_position = ('BHQ1', 'BHQ2', 'MGB', 'MGB-ECLIPSE', 'ECLIPSE',
-                           'CHOL-PRO', 'GALNAC-PRO', 'GALNAC3-ALN')
+                           'CHOL-PRO', 'GALNAC-PRO', 'GALNAC3-ALN',
+                           'po')
 
 # Modifications available only at internal position
 modification_int_position = ('BHQ1', 'BHQ2', 'ECLIPSE', 'GALNAC-PRO')
 
-all_nucleotide = nucleotide_any_position + modification_5_position + modification_3_position + modification_int_position
-
 # Modifications available on phosphate
-modification_phosphorus = ('po', 'ps', '*')
+modification_phosphorus = ('po', 'ps', '*',)
 
 degenerate_nucleotide = ('dW', 'dS', 'dM', 'dK', 'dR', 'dY', 'dB', 'dD', 'dH', 'dV', 'dN',)
 
 dna_nucleotides = ('dA', 'dC', 'dG', 'dT', 'dCm', 'dU',)
+
+all_nucleotide = {*nucleotide_any_position,
+                  *modification_5_position,
+                  *modification_3_position,
+                  *modification_int_position} - {*modification_phosphorus}
 
 formula = {
     'dA': {'C': 10, 'H': 13, 'N': 5, 'O': 3},
@@ -187,8 +196,8 @@ formula = {
     'ALKYNE': {'C': 12, 'H': 19, 'N': 1, 'O': 2},
     'FAM': {'C': 27, 'H': 25, 'N': 1, 'O': 7},
     'TMR-ACH': {'C': 31, 'H': 33, 'N': 3, 'O': 5},
-    'CY3-ACH': {'C': 36, 'H': 48, 'N': 3, 'O': 2},
-    'CY5-CLK': {'C': 47, 'H': 64, 'N': 7, 'O': 3},
+    'CY3-ACH': {'C': 36, 'H': 47, 'N': 3, 'O': 2},
+    'CY5-CLK': {'C': 47, 'H': 63, 'N': 7, 'O': 3},
     'VIC': {'C': 33, 'H': 26, 'Cl': 3, 'N': 1, 'O': 7},
     'TET': {'C': 27, 'H': 21, 'Cl': 4, 'N': 1, 'O': 7},
     'HEX': {'C': 27, 'H': 19, 'Cl': 6, 'N': 1, 'O': 7},
@@ -314,7 +323,7 @@ def get_mass_avg(sequence):
     """
     sequence_full = sequence_explicit(sequence)
     m_avg = 0
-    if get_length(sequence) == 1:
+    if len(sequence_split(sequence)) == 1:
         for atom in formula[sequence]:
             m_avg += mass_avg[atom] * formula[sequence][atom]
         return round(m_avg, 2)
@@ -335,7 +344,7 @@ def get_mass_monoisotopic(sequence):
     if len(sequence_split(sequence)) == 1:
         for atom in formula[sequence]:
             m_mono += mass_mono[atom] * formula[sequence][atom]
-        return round(m_mono, 5)
+        return round(m_mono, 4)
     for nt in sequence_split(sequence_full):
         for atom in formula[nt]:
             m_mono += mass_mono[atom] * formula[nt][atom]
@@ -392,37 +401,42 @@ def get_ms_fragments(sequence):
     z = {}
     seq_full_tup = sequence_split(sequence_explicit(sequence))
     mass = get_mass_monoisotopic(sequence)
+    count_nt = 0
 
     for index in range(len(seq_full_tup)):
-        if index % 2 == 0 and index < len(seq_full_tup)-1:
-            seq_part_tup = seq_full_tup[:index + 1]
-            seq_part = ' '.join(seq_full_tup[:index+1])
-            b[(index+2)//2] = get_mass_monoisotopic(seq_part)
-            a[(index+2)//2] = round(b[(index+2)//2] - mass_mono['H2O'], 4)
-            x[(index+4)//2] = round(mass - b[(index+2)//2], 4)
-            w[(index+4)//2] = round(x[(index+4)//2] + mass_mono['H2O'], 4)
-            if seq_part_tup[-1] in map_nucleobase:
-                a_B[(index+2)//2] = round(a[(index+2)//2] - get_mass_monoisotopic(map_nucleobase[seq_part_tup[-1]]), 4)
+        if seq_full_tup[index] in all_nucleotide and index < len(seq_full_tup)-2:
+            count_nt += 1
+            seq_part_tup_l = seq_full_tup[:index + 1]
+            seq_part_tup_l_plus_phos = seq_full_tup[:index + 2]
+            seq_part_tup_r_plus_phos = seq_full_tup[index + 1:]
+            seq_part_tup_r = seq_full_tup[index + 2:]
+            seq_part_l = ' '.join(seq_part_tup_l)
+            seq_part_l_plus_phos = ' '.join(seq_part_tup_l_plus_phos)
+            seq_part_r_plus_phos = ' '.join(seq_part_tup_r_plus_phos)
+            seq_part_r = ' '.join(seq_part_tup_r)
+            b[count_nt] = get_mass_monoisotopic(seq_part_l)
+            a[count_nt] = round(b[count_nt] - mass_mono['H2O'], 4)
+            d[count_nt] = get_mass_monoisotopic(seq_part_l_plus_phos)
+            c[count_nt] = round(d[count_nt] - mass_mono['H2O'], 4)
+            y[count_nt + 1] = get_mass_monoisotopic(seq_part_r)
+            z[count_nt + 1] = round(y[count_nt + 1] - mass_mono['H2O'], 4)
+            w[count_nt + 1] = get_mass_monoisotopic(seq_part_r_plus_phos)
+            x[count_nt + 1] = round(w[count_nt + 1] - mass_mono['H2O'], 4)
+            if seq_part_tup_l[-1] in map_nucleobase:
+                a_B[count_nt] = round(a[count_nt] - get_mass_monoisotopic(map_nucleobase[seq_part_tup_l[-1]]), 4)
             else:
-                a_B[(index+2)//2] = 0
+                a_B[count_nt] = 0
 
-            seq_part = ' '.join(seq_full_tup[:index + 2])
-            d[(index+2)//2] = get_mass_monoisotopic(seq_part)
-            c[(index+2)//2] = round(d[(index+2)//2] - mass_mono['H2O'], 4)
-            y[(index+4)//2] = round(mass - c[(index+2)//2], 4)
-            z[(index+4)//2] = round(y[(index+4)//2] - mass_mono['H2O'], 4)
-
-        if index == len(seq_full_tup) - 1:
-            a[(index + 2) // 2] = 0
-            a_B[(index + 2) // 2] = 0
-            b[(index + 2) // 2] = 0
-            c[(index + 2) // 2] = 0
-            d[(index + 2) // 2] = 0
+        if seq_full_tup[index] in all_nucleotide and (index == len(seq_full_tup)-1 or index == len(seq_full_tup)-2):
+            a[count_nt + 1] = 0
+            a_B[count_nt + 1] = 0
+            b[count_nt + 1] = 0
+            c[count_nt + 1] = 0
+            d[count_nt + 1] = 0
             w[1] = 0
             x[1] = 0
             y[1] = 0
             z[1] = 0
-
     return a, a_B, b, c, d, w, x, y, z
 
 

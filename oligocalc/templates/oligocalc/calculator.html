@@ -69,7 +69,7 @@
                 </div>
             </div>
 
-                <div class="row mb-1 mt-1">
+                <div class="row mt-1">
                     <div class="col-md-8">
                         {{form.sequence}}
                     </div>
@@ -103,7 +103,7 @@
                         </table>
                     </div>
                 </div>
-                <div class="col-md-8">
+                <div class="mb-2 col-md-8">
                     {% if form.errors %}
                         {% for field_error, error in form.errors.items %}
                             <div>{{ error }}</div>
@@ -111,7 +111,7 @@
                     {% endif %}
                 </div>
 
-            <button type="submit" class="ms-0 mt-0 btn btn-primary submit">Calculate!</button>
+            <button type="submit" class="ms-0 btn btn-primary submit">Calculate!</button>
 
         </div>
       </div>
@@ -235,13 +235,21 @@
                                 <tr>
                                     <td><strong>nmol/OD<sub>260</sub>: </strong></td>
                                     <td>
-                                        {{ nmol_OD260 }}
+                                        {% if nmol_OD260 > 0 %}
+                                            {{ nmol_OD260 }}
+                                        {% else %}
+                                            -
+                                        {% endif %}
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><strong>&micro;g/OD<sub>260</sub>: </strong></td>
                                     <td>
-                                        {{ ug_OD260 }}
+                                        {% if ug_OD260 > 0 %}
+                                            {{ ug_OD260 }}
+                                        {% else %}
+                                            -
+                                        {% endif %}
                                     </td>
                                 </tr>
                             </table>

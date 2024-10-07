@@ -128,27 +128,27 @@ nucleotide_any_position = (
 )
 
 # Modifications available only at 5'-position
-modification_5_position = ('ALKYNE',
+modification_5_position = ['ALKYNE',
                            'FAM', 'TET', 'HEX', 'JOE', 'VIC',
                            'TMR-ACH', 'R6G', 'R6G-ACH', 'ROX-CLK', 'TR-CLK', 'AF594-CLK',
                            'CY3-ACH', 'CY5-CLK',
                            'CHOL-PRO', 'GALNAC-PRO',
-                           'po')
+                           'po']
 
 # Modifications available only at 3'-position
-modification_3_position = ('BHQ1', 'BHQ2', 'MGB', 'MGB-ECLIPSE', 'ECLIPSE',
+modification_3_position = ['BHQ1', 'BHQ2', 'MGB', 'MGB-ECLIPSE', 'ECLIPSE',
                            'CHOL-PRO', 'GALNAC-PRO', 'GALNAC3-ALN',
-                           'po')
+                           'po']
 
 # Modifications available only at internal position
-modification_int_position = ('BHQ1', 'BHQ2', 'ECLIPSE', 'GALNAC-PRO')
+modification_int_position = ['BHQ1', 'BHQ2', 'ECLIPSE', 'GALNAC-PRO']
 
 # Modifications available on phosphate
-modification_phosphorus = ('po', 'ps', '*',)
+modification_phosphorus = ['po', 'ps', '*']
 
-degenerate_nucleotide = ('dW', 'dS', 'dM', 'dK', 'dR', 'dY', 'dB', 'dD', 'dH', 'dV', 'dN',)
+degenerate_nucleotide = ['dW', 'dS', 'dM', 'dK', 'dR', 'dY', 'dB', 'dD', 'dH', 'dV', 'dN']
 
-dna_nucleotides = ('dA', 'dC', 'dG', 'dT', 'dCm', 'dU',)
+dna_nucleotides = ['dA', 'dC', 'dG', 'dT', 'dCm', 'dU']
 
 all_nucleotide = {*nucleotide_any_position,
                   *modification_5_position,
@@ -336,7 +336,7 @@ def get_mass_avg(sequence):
 
 def get_mass_monoisotopic(sequence):
     """
-    Takes a sequence as a string and calculates monoisotopic molecular mass of this sequence.
+    Takes a sequence in Therapeutic format as a string and calculates monoisotopic molecular mass of this sequence.
     Returns value of monoisotopic mass.
     """
     sequence_full = sequence_explicit(sequence)

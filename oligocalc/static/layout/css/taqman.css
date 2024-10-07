@@ -1,0 +1,10 @@
+div.taqman-box-scroll {
+  background-color: rgb(246,246,246);
+  padding: 10px;
+  font-family: monospace,monospace;
+  overflow: auto;
+  white-space: nowrap;
+  border-style: solid;
+  border-width: thin;
+  border-color: grey;
+}

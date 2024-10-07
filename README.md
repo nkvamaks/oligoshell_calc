@@ -8,6 +8,9 @@ This web application is aimed to calculate properties of natural, modified and t
 <ul>
     <li>
         <sup><strong>NEW!</strong></sup>
+        Melting temperature of MGB-modified oligonucleotide probes
+    </li>
+    <li>
         Melting temperature of DNA oligonucleotide with DNA target
     </li>
     <li>
@@ -25,6 +28,14 @@ This web application is aimed to calculate properties of natural, modified and t
 </ul>
 <p>
 It can also quantify oligonucleotide based on user input of measured <strong>absorbanse at 260 nm</strong> and <strong>volume</strong> of oligonucleotide solution.
+</p>
+<p>
+<strong>New Tool - TaqMan Find</strong>
+</p>
+<p>
+This tool is made to help you find matching primers and probes for TaqMan assays within your specified target sequence. 
+By providing the exact (single isotope) masses of both primers and the probe, the chemical modifications of the probe, 
+the length of the amplicon, and the reference sequence (RefSeq), you can easily identify compatible components of your assay. 
 </p>
 <p>
 <strong>How to input a sequence:</strong>

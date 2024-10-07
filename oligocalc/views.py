@@ -1,12 +1,21 @@
+from Bio import Entrez
+# from Bio import SeqIO
+# from io import StringIO
 from django.shortcuts import render
 from django.core.mail import EmailMessage
 from django.conf import settings
-from django.http import HttpResponseRedirect
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.urls import reverse
+from django.views.generic import FormView
+# from django.views import View
+from django.core.exceptions import ValidationError
+from http import HTTPStatus
+
 
 from . import forms
 from . import utils
 from . import tm
+from . import taqman_find_utils
 
 
 def calc_view(request):
@@ -45,8 +54,8 @@ def calc_view(request):
 
             mass_average = utils.get_mass_avg(sequence)
             if epsilon260:
-                nmol_OD260 = round((1 / epsilon260) * 1e6, 2)
-                ug_OD260 = round((1 / epsilon260) * mass_average * 1e3, 2)
+                nmol_OD260 = (1 / epsilon260) * 1e6
+                ug_OD260 = (1 / epsilon260) * mass_average * 1e3
             else:
                 nmol_OD260 = -1
                 ug_OD260 = -1
@@ -55,19 +64,19 @@ def calc_view(request):
                 mass_monoisotopic = utils.get_mass_monoisotopic(sequence)
 
             for z in range(1, length):
-                esi_series_avg_dmt_off = round((mass_average - z * utils.mass_avg['H']) / z, 2)
+                esi_series_avg_dmt_off = (mass_average - z * utils.mass_avg['H']) / z
                 if not utils.contain_degenerate_nucleotide(sequence):
-                    esi_series_mono_dmt_off = round((mass_monoisotopic - z * utils.mass_mono['H']) / z, 4)
+                    esi_series_mono_dmt_off = (mass_monoisotopic - z * utils.mass_mono['H']) / z
                 else:
                     esi_series_mono_dmt_off = None
                 esi_series.append((z, esi_series_avg_dmt_off, esi_series_mono_dmt_off))
 
             if absorbance260 and epsilon260:
-                concentration_molar = round(absorbance260 / epsilon260 * 1000000, 2)
-                concentration_mass = round(concentration_molar * mass_average / 1000, 2)
+                concentration_molar = absorbance260 / epsilon260 * 1000000
+                concentration_mass = concentration_molar * mass_average / 1000
 
             if concentration_molar and volume:
-                quantity = round(concentration_molar * volume, 1)
+                quantity = concentration_molar * volume
 
             if not utils.contain_degenerate_nucleotide(sequence):
                 a_esi, a_B_esi, b_esi, c_esi, d_esi, w_esi, x_esi, y_esi, z_esi = map(utils.get_ms_fragments_esi_series, utils.get_ms_fragments(sequence))
@@ -87,8 +96,10 @@ def calc_view(request):
                              z_esi[seq_ind][charge-1]) for seq_ind in range(1, length+1)
                         ]
                     )
-
-            dna_mon = list(nt in utils.dna_nucleotides for nt in seq_wo_phosph_tup)
+            allowed_for_calc_tm_mgb = set(utils.dna_nucleotides + utils.modification_5_position + utils.modification_3_position)
+            allowed_for_calc_tm = allowed_for_calc_tm_mgb - {'MGB', 'MGB-ECLIPSE'}
+            dna_mon = (nt in allowed_for_calc_tm for nt in seq_wo_phosph_tup)
+            dna_mon_mgb = (nt in allowed_for_calc_tm_mgb for nt in seq_wo_phosph_tup)
             if dna_mon and all(dna_mon):
                 melting_t = tm.calc_tm(seq=sequence,
                                        target=target,
@@ -97,6 +108,12 @@ def calc_view(request):
                                        dv_conc=dv_conc,
                                        dntp_conc=dntp_conc
                                        )
+            if dna_mon_mgb and all(dna_mon_mgb) and ('MGB' in seq_wo_phosph_tup or 'MGB-ECLIPSE' in seq_wo_phosph_tup):
+                melting_t = tm.calc_tm_mgb(seq=sequence,
+                                           dna_conc=dna_conc,
+                                           mv_conc=mv_conc,
+                                           dv_conc=dv_conc,
+                                           dntp_conc=dntp_conc)
 
             return render(request, 'oligocalc/calculator.html', {
                 'form': form,
@@ -169,3 +186,100 @@ def success(request):
 
 def modifications(request):
     return render(request, 'oligocalc/modifications.html')
+
+
+class TaqManFindView(FormView):
+    template_name = 'oligocalc/taqman_find.html'
+    form_class = forms.TaqManFindForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form_taqman'] = self.get_form(self.form_class)
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form_taqman = self.get_form(self.form_class)
+        fasta = ''
+
+        if form_taqman.is_valid():
+            fasta = form_taqman.cleaned_data['fasta']
+            fasta_seq = taqman_find_utils.simple_fasta_parser(fasta)
+            primer1 = form_taqman.cleaned_data['primer1']
+            primer2 = form_taqman.cleaned_data['primer2']
+            probe = form_taqman.cleaned_data['probe']
+            probe_dye = form_taqman.cleaned_data['probe_dye']
+            amp_size = form_taqman.cleaned_data['amp_size']
+            fasta_seq_len = len(fasta_seq)
+            fasta_seq_rev_compl = utils.rev_compl(fasta_seq)
+
+            composition_list_primer1 = taqman_find_utils.brutforce_oligo_composition(primer1)
+            composition_list_primer2 = taqman_find_utils.brutforce_oligo_composition(primer2)
+            composition_list_probe = taqman_find_utils.brutforce_oligo_composition(
+                probe - taqman_find_utils.mass_probe_dye[probe_dye])
+
+            seq_list_F_set1 = taqman_find_utils.find_seq_in_fasta_from_list(composition_list_primer1, fasta_seq)
+            seq_list_F_set2 = taqman_find_utils.find_seq_in_fasta_from_list(composition_list_primer2, fasta_seq)
+            seq_list_R_set1 = taqman_find_utils.find_seq_in_fasta_from_list(composition_list_primer2,
+                                                                            fasta_seq_rev_compl)
+            seq_list_R_set2 = taqman_find_utils.find_seq_in_fasta_from_list(composition_list_primer1,
+                                                                            fasta_seq_rev_compl)
+
+            match_set1 = taqman_find_utils.find_matching_pair(seq_list_F_set1, seq_list_R_set1, amp_size, fasta_seq_len)
+            match_set2 = taqman_find_utils.find_matching_pair(seq_list_F_set2, seq_list_R_set2, amp_size, fasta_seq_len)
+
+            results = []
+            for seqF_seq, seqF_pos, seqR_seq, seqR_pos in match_set1 + match_set2:
+                amplicon = fasta_seq[seqF_pos:seqF_pos + amp_size]
+                amplicon_rev_compl = utils.rev_compl(amplicon)
+
+                seqF_mass = utils.get_mass_monoisotopic(utils.dna2mix(seqF_seq))
+                seqR_mass = utils.get_mass_monoisotopic(utils.dna2mix(seqR_seq))
+
+                seqF_melting_t = tm.calc_tm(seq=utils.dna2mix(seqF_seq),
+                                            target='dna',
+                                            dna_conc=0.2,
+                                            mv_conc=50,
+                                            dv_conc=3,
+                                            dntp_conc=0.8
+                                            )
+                seqR_melting_t = tm.calc_tm(seq=utils.dna2mix(seqR_seq),
+                                            target='dna',
+                                            dna_conc=0.2,
+                                            mv_conc=50,
+                                            dv_conc=3,
+                                            dntp_conc=0.8
+                                            )
+
+                seq_list_Pf = taqman_find_utils.find_seq_in_fasta_from_list(composition_list_probe, amplicon)
+                seq_list_Pr = taqman_find_utils.find_seq_in_fasta_from_list(composition_list_probe, amplicon_rev_compl)
+
+                seq_list_Pf_mass_tm = taqman_find_utils.calculate_mass_tm(seq_list_Pf, probe_dye)
+                seq_list_Pr_mass_tm = taqman_find_utils.calculate_mass_tm(seq_list_Pr, probe_dye)
+
+                master_list_Pf = [x + y for x, y in zip(seq_list_Pf, seq_list_Pf_mass_tm)]
+                master_list_Pr = [x + y for x, y in zip(seq_list_Pr, seq_list_Pr_mass_tm)]
+
+                assay = taqman_find_utils.get_taqman_assay(seqF_seq, seqR_seq, amplicon, seq_list_Pf, seq_list_Pr,
+                                                           seqF_pos)
+
+                results.append((seqF_seq, seqF_pos, seqF_mass, seqF_melting_t,
+                                seqR_seq, seqR_pos, seqR_mass, seqR_melting_t,
+                                amplicon, amplicon_rev_compl,
+                                master_list_Pf, master_list_Pr,
+                                assay))
+            if not results:
+                results = -1
+            context = self.get_context_data()
+            context.update({
+                'form_taqman': form_taqman,
+                'fasta': fasta,
+                'results': results,
+                'amp_size': amp_size,
+            })
+            return self.render_to_response(context)
+
+        context = self.get_context_data()
+        context.update({
+            'form_taqman': form_taqman,
+            'fasta': fasta})
+        return self.render_to_response(context)

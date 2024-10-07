@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 
 class Oligo(models.Model):
@@ -18,3 +19,25 @@ class Oligo(models.Model):
     class Meta:
         verbose_name_plural = 'Oligos'
         verbose_name = 'Oligo'
+
+
+class TaqManFind(models.Model):
+    PROBE_DYE_CHOICES = [
+        ('NO-ANY', 'No any'),
+        ('FAM-BHQ1', 'FAM - BHQ1'),
+        ('HEX-BHQ1', 'HEX - BHQ1'),
+        ('FAM-MGB', 'FAM - MGB-ECLIPSE (Thermo)'),
+        ('VIC-MGB', 'VIC - MGB-ECLIPSE (Thermo)'),
+        ('JUN-QSY', 'JUN - QSY (Thermo)'),
+        ('TexRd-BHQ2', 'TexRd - BHQ2 (IDT)'),
+        ('Cy5-BHQ2', 'Cy5 - BHQ2 (IDT)')
+    ]
+    fasta = models.TextField(verbose_name="Sequence in FASTA format", blank=False, null=False)
+    primer1 = models.FloatField(verbose_name='Molecular weight of Primer 1', blank=False, null=False)
+    primer2 = models.FloatField(verbose_name='Molecular weight of Primer 2', blank=False, null=False)
+    probe = models.FloatField(verbose_name='Molecular weight of Probe', blank=False, null=False)
+    probe_dye = models.CharField(verbose_name='Dye', max_length=50, choices=PROBE_DYE_CHOICES, default='FAM-BHQ1')
+    amp_size = models.IntegerField(verbose_name='Amplicon length', blank=False, null=False)
+
+    def get_absolute_url(self):
+        return reverse('oligocalc:taqman_find')

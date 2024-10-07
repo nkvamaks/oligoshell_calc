@@ -111,7 +111,7 @@
                     {% endif %}
                 </div>
 
-            <button type="submit" class="ms-0 btn btn-primary submit">Calculate!</button>
+            <button type="submit" class="ms-0 btn btn-primary submit">Calculate</button>
 
         </div>
       </div>
@@ -200,7 +200,7 @@
                                     <td><strong>Melt Temp:</strong></td>
                                     <td>
                                         {% if melting_t > 0 %}
-                                            {{ melting_t }} <span class="text-muted">&deg;C</span>
+                                            {{ melting_t|floatformat:1 }} <span class="text-muted">&deg;C</span>
                                         {% else %}
                                             -
                                         {% endif %}
@@ -214,7 +214,7 @@
                                     <td><strong>Monoisotopic Mass:</strong></td>
                                     <td>
                                         {% if mass_monoisotopic %}
-                                            {{ mass_monoisotopic }} <span class="text-muted">Da</span>
+                                            {{ mass_monoisotopic|floatformat:4 }} <span class="text-muted">Da</span>
                                         {% else %}
                                             -
                                         {% endif %}
@@ -223,7 +223,7 @@
                                 <tr>
                                     <td><strong>Molecular Weight:</strong></td>
                                     <td>
-                                        {{mass_average}} <span class="text-muted">Da</span>
+                                        {{mass_average|floatformat:2}} <span class="text-muted">Da</span>
                                     </td>
                                 </tr>
                                 <tr>
@@ -236,7 +236,7 @@
                                     <td><strong>nmol/OD<sub>260</sub>: </strong></td>
                                     <td>
                                         {% if nmol_OD260 > 0 %}
-                                            {{ nmol_OD260 }}
+                                            {{ nmol_OD260|floatformat:3 }}
                                         {% else %}
                                             -
                                         {% endif %}
@@ -246,27 +246,13 @@
                                     <td><strong>&micro;g/OD<sub>260</sub>: </strong></td>
                                     <td>
                                         {% if ug_OD260 > 0 %}
-                                            {{ ug_OD260 }}
+                                            {{ ug_OD260|floatformat:3 }}
                                         {% else %}
                                             -
                                         {% endif %}
                                     </td>
                                 </tr>
                             </table>
-                            {%comment%}
-                            <table class="table table-sm table-borderless table-hover">
-                                <tr>
-                                    <td width="9%"> {{ form.absorbance260 }} </td>
-                                    <td width="15%"> OD260 dissolved in </td>
-                                    <td width="9%"> {{ form.volume }} </td>
-                                    <td> mL </td>
-                                    <td> contains </td>
-                                    <td> {{ quantity }} nmol</td>
-                                    <td> oligo with conc </td>
-                                    <td> {{ concentration_molar }} </td>
-                                </tr>
-                            </table>
-                            {%endcomment%}
                         </div>
 
             {%comment%}
@@ -314,7 +300,7 @@
                                 {% endif %}
                         </div>
 
-                        <button type="submit" class="mt-3 btn btn-sm btn-primary submit"> Quantify! </button>
+                        <button type="submit" class="mt-3 btn btn-sm btn-primary submit"> Quantify </button>
                     </div>
                   </div>
                 </div>
@@ -343,12 +329,12 @@
                                             <td></td>
                                             <td><strong>
                                                 {% if mass_monoisotopic %}
-                                                    {{ mass_monoisotopic }}
+                                                    {{ mass_monoisotopic|floatformat:4 }}
                                                 {% endif %}
                                             </strong></td>
                                             <td><strong>
                                                 {% if mass_average %}
-                                                    {{mass_average}}
+                                                    {{mass_average|floatformat:2}}
                                                 {% endif %}
                                             </strong></td>
                                         </tr>
@@ -358,10 +344,10 @@
                                                 <td><strong>-{{z}}</strong></td>
                                                 <td>
                                                     {% if esi_mono_off %}
-                                                        {{esi_mono_off}}
+                                                        {{esi_mono_off|floatformat:4}}
                                                     {% endif %}
                                                 </td>
-                                                <td>{{esi_avg_off}}</td>
+                                                <td>{{esi_avg_off|floatformat:2}}</td>
                                             </tr>
                                         {% endfor %}
                                     </tbody>
@@ -449,7 +435,7 @@
                                                         <td>
                                                             <small>
                                                                 {% if d_esi >= 0 %}
-                                                                    {{d_esi}}
+                                                                    {{d_esi|floatformat:2}}
                                                                 {% else %}
                                                                     -
                                                                 {% endif %}
@@ -458,7 +444,7 @@
                                                         <td>
                                                             <small>
                                                                 {% if c_esi >= 0 %}
-                                                                    {{c_esi}}
+                                                                    {{c_esi|floatformat:2}}
                                                                 {% else %}
                                                                     -
                                                                 {% endif %}
@@ -467,7 +453,7 @@
                                                         <td>
                                                             <small>
                                                                 {% if b_esi >= 0 %}
-                                                                    {{b_esi}}
+                                                                    {{b_esi|floatformat:2}}
                                                                 {% else %}
                                                                     -
                                                                 {% endif %}
@@ -476,7 +462,7 @@
                                                         <td>
                                                             <small>
                                                                 {% if a_esi >= 0 %}
-                                                                    {{a_esi}}
+                                                                    {{a_esi|floatformat:2}}
                                                                 {% else %}
                                                                     -
                                                                 {% endif %}
@@ -485,7 +471,7 @@
                                                         <td>
                                                             <small>
                                                                 {% if a_B_esi >= 0 %}
-                                                                    {{a_B_esi}}
+                                                                    {{a_B_esi|floatformat:2}}
                                                                 {% else %}
                                                                     -
                                                                 {% endif %}
@@ -497,7 +483,7 @@
                                                         <td>
                                                             <small>
                                                                 {% if w_esi >= 0 %}
-                                                                    {{w_esi}}
+                                                                    {{w_esi|floatformat:2}}
                                                                 {% else %}
                                                                     -
                                                                 {% endif %}
@@ -506,7 +492,7 @@
                                                         <td>
                                                             <small>
                                                                 {% if x_esi >= 0 %}
-                                                                    {{x_esi}}
+                                                                    {{x_esi|floatformat:2}}
                                                                 {% else %}
                                                                     -
                                                                 {% endif %}
@@ -515,7 +501,7 @@
                                                         <td>
                                                             <small>
                                                                 {% if y_esi >= 0 %}
-                                                                    {{y_esi}}
+                                                                    {{y_esi|floatformat:2}}
                                                                 {% else %}
                                                                     -
                                                                 {% endif %}
@@ -524,7 +510,7 @@
                                                         <td>
                                                             <small>
                                                                 {% if z_esi >= 0 %}
-                                                                    {{z_esi}}
+                                                                    {{z_esi|floatformat:2}}
                                                                 {% else %}
                                                                     -
                                                                 {% endif %}
@@ -554,5 +540,11 @@
 {% endif %}
 
 </form>
+
+<!-- Parameter Sets in Calculator form -->
+<script src="{% static 'js/parametersets.js'%}"></script>
+
+<!-- Parameter Sets in Calculator form -->
+<script src="{% static 'js/formula.js'%}"></script>
 
 {% endblock %}

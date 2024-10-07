@@ -2,6 +2,7 @@ from django.core.exceptions import ValidationError
 import re
 
 from . import utils
+from . import taqman_find_utils
 
 
 def validate_seq_mix(sequence):
@@ -113,3 +114,44 @@ def validate_dntp_conc(dntp_value, dv_value):
         return dntp_value
     else:
         raise ValidationError(message)
+
+
+def validate_fasta(fasta):
+    fasta_seq = taqman_find_utils.simple_fasta_parser(fasta)
+    nucleotides = set(fasta_seq)
+    standard_nucleotides = []
+    for nucleotide in nucleotides:
+        standard_nucleotides.append(True if nucleotide in 'AaCcGgTtUuWwSsMmKkRrYyBbDdHhVvNn' else False)
+    if not all(standard_nucleotides):
+        raise ValidationError(message='Sequence contains nucleotides other than A/C/G/T/W/S/M/K/R/Y/B/D/H/V/N')
+    else:
+        return fasta
+
+
+def validate_primer1(primer1):
+    if 800 <= primer1 <= 20000:
+        return primer1
+    else:
+        raise ValidationError(message='Mass of Primer1 must be within the range 800 - 20.000 Da')
+
+
+def validate_primer2(primer2):
+    if 800 <= primer2 <= 20000:
+        return primer2
+    else:
+        raise ValidationError(message='Mass of Primer2 must be within the range 800 - 20.000 Da')
+
+
+def validate_probe(probe):
+    if 800 <= probe <= 20000:
+        return probe
+    else:
+        raise ValidationError(message='Mass of Probe must be within the range 800 - 20.000 Da')
+
+
+def validate_amp_size(amp_size):
+    if 10 <= amp_size <= 10000:
+        return amp_size
+    else:
+        raise ValidationError(message='Amplicon length must be within the range 10 - 10.000')
+

@@ -1,6 +1,8 @@
 from django import forms
 from . import models
 from . import validators
+from django.core.exceptions import ValidationError
+
 
 
 class CalcForm(forms.ModelForm):
@@ -65,3 +67,44 @@ class ContactForm(forms.Form):
                                                            }))
 
 
+# class FetchForm(forms.Form):
+#     refseq = forms.CharField(required=False,
+#                              max_length=100,
+#                              widget=forms.TextInput(attrs={'placeholder': 'NM_003286.2',
+#                                                            'class': 'form-control'}))
+
+
+class TaqManFindForm(forms.ModelForm):
+    def clean_fasta(self):
+        return validators.validate_fasta(self.cleaned_data['fasta'])
+
+    def clean_primer1(self):
+        return validators.validate_primer1(self.cleaned_data['primer1'])
+
+    def clean_primer2(self):
+        return validators.validate_primer2(self.cleaned_data['primer2'])
+
+    def clean_probe(self):
+        return validators.validate_probe(self.cleaned_data['probe'])
+
+    def clean_amp_size(self):
+        return validators.validate_amp_size(self.cleaned_data['amp_size'])
+
+    class Meta:
+        model = models.TaqManFind
+        fields = '__all__'
+        widgets = {'fasta': forms.Textarea(attrs={'rows': 7,
+                                                  'placeholder': 'Fetch NCBI RefSeq or paste DNA/RNA target sequence as a plain text or FASTA format',
+                                                  'class': 'form-control',
+                                                  'id': 'output',
+                                                  'style': 'font-family: monospace,monospace;'}),
+                   'primer1': forms.NumberInput(attrs={'placeholder': '5432.1',
+                                                       'class': 'form-control'}),
+                   'primer2': forms.NumberInput(attrs={'placeholder': '6789.0',
+                                                       'class': 'form-control'}),
+                   'probe': forms.NumberInput(attrs={'placeholder': '7654.3',
+                                                     'class': 'form-control'}),
+                   'probe_dye': forms.Select(attrs={'class': 'form-select'}),
+                   'amp_size': forms.NumberInput(attrs={'placeholder': '120',
+                                                        'class': 'form-control'}),
+                   }

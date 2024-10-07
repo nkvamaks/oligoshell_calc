@@ -12,7 +12,8 @@ urlpatterns = [
     path('contact/', views.contact, name='contact'),
     path('success/', views.success, name='success'),
     path('modifications/', views.modifications, name='modifications'),
-
+    # path('taqman_find/', views.taqman_find, name='taqman_find'),
+    path('taqman_find/', views.TaqManFindView.as_view(), name='taqman_find'),
 ]
 
 if settings.DEBUG:

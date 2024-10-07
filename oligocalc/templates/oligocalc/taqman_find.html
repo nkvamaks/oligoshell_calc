@@ -1,0 +1,253 @@
+{% extends "layout/basic.html" %}
+{% load static %}
+{% block title %}OligoShell TaqMan Finder{% endblock %}
+{% block content %}
+
+<div class="card accordion-item mb-3">
+  <h2 class="accordion-header" id="aboutTaqManFind">
+    <button
+      type="button"
+      class="accordion-button collapsed"
+      data-bs-toggle="collapse"
+      data-bs-target="#accordionTaqManFind"
+      aria-expanded="false"
+      aria-controls="accordionTaqManFind"
+    >
+      How to Use &nbsp;<strong>TaqMan Find</strong>&nbsp; Tool
+    </button>
+  </h2>
+  <div
+    id="accordionTaqManFind"
+    class="accordion-collapse collapse"
+    aria-labelledby="headingTwo"
+    data-bs-parent="#accordionExample"
+  >
+    <div class="accordion-body">
+        <strong>Please Note: This is <em>not</em> a design tool!</strong><br/>
+        This tool is made to help you find matching primers and probes for TaqMan assays within your specified
+        target sequence. By providing the exact (single isotope) masses of both primers and the probe, the chemical
+        modifications of the probe, the length of the amplicon, and the reference sequence (RefSeq), you can easily
+        identify compatible components of your assay. Ensure all details are accurate for optimal results.<br/>
+        You can test this tool using <a id="actbExample" href="javascript:pasteExample()">this example dataset</a> for the Actin Beta
+        TaqMan assay
+        <a href="https://www.thermofisher.com/order/genome-database/details/gene-expression/Hs99999903_m1" target="_blank">
+            Hs99999903_m1 </a> from Thermo Fisher.
+        Please note, the output of this tool can sometimes be ambiguous, providing several probes with the same mass.
+        For this specific example, the actual sequences can be found in
+        <a href="https://www.doi.org/10.1038/sj.leu.2402880" target="_blank">this</a> publication.
+
+    </div>
+  </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+
+                <div class="table-responsive">
+                    <!-- Form for fetching RefSeq -->
+                    <form method="POST" action="{% url 'oligocalc:taqman_find' %}">
+                        {% csrf_token %}
+                        <table class="table table-borderless" style="table-layout: fixed; width: 100%">
+                            <tr class="p-0 m-0">
+                                <td width="45%">
+                                    <input class="form-control" type="text" id="accInput" placeholder="NM_009417">
+                                </td>
+                                <td>
+                                    <button id="fetchButton" class="ms-0 btn btn-secondary" name="fetchRefSeq">Fetch RefSeq</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><div id="errorFetchSeq" class="error"></div></td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+
+                <!-- Form for TaqMan Find -->
+
+                <form method="POST" action="{% url 'oligocalc:taqman_find' %}">
+                    {% csrf_token %}
+                    <div class="col-md-12 p-1">
+                        {{form_taqman.fasta}}
+                    </div>
+                    <div class="col-md-12 p-1">
+                        {% if form_taqman.errors %}
+                            {% for field_error, error in form_taqman.errors.items %}
+                                <div>{{ error }}</div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+
+
+                    <div class="table-responsive">
+                        <table class="table table-sm table-borderless" style="table-layout: fixed; width: 100%">
+                            <tr>
+                                <td width="45%"><strong>Mass of Primer 1</strong></td>
+                                <td style="word-wrap:break-word">{{form_taqman.primer1}}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Mass of Primer 2</strong></td>
+                                <td style="word-wrap:break-word">{{form_taqman.primer2}}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Mass of Probe</strong></td>
+                                <td style="word-wrap:break-word">{{form_taqman.probe}}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Dye-Quencher</strong></td>
+                                <td style="word-wrap:break-word">{{form_taqman.probe_dye}}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Amplicon size</strong></td>
+                                <td style="word-wrap:break-word">{{form_taqman.amp_size}}</td>
+                            </tr>
+
+                        </table>
+                    </div>
+                    <button type="submit" class="mt-3 btn btn-primary submit" name="TaqManFind">Find TaqMan</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if results == -1 %}
+<div class="row mt-4">
+    <div class="col-md-12">
+        <h4>Results</h4>
+            <div class="card mb-4">
+                <div class="card-body" style="font-family: monospace,monospace;">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h5>No Matches Found</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+
+{% elif results %}
+<div class="row mt-4">
+    <div class="col-md-12">
+        <h4>Results</h4>
+        {% for seqF_seq, seqF_pos, seqF_mass, seqF_melting_t, seqR_seq, seqR_pos, seqR_mass, seqR_melting_t, amplicon, amplicon_rev_compl, seq_list_Pf, seq_list_Pr, assay in results %}
+            <div class="card mb-4">
+                <div class="card-body" style="font-family: monospace,monospace;">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h5>Match {{forloop.counter}}</h5>
+                            <div class="taqman-box-scroll mb-4">
+                                {%autoescape off%}
+                                {{assay}}
+                                {%endautoescape%}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive text-nowrap">
+                        <table class="table table-sm table-hover">
+                            <tbody class="table-border">
+                                <tr>
+                                    <td><strong>OLIGO</strong></td>
+                                    <td><strong>SEQUENCE, 5'&rarr;3'</strong></td>
+                                    <td><strong>EXACT MASS, Da</strong></td>
+                                    <td>
+                                        <strong>MELTING TEMP, &deg;C</strong>
+                                        <svg data-bs-toggle="tooltip"
+                                             data-bs-offset="0,5"
+                                             data-bs-placement="left"
+                                             data-bs-html="true"
+                                             title="<p>Tm is calculated for<br/>
+                                                       Oligo conc = 0.2 &mu;M<br/>
+                                                       Na<sup>+</sup> conc = 50 mM<br/>
+                                                       Mg<sup>2+</sup> conc = 3 mM<br/>
+                                                       dNTP conc = 0.8 mM</p>"
+                                             xmlns="http://www.w3.org/2000/svg"
+                                             width="22"
+                                             height="22"
+                                             viewBox="0 0 24 24">
+                                            <path fill="currentColor" d="M13 9h-2V7h2m0 10h-2v-6h2m-1-9A10 10 0 0 0 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10A10 10 0 0 0 12 2Z"/>
+                                        </svg>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Forward</strong> sense</td>
+                                    <td>{{seqF_seq}}</td>
+                                    <td>{{seqF_mass|floatformat:2}}</td>
+                                    <td>
+                                        {% if seqF_melting_t > 0 %}
+                                            {{seqF_melting_t|floatformat:1}}
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Reverse</strong> antisense</td>
+                                    <td>{{seqR_seq}}</td>
+                                    <td>{{seqR_mass|floatformat:2}}</td>
+                                    <td>
+                                        {% if seqR_melting_t > 0 %}
+                                            {{seqR_melting_t|floatformat:1}}
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    </td>
+                                </tr>
+
+                                {% for probe_f, pos_probe_f, probe_f_mass, probe_f_tm in seq_list_Pf %}
+                                    <tr>
+                                        <td><strong>Probe{{forloop.counter}}</strong> sense</td>
+                                        <td>{{ probe_f }}</td>
+                                        <td>{{ probe_f_mass|floatformat:2 }}</td>
+                                        <td>
+                                            {% if probe_f_tm > 0 %}
+                                                {{ probe_f_tm|floatformat:1 }}
+                                            {% else %}
+                                                -
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                {% for probe_r, pos_probe_r, probe_r_mass, probe_r_tm in seq_list_Pr %}
+                                    <tr>
+                                        <td><strong>Probe{{forloop.counter}}</strong> antisense</td>
+                                        <td>{{ probe_r }}</td>
+                                        <td>{{ probe_r_mass|floatformat:2 }}</td>
+                                        <td>
+                                            {% if probe_r_tm > 0 %}
+                                                {{ probe_r_tm|floatformat:1 }}
+                                            {% else %}
+                                                -
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endif %}
+
+<script src="{% static 'js/fetch_fasta.js' %}"></script>
+<script src="{% static 'js/actin_example.js' %}"></script>
+
+{% endblock %}

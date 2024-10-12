@@ -1,15 +1,10 @@
-from Bio import Entrez
-# from Bio import SeqIO
-# from io import StringIO
 from django.shortcuts import render
 from django.core.mail import EmailMessage
 from django.conf import settings
-from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.views.generic import FormView
-# from django.views import View
-from django.core.exceptions import ValidationError
-from http import HTTPStatus
+from django.template.loader import render_to_string
 
 
 from . import forms
@@ -283,3 +278,10 @@ class TaqManFindView(FormView):
             'form_taqman': form_taqman,
             'fasta': fasta})
         return self.render_to_response(context)
+
+
+def robots_txt(request):
+    sitemap_url = request.build_absolute_uri(reverse('oligocalc:django.contrib.sitemaps.views.sitemap'))
+    content = render_to_string('oligocalc/robots.txt', {'sitemap_url': sitemap_url})
+    return HttpResponse(content, content_type='text/plain')
+

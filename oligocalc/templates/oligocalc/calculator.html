@@ -281,7 +281,7 @@
                         <div class="mt-3 mb-2"><strong>Quantity:</strong></div>
                         <div>
                             {% if quantity %}
-                                {{ quantity }} <span class="text-muted">nmol</span>
+                                {{ quantity|floatformat:2 }} <span class="text-muted">nmol</span>
                             {% else %}
                                 -
                             {% endif %}
@@ -290,10 +290,10 @@
                         <div>
                             {% if concentration_molar %}
                                 <div class="mb-2">
-                                    {{ concentration_molar }} <span class="text-muted">&mu;M (pmol/&mu;L)</span>
+                                    {{ concentration_molar|floatformat:2 }} <span class="text-muted">&mu;M (pmol/&mu;L)</span>
                                 </div>
                                 <div>
-                                    {{ concentration_mass }} <span class="text-muted">&mu;g/mL</span>
+                                    {{ concentration_mass|floatformat:2 }} <span class="text-muted">&mu;g/mL</span>
                                 </div>
                             {% else %}
                                     -
@@ -403,7 +403,7 @@
                       <div class="tab-content" style="background: #fff;">
                         <div class="tab-pane fade show active" id="navs-justified-home" role="tabpanel">
                             <p>
-                              <img src="{% static 'ms_ms_fragmentation.png' %}" >
+                              <img src="{% static 'ms_ms_fragmentation.png' %}" alt="Oligonucleotide Fragmentation Scheme">
                             </p>
                         </div>
                         {% for charge_array in mass_fragments_array %}

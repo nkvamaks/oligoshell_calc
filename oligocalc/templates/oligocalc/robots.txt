@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /contact/
+Disallow: /tmp/
+Disallow: /test/
+
+Sitemap: {{ sitemap_url }}

@@ -1,8 +1,6 @@
 from django import forms
 from . import models
 from . import validators
-from django.core.exceptions import ValidationError
-
 
 
 class CalcForm(forms.ModelForm):
@@ -14,7 +12,7 @@ class CalcForm(forms.ModelForm):
                                  initial='dna')
     param_set = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-select form-select-sm'}),
                                   choices=PARAM_CHOICES,
-                                  initial='Default')
+                                  initial='qPCR')
 
     def clean(self):
         if self.cleaned_data['btnradio'] == 'dna':
@@ -65,13 +63,6 @@ class ContactForm(forms.Form):
                                                            'placeholder': 'Your message (Required)',
                                                            'class': 'form-control'
                                                            }))
-
-
-# class FetchForm(forms.Form):
-#     refseq = forms.CharField(required=False,
-#                              max_length=100,
-#                              widget=forms.TextInput(attrs={'placeholder': 'NM_003286.2',
-#                                                            'class': 'form-control'}))
 
 
 class TaqManFindForm(forms.ModelForm):

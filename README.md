@@ -8,29 +8,29 @@ This web application is aimed to calculate properties of natural, modified and t
 <ul>
     <li>
         <sup><strong>NEW!</strong></sup>
-        Melting temperature of MGB-modified oligonucleotide probes
+        Melting temperatures of MGB-modified oligonucleotide probes similar to Primer Express 3.0 software
     </li>
     <li>
-        Melting temperature of DNA oligonucleotide with DNA target
+        Melting temperatures of DNA oligonucleotides with DNA target
     </li>
     <li>
-        Extinction coefficient (nearest neighbours model)
+        Extinction coefficients (nearest neighbours model)
     </li>
     <li>
-        Monoisotopic and average molecular weight and charge states
+        Monoisotopic and average molecular weights and charge states
     </li>
     <li>
-        Molecular formula of oligonucleotide
+        Molecular formulas of oligonucleotide
     </li>
     <li>
         Theoretical masses of fragments in MS/MS experiments
     </li>
 </ul>
 <p>
-It can also quantify oligonucleotide based on user input of measured <strong>absorbanse at 260 nm</strong> and <strong>volume</strong> of oligonucleotide solution.
+It can also quantify oligonucleotides based on user input of measured <strong>absorbanse at 260 nm</strong> and <strong>volume</strong> of oligonucleotide solution.
 </p>
 <p>
-<strong>New Tool - TaqMan Find</strong>
+<strong>New Tool - TaqMan Finder</strong>
 </p>
 <p>
 This tool is made to help you find matching primers and probes for TaqMan assays within your specified target sequence. 

@@ -1,7 +1,3 @@
-# degeneration_pattern = r'[wWsSmMkKrRyYbBdDhHvVnN]'
-# modification_pattern = r'\[[-\._a-zA-Z0-9]+\]'
-
-
 # Monoisotopic and average masses of elements and some molecules
 mass_mono = {
     'H': 1.007825035, 'Li': 7.016003, 'B': 11.0093055, 'C': 12, 'N': 14.003074, 'O': 15.99491463,
@@ -60,6 +56,8 @@ modification_extinction_260 = {
 
     'YAKYEL': 23700, 'TR-CLK': 14400, 'IABK': 44510, 'AF594-CLK': 29400,
 
+    'ATTO647N-CLK': 6000,
+
     'GALNAC-PRO': 0, 'CHOL-PRO': 0, 'GALNAC3-ALN': 0,
 
     'po': 0, 'ps': 0, '*': 0,
@@ -105,7 +103,7 @@ map_dna2mix = {
     '[ALKYNE]': 'ALKYNE', '[FAM]': 'FAM', '[TET]': 'TET', '[HEX]': 'HEX', '[JOE]': 'JOE', '[VIC]': 'VIC',
     '[TMR-ACH]': 'TMR-ACH', '[R6G]': 'R6G', '[R6G-ACH]': 'R6G-ACH', '[ROX-CLK]': 'ROX-CLK', '[CY3-ACH]': 'CY3-ACH',
     '[CY5-CLK]': 'CY5-CLK', '[CHOL-PRO]': 'CHOL-PRO', '[GALNAC-PRO]': 'GALNAC-PRO', '[GALNAC3-ALN]': 'GALNAC3-ALN',
-    '[TR-CLK]': 'TR-CLK', '[AF594-CLK]': 'AF594-CLK',
+    '[TR-CLK]': 'TR-CLK', '[AF594-CLK]': 'AF594-CLK', '[ATTO647N-CLK]': 'ATTO647N-CLK',
     '[BHQ1]': 'BHQ1', '[BHQ2]': 'BHQ2', '[MGB]': 'MGB', '[MGB-ECLIPSE]': 'MGB-ECLIPSE', '[ECLIPSE]': 'ECLIPSE',
     '*': '*', '[po]': 'po',
 }
@@ -131,7 +129,7 @@ nucleotide_any_position = (
 modification_5_position = ['ALKYNE',
                            'FAM', 'TET', 'HEX', 'JOE', 'VIC',
                            'TMR-ACH', 'R6G', 'R6G-ACH', 'ROX-CLK', 'TR-CLK', 'AF594-CLK',
-                           'CY3-ACH', 'CY5-CLK',
+                           'CY3-ACH', 'CY5-CLK', 'ATTO647N-CLK',
                            'CHOL-PRO', 'GALNAC-PRO',
                            'po']
 
@@ -207,6 +205,7 @@ formula = {
     'ROX-CLK': {'C': 48, 'H': 55, 'N': 7, 'O': 6},
     'TR-CLK': {'C': 46, 'H': 55, 'N': 7, 'O': 8, 'S': 2},
     'AF594-CLK': {'C': 50, 'H': 59, 'N': 7, 'O': 12, 'S': 2},
+    'ATTO647N-CLK': {'C': 62, 'H': 86, 'N': 8, 'O': 7},
 
     'BHQ1': {'C': 25, 'H': 28, 'N': 6, 'O': 5},
     'BHQ2': {'C': 24, 'H': 26, 'N': 6, 'O': 6},

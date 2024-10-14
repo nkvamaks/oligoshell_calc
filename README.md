@@ -95,7 +95,7 @@ the length of the amplicon, and the reference sequence (RefSeq), you can easily 
 <ul>
     <li>
         5': po (phosphate), ALKYNE, FAM, TET, HEX, JOE, VIC, TMR-ACH, R6G, R6G-ACH, ROX-CLK, TR-CLK, AF594-CLK, 
-        CY3-ACH, CY5-CLK, CHOL-PRO, GALNAC-PRO
+        CY3-ACH, CY5-CLK, ATTO647N-CLK, CHOL-PRO, GALNAC-PRO
     </li>
     <li>
         3': po (phosphate), BHQ1, BHQ2, MGB, MGB-ECLIPSE, ECLIPSE, CHOL-PRO, GALNAC-PRO, GALNAC3-ALN

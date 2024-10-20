@@ -5,6 +5,43 @@
 
 {% block content %}
 
+<div class="row">
+    <div class="col-xl">
+      <div class="card mb-3">
+        <div class="card-body">
+            <h3 class="mb-2 text-center">Oligonucleotide Properties Calculator</h3>
+            <div class="table-responsive text-nowrap">
+                <table class="table table-borderless table-sm">
+                    <tr>
+                        <td>
+                            <ul class="list-unstyled mb-0">
+                                <ul>
+                                    <small>
+                                        <li>Calculator for natural, modified and therapeutic oligonucleotides</li>
+                                        <li>Melting temperature (Tm) of DNA/DNA duplexes with salt correction</li>
+                                        <li>Minor groove binder (MGB) contribution</li>
+                                    </small>
+                                </ul>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-unstyled mb-0">
+                                <ul>
+                                    <small>
+                                        <li>Exact mass, molecular weight, ESI series and MS/MS fragments</li>
+                                        <li>Extinction coefficient, µg/OD, nmol/OD, quantification tool</li>
+                                        <li>Molecular formula calculator</li>
+                                    </small>
+                                </ul>
+                            </ul>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
 
 <form method="POST" action=".">
 {% csrf_token %}

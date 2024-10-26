@@ -33,8 +33,8 @@ class CalcForm(forms.ModelForm):
         model = models.Oligo
         fields = ('sequence', 'target', 'absorbance260', 'volume',
                   'mv_conc', 'dv_conc', 'dntp_conc', 'dna_conc',)
-        widgets = {'sequence': forms.Textarea(attrs={'rows': 5,
-                                                     'placeholder': 'DNA style:  [VIC]CAAGAGGAAGAGAGAGACC[MGB-ECLIPSE]\n\nTherapeutic style:  +A * +G * +A * dT * dT * dC * dA * dG * dT * dG * dT * dG * dG * +T * +G * dG',
+        widgets = {'sequence': forms.Textarea(attrs={'rows': 6,
+                                                     'placeholder': 'DNA style:  [VIC]CAAGAGGAAGAGAGAGACC[MGB-ECLIPSE]\nTherapeutic style:  +A * +G * +A * dT * dT * dC * dA * dG * dT * dG * dT * dG * dG * +T * +G * dG',
                                                      'class': 'form-control'}),
                    'target': forms.Select(attrs={'class': 'form-select form-select-sm'}),
                    'absorbance260': forms.NumberInput(attrs={'class': 'form-control form-control-sm'}),

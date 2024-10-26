@@ -522,3 +522,35 @@ def gc_content(sequence_tup):
         return round(g_c / len(sequence_str_wo_mod), 2)
     else:
         return -1
+
+
+def calculate_od260(epsilon260, mass_average):
+    if epsilon260:
+        nmol_OD260 = (1 / epsilon260) * 1e6
+        ug_OD260 = (1 / epsilon260) * mass_average * 1e3
+    else:
+        nmol_OD260, ug_OD260 = -1, -1
+    return nmol_OD260, ug_OD260
+
+
+def calculate_esi_series(sequence, length, mass_average, mass_monoisotopic):
+    esi_series = []
+    for z in range(1, length):
+        esi_series_avg_dmt_off = (mass_average - z * mass_avg['H']) / z
+        esi_series_mono_dmt_off = (mass_monoisotopic - z * mass_mono['H']) / z if not contain_degenerate_nucleotide(sequence) else None
+        esi_series.append((z, esi_series_avg_dmt_off, esi_series_mono_dmt_off))
+    return esi_series
+
+
+def calculate_mass_fragments(sequence, length, seq_wo_phosph_tup):
+    mass_fragments_array = []
+    a_esi, a_B_esi, b_esi, c_esi, d_esi, w_esi, x_esi, y_esi, z_esi = map(get_ms_fragments_esi_series,
+                                                                          get_ms_fragments(sequence))
+    for charge in range(1, length):
+        mass_fragments_array.append([
+            (d_esi[seq_ind][charge - 1], c_esi[seq_ind][charge - 1], b_esi[seq_ind][charge - 1],
+             a_esi[seq_ind][charge - 1], a_B_esi[seq_ind][charge - 1], seq_wo_phosph_tup[seq_ind - 1],
+             w_esi[seq_ind][charge - 1], x_esi[seq_ind][charge - 1], y_esi[seq_ind][charge - 1],
+             z_esi[seq_ind][charge - 1]) for seq_ind in range(1, length + 1)
+        ])
+    return mass_fragments_array

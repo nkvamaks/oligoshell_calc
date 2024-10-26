@@ -173,34 +173,37 @@ def calc_dH_dS(sequence, nn_set):
     Takes a cleared sequence in 'DNA' style format and returns calculated dH and dS values according to
     thermodynamic nearest neighbours parameters set
     """
-    delta_h = 0
-    delta_s = 0
+    if not sequence:
+        return 0, 0
+    else:
+        delta_h = 0
+        delta_s = 0
 
-    # Initiation values
-    delta_h += nn_set['init']['dH']
-    delta_s += nn_set['init']['dS']
+        # Initiation values
+        delta_h += nn_set['init']['dH']
+        delta_s += nn_set['init']['dS']
 
-    # Values for G/C or A/T terminal basepairs
-    ends = sequence[0] + sequence[-1]
-    a_t = ends.count('A') + ends.count('T')
-    g_c = ends.count('G') + ends.count('C')
-    delta_h += nn_set['init_A/T']['dH'] * a_t
-    delta_s += nn_set['init_A/T']['dS'] * a_t
-    delta_h += nn_set['init_G/C']['dH'] * g_c
-    delta_s += nn_set['init_G/C']['dS'] * g_c
+        # Values for G/C or A/T terminal basepairs
+        ends = sequence[0] + sequence[-1]
+        a_t = ends.count('A') + ends.count('T')
+        g_c = ends.count('G') + ends.count('C')
+        delta_h += nn_set['init_A/T']['dH'] * a_t
+        delta_s += nn_set['init_A/T']['dS'] * a_t
+        delta_h += nn_set['init_G/C']['dH'] * g_c
+        delta_s += nn_set['init_G/C']['dS'] * g_c
 
-    # If sequence is self-complementary, apply symmetry
-    if self_complement(sequence):
-        delta_h += nn_set['sym']['dH']
-        delta_s += nn_set['sym']['dS']
+        # If sequence is self-complementary, apply symmetry
+        if self_complement(sequence):
+            delta_h += nn_set['sym']['dH']
+            delta_s += nn_set['sym']['dS']
 
-    # NN calculations
-    for nt_index in range(len(sequence) - 1):
-        nt_pair = sequence[nt_index:nt_index + 2]
-        delta_h += nn_set[nt_pair]['dH']
-        delta_s += nn_set[nt_pair]['dS']
+        # NN calculations
+        for nt_index in range(len(sequence) - 1):
+            nt_pair = sequence[nt_index:nt_index + 2]
+            delta_h += nn_set[nt_pair]['dH']
+            delta_s += nn_set[nt_pair]['dS']
 
-    return delta_h, delta_s
+        return delta_h, delta_s
 
 
 def calc_tm_perfect_match(delta_h, delta_s, na_conc, self_compl):
@@ -513,3 +516,20 @@ def calc_tm(seq, target, dna_conc, mv_conc, dv_conc, dntp_conc):
                                               Nbp=Nbp
                                               )
     return melting_t_salt_corr_K - T0
+
+
+def calculate_melting_temp(seq_wo_phosph_tup, sequence, target, dna_conc, mv_conc, dv_conc, dntp_conc):
+    allowed_for_calc_tm_mgb = set(
+        utils.dna_nucleotides + utils.modification_5_position + utils.modification_3_position)
+    allowed_for_calc_tm = allowed_for_calc_tm_mgb - {'MGB', 'MGB-ECLIPSE'}
+
+    dna_mon = all(nt in allowed_for_calc_tm for nt in seq_wo_phosph_tup)
+    dna_mon_mgb = all(nt in allowed_for_calc_tm_mgb for nt in seq_wo_phosph_tup)
+
+    if dna_mon:
+        return calc_tm(seq=sequence, target=target, dna_conc=dna_conc, mv_conc=mv_conc, dv_conc=dv_conc,
+                       dntp_conc=dntp_conc)
+    elif dna_mon_mgb and ('MGB' in seq_wo_phosph_tup or 'MGB-ECLIPSE' in seq_wo_phosph_tup):
+        return calc_tm_mgb(seq=sequence, dna_conc=dna_conc, mv_conc=mv_conc, dv_conc=dv_conc,
+                           dntp_conc=dntp_conc)
+    return -1

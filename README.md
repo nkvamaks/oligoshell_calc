@@ -1,72 +1,72 @@
 <h4 class="mb-4"> About OligoShell Calculator: </h4>
 <p>
-This web application is aimed to calculate properties of natural, modified and therapeutic oligonucleotides.
-</p>
+OligoShell Calculator is a comprehensive web application designed for calculating various properties of natural (DNA, RNA), modified, and therapeutic oligonucleotides. Our tool offers advanced features that meet the needs of researchers and professionals in the fields of nucleic acid chemistry and molecular biology.</p>
 <p>
-<strong>It can calculate:</strong>
+<strong>Key Features:</strong>
 </p>
 <ul>
     <li>
         <sup><strong>NEW!</strong></sup>
-        Melting temperatures of MGB-modified oligonucleotide probes similar to Primer Express 3.0 software
+        Calculate melting temperatures of MGB-modified oligonucleotide probes, similar to Primer Express 3.0 software.
     </li>
     <li>
-        Melting temperatures of DNA oligonucleotides with DNA target
+        Determine melting temperatures of DNA oligonucleotides with DNA targets.
     </li>
     <li>
-        Extinction coefficients (nearest neighbours model)
+        Compute extinction coefficients using nearest neighbors model.
     </li>
     <li>
-        Monoisotopic and average molecular weights and charge states
+        Obtain monoisotopic and average molecular weights and charge states.
     </li>
     <li>
-        Molecular formulas of oligonucleotide
+        Generate molecular formulas for oligonucleotides.
     </li>
     <li>
-        Theoretical masses of fragments in MS/MS experiments
+        Predict theoretical masses of fragments in MS/MS experiments.
+    </li>
+    <li>
+        Quantify oligonucleotides based on user input of measured absorbance at 260 nm and volume of the oligonucleotide solution.
     </li>
 </ul>
 <p>
-It can also quantify oligonucleotides based on user input of measured <strong>absorbanse at 260 nm</strong> and <strong>volume</strong> of oligonucleotide solution.
+    <strong>New Tool: TaqMan Finder</strong>
 </p>
 <p>
-<strong>New Tool - TaqMan Finder</strong>
+    This tool simplifies the process of finding matching primers and probes for TaqMan assays within your specified target sequence. By providing the exact (single isotope) masses of both primers and the probe, chemical modifications of the probe, length of the amplicon, and the reference sequence (RefSeq), you can easily identify compatible components for your assay.
 </p>
 <p>
-This tool is made to help you find matching primers and probes for TaqMan assays within your specified target sequence. 
-By providing the exact (single isotope) masses of both primers and the probe, the chemical modifications of the probe, 
-the length of the amplicon, and the reference sequence (RefSeq), you can easily identify compatible components of your assay. 
+    <strong>Sequence Input Guidelines:</strong>
 </p>
 <p>
-<strong>How to input a sequence:</strong>
-</p>
-<p>
-    Sequences are 5'&rarr;3' left to right. You may choose one of two input styles: 'DNA' and 'Therapeutic.
-    On default it is assumed that two nucleotides have phosphodiester linkage. Use ' * ' as a separator to designate phosphorothioate linkage.
+    Sequences must be entered from 5' to 3'. You can choose whether your oligonucleotide is primarily <strong>DNA</strong>, <strong>RNA</strong>, or <strong>Therapeutic</strong>. For sequences containing phosphorothioate linkages, use an asterisk (*) as a separator.
 </p>
 <ul>
     <li>
-        <strong>DNA input style</strong>
+        <strong>DNA / RNA Input</strong>
         <p>
-            Four deoxynucleotides (A, C, G, T) as well as eleven degenerate deoxynucleotides (W, S, M, K, R, Y, B, D, H, V, N) can be used with a single letter code. All other nucleotides with different sugar moieties as well as modifications have several letter codes and should be surrounded by square brackets, e.g. [FAM] or [BHQ1].
+            Use single-letter codes for standard nucleotides (A, C, G, T/U) and degenerate nucleotides (W, S, M, K, R, Y, B, D, H, V, N). These single-letter codes represent deoxy-nucleotides for <strong>DNA</strong> and ribo-nucleotides for <strong>RNA</strong>.
+            For other nucleotides or modifications, use their designated multi-letter codes enclosed in square brackets, e.g., [+Cm], [FAM], or [GALNAC-PRO].
         </p>
-        <p>Examples:</p>
-        <p>ACGTACGTGGCAGGCA</p>
-        <p>[VIC]CCGGCGCGNTTSCGTC[MGB-ECLIPSE]</p>
-        <p>[+Cm]*[+G]*[+T]*A*A*C*C*T*G*A*C*C*G*[+A]*[+G]*[+A]</p>
     </li>
     <li>
-        <strong>Therapeutic input style</strong>
+        <strong>Therapeutic Input</strong>
         <p>
-            Every nucleotide, degenerate nucleotide or modification has a specific designation and should be separated with 'space' from the next nucleotide or phosphate entity.
+            Enter each nucleotide, degenerate nucleotide, or modification using its specific designation. Separate each entity (nucleotide, modification, or phosphate backbone) with a space.
         </p>
-        <p>Examples:</p>
-        <p>dA dC dG dT dA dC dG dT dG dG dC dA dG dG dC dA</p>
-        <p>VIC dC dC dG dG dC dG dC dG dN dT dT dS dC dG dT dC MGB-ECLIPSE</p>
-        <p>+Cm * +G * +T * dA * dA * dC * dC * dT * dG * dA * dC * dC * dG * +A * +G * +A</p>
     </li>
+    To facilitate input, use dropdown menus with modifications of nucleotides from the 'keyboard'.
 </ul>
-<p><strong>Available alphabet:</strong></p>
+
+<p><strong>Examples:</strong></p>
+<ul>
+    <li><strong>DNA:</strong> ACGTACGTGGCAGGCA</li>
+    <li><strong>DNA:</strong> [VIC]CCGGCGCGNTTSCGTC[MGB-ECLIPSE]</li>
+    <li><strong>RNA:</strong> [po]ACGUGGCUSGACUGVUUGAUNG</li>
+    <li><strong>RNA:</strong> GUGCGAAGGGACGGUGCGGAGAGGAGAGCAC[GALNAC3-ALN]</li>
+    <li><strong>Therapeutic:</strong> +A +Cm +G dT dA dC dG dT dG dG dC dA dG +G +Cm +A</li>
+    <li><strong>Therapeutic:</strong> +Cm * +G * +T * dA * dA * dC * dC * dT * dG * dA * dC * dC * dG * +A * +G * +A</li>
+</ul>
+<p><strong>Available Nucleotides:</strong></p>
 <ul>
     <li>
         Deoxynucleotides: dA, dC, dG, dT, dU, dCm
@@ -76,6 +76,9 @@ the length of the amplicon, and the reference sequence (RefSeq), you can easily 
     </li>
     <li>
         Ribonucleotides: rA, rC, rG, rU
+    </li>
+    <li>
+        Degenerate ribonucleotides: rW, rS, rM, rK, rR, rY, rB, rD, rH, rV, rN
     </li>
     <li>
         2'-OMe nucleotides: mA, mC, mG, mU
@@ -91,20 +94,7 @@ the length of the amplicon, and the reference sequence (RefSeq), you can easily 
     </li>
     <sub>* <b>Cm</b> stands for 5-methylcytosine and <b>T</b> for 5-methyluracil</sub>
 </ul>
-<p><strong>Available modifications:</strong></p>
-<ul>
-    <li>
-        5': po (phosphate), ALKYNE, FAM, TET, HEX, JOE, VIC, TMR-ACH, R6G, R6G-ACH, ROX-CLK, TR-CLK, AF594-CLK, 
-        CY3-ACH, CY5-CLK, ATTO647N-CLK, CHOL-PRO, GALNAC-PRO
-    </li>
-    <li>
-        3': po (phosphate), BHQ1, BHQ2, MGB, MGB-ECLIPSE, ECLIPSE, CHOL-PRO, GALNAC-PRO, GALNAC3-ALN
-    </li>
-    <li>
-        Internal: BHQ1, BHQ2, ECLIPSE, GALNAC-PRO
-    </li>
-</ul>
 
 <p>
-<b>OligoShell Calculator</b> is available online at <a href="http://www.oligoshell.com">www.oligoshell.com</a>
+Experience full functionality of the <strong>OligoShell Calculator</strong> online at <a href="https://www.oligoshell.com">www.oligoshell.com</a>
 </p>

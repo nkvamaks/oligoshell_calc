@@ -6,7 +6,7 @@ class Oligo(models.Model):
     OLIGO_CHOICES = [('ss', 'ss'), ('ds', 'ds')]
     TARGET_CHOICES = [('dna', 'DNA')]
 
-    sequence = models.CharField(verbose_name="Sequence, 5'->3'", max_length=300)
+    sequence = models.CharField(verbose_name="Sequence, 5'->3'", max_length=400)
     oligo_type = models.CharField(verbose_name='oligonucleotide type', max_length=10, choices=OLIGO_CHOICES, default='ss')
     target = models.CharField(verbose_name='Target type', max_length=50, choices=TARGET_CHOICES, default='dna')
     absorbance260 = models.FloatField(verbose_name='Absorbance at 260 nm (10 mm)', blank=True, null=True)

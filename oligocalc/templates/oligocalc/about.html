@@ -5,11 +5,15 @@
 
 {% block content %}
 
-<div class="card">
-    <div class="card-body">
-        {% autoescape off %}
-            {{ about_osh_calc }}
-        {% endautoescape %}
+<div class="row">
+    <div class="col-xl">
+        <div class="card mb-4">
+            <div class="card-body">
+                {% autoescape off %}
+                    {{ about_osh_calc }}
+                {% endautoescape %}
+            </div>
+        </div>
     </div>
 </div>
 

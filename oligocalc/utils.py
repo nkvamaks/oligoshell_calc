@@ -18,6 +18,8 @@ nucleotide_extinction_260 = {'dA': 15400, 'dC': 7400,  'dG': 11500, 'dT': 8700, 
                              'dW': 12050, 'dS': 9450,  'dM': 11400, 'dK': 10050, 'dR': 13450, 'dY': 8050,
                              'dB': 9200,  'dD': 11867, 'dH': 10500, 'dV': 11433, 'dN': 10750,
                              'rA': 15400, 'rC': 7200,  'rG': 11500, 'rU': 9900,
+                             'rW': 12650, 'rS': 9350,  'rM': 11300, 'rK': 10700, 'rR': 13450, 'rY': 8550,
+                             'rB': 9533,  'rD': 12267, 'rH': 10833, 'rV': 11367, 'rN': 11000,
                              'fA': 15400, 'fC': 7200, 'fG': 11500, 'fU': 9900,
                              'mA': 15400, 'mC': 7200, 'mG': 11500, 'mU': 9900,
                              '+A': 15400, '+Cm': 7200, '+G': 11500, '+T': 8700,
@@ -60,7 +62,7 @@ modification_extinction_260 = {
 
     'GALNAC-PRO': 0, 'CHOL-PRO': 0, 'GALNAC3-ALN': 0,
 
-    'po': 0, 'ps': 0, '*': 0,
+    'po': 0, 'ps': 0, '*': 0, 'ps2': 0, 'ms': 0,
 }
 
 map_compl = {
@@ -80,6 +82,8 @@ map_nucleoside = {
 map_deg_nucleoside = {
     'dW': 'W', 'dS': 'S', 'dM': 'M', 'dK': 'K', 'dR': 'R', 'dY': 'Y',
     'dB': 'B', 'dD': 'D', 'dH': 'H', 'dV': 'V', 'dN': 'N',
+    'rW': 'W', 'rS': 'S', 'rM': 'M', 'rK': 'K', 'rR': 'R', 'rY': 'Y',
+    'rB': 'B', 'rD': 'D', 'rH': 'H', 'rV': 'V', 'rN': 'N',
 }
 
 map_nucleobase = {
@@ -96,6 +100,7 @@ map_dna2mix = {
     'W': 'dW', 'S': 'dS', 'M': 'dM', 'K': 'dK', 'R': 'dR', 'Y': 'dY', 'B': 'dB', 'D': 'dD', 'H': 'dH', 'V': 'dV', 'N': 'dN',
     '[dCm]': 'dCm', '[dU]': 'dU',
     '[rA]': 'rA', '[rC]': 'rC', '[rG]': 'rG', '[rU]': 'rU',
+    '[rW]': 'rW', '[rS]': 'rS', '[rM]': 'rM', '[rK]': 'rK', '[rR]': 'rR', '[rY]': 'rY', '[rB]': 'rB', '[rD]': 'rD', '[rH]': 'rH', '[rV]': 'rV', '[rN]': 'rN',
     '[fA]': 'fA', '[fC]': 'fC', '[fG]': 'fG', '[fU]': 'fU',
     '[mA]': 'mA', '[mC]': 'mC', '[mG]': 'mG', '[mU]': 'mU',
     '[+A]': '+A', '[+Cm]': '+Cm', '[+G]': '+G', '[+T]': '+T',
@@ -105,8 +110,27 @@ map_dna2mix = {
     '[CY5-CLK]': 'CY5-CLK', '[CHOL-PRO]': 'CHOL-PRO', '[GALNAC-PRO]': 'GALNAC-PRO', '[GALNAC3-ALN]': 'GALNAC3-ALN',
     '[TR-CLK]': 'TR-CLK', '[AF594-CLK]': 'AF594-CLK', '[ATTO647N-CLK]': 'ATTO647N-CLK',
     '[BHQ1]': 'BHQ1', '[BHQ2]': 'BHQ2', '[MGB]': 'MGB', '[MGB-ECLIPSE]': 'MGB-ECLIPSE', '[ECLIPSE]': 'ECLIPSE',
-    '*': '*', '[po]': 'po',
+    '*': '*', '[po]': 'po', '[ps]': 'ps', '[ps2]': 'ps2', '[ms]': 'ms',
 }
+
+map_rna2mix = {
+    'A': 'rA', 'C': 'rC', 'G': 'rG', 'U': 'rU',
+    'W': 'rW', 'S': 'rS', 'M': 'rM', 'K': 'rK', 'R': 'rR', 'Y': 'rY', 'B': 'rB', 'D': 'rD', 'H': 'rH', 'V': 'rV', 'N': 'rN',
+    '[dCm]': 'dCm', '[dU]': 'dU',
+    '[dA]': 'dA', '[dC]': 'dC', '[dG]': 'dG', '[dT]': 'dT',
+    '[dW]': 'dW', '[dS]': 'dS', '[dM]': 'dM', '[dK]': 'dK', '[dR]': 'dR', '[dY]': 'dY', '[dB]': 'dB', '[dD]': 'dD', '[dH]': 'dH', '[dV]': 'dV', '[dN]': 'dN',
+    '[fA]': 'fA', '[fC]': 'fC', '[fG]': 'fG', '[fU]': 'fU',
+    '[mA]': 'mA', '[mC]': 'mC', '[mG]': 'mG', '[mU]': 'mU',
+    '[+A]': '+A', '[+Cm]': '+Cm', '[+G]': '+G', '[+T]': '+T',
+    '[moeA]': 'moeA', '[moeCm]': 'moeCm', '[moeG]': 'moeG', '[moeT]': 'moeT',
+    '[ALKYNE]': 'ALKYNE', '[FAM]': 'FAM', '[TET]': 'TET', '[HEX]': 'HEX', '[JOE]': 'JOE', '[VIC]': 'VIC',
+    '[TMR-ACH]': 'TMR-ACH', '[R6G]': 'R6G', '[R6G-ACH]': 'R6G-ACH', '[ROX-CLK]': 'ROX-CLK', '[CY3-ACH]': 'CY3-ACH',
+    '[CY5-CLK]': 'CY5-CLK', '[CHOL-PRO]': 'CHOL-PRO', '[GALNAC-PRO]': 'GALNAC-PRO', '[GALNAC3-ALN]': 'GALNAC3-ALN',
+    '[TR-CLK]': 'TR-CLK', '[AF594-CLK]': 'AF594-CLK', '[ATTO647N-CLK]': 'ATTO647N-CLK',
+    '[BHQ1]': 'BHQ1', '[BHQ2]': 'BHQ2', '[MGB]': 'MGB', '[MGB-ECLIPSE]': 'MGB-ECLIPSE', '[ECLIPSE]': 'ECLIPSE',
+    '*': '*', '[po]': 'po', '[ps]': 'ps', '[ps2]': 'ps2', '[ms]': 'ms',
+}
+
 
 # 'Alfabet' of nucleosides. Can be at any position
 # d -     deoxy
@@ -119,6 +143,7 @@ nucleotide_any_position = (
     'dA', 'dC', 'dG', 'dT', 'dCm', 'dU',
     'dW', 'dS', 'dM', 'dK', 'dR', 'dY', 'dB', 'dD', 'dH', 'dV', 'dN',
     'rA', 'rC', 'rG', 'rU',
+    'rW', 'rS', 'rM', 'rK', 'rR', 'rY', 'rB', 'rD', 'rH', 'rV', 'rN',
     'fA', 'fC', 'fG', 'fU',
     'mA', 'mC', 'mG', 'mU',
     '+A', '+Cm', '+G', '+T',
@@ -126,10 +151,10 @@ nucleotide_any_position = (
 )
 
 # Modifications available only at 5'-position
-modification_5_position = ['ALKYNE',
-                           'FAM', 'TET', 'HEX', 'JOE', 'VIC',
+modification_5_position = ['FAM', 'TET', 'HEX', 'JOE', 'VIC',
                            'TMR-ACH', 'R6G', 'R6G-ACH', 'ROX-CLK', 'TR-CLK', 'AF594-CLK',
                            'CY3-ACH', 'CY5-CLK', 'ATTO647N-CLK',
+                           'ALKYNE',
                            'CHOL-PRO', 'GALNAC-PRO',
                            'po']
 
@@ -142,9 +167,10 @@ modification_3_position = ['BHQ1', 'BHQ2', 'MGB', 'MGB-ECLIPSE', 'ECLIPSE',
 modification_int_position = ['BHQ1', 'BHQ2', 'ECLIPSE', 'GALNAC-PRO']
 
 # Modifications available on phosphate
-modification_phosphorus = ['po', 'ps', '*']
+modification_phosphorus = ['po', 'ps', '*', 'ps2', 'ms']
 
-degenerate_nucleotide = ['dW', 'dS', 'dM', 'dK', 'dR', 'dY', 'dB', 'dD', 'dH', 'dV', 'dN']
+degenerate_nucleotide = ['dW', 'dS', 'dM', 'dK', 'dR', 'dY', 'dB', 'dD', 'dH', 'dV', 'dN',
+                         'rW', 'rS', 'rM', 'rK', 'rR', 'rY', 'rB', 'rD', 'rH', 'rV', 'rN']
 
 dna_nucleotides = ['dA', 'dC', 'dG', 'dT', 'dCm', 'dU']
 
@@ -175,6 +201,19 @@ formula = {
     'rC': {'C': 9, 'H': 13, 'N': 3, 'O': 5},
     'rG': {'C': 10, 'H': 13, 'N': 5, 'O': 5},
     'rU': {'C': 9, 'H': 12, 'N': 2, 'O': 6},
+
+    'rW': {'C': 9.5, 'H': 12.5, 'N': 3.5, 'O': 5},
+    'rS': {'C': 9.5, 'H': 13, 'N': 4, 'O': 5},
+    'rM': {'C': 9.5, 'H': 13, 'N': 4, 'O': 4.5},
+    'rK': {'C': 9.5, 'H': 12.5, 'N': 3.5, 'O': 5.5},
+    'rR': {'C': 10, 'H': 13, 'N': 5, 'O': 4.5},
+    'rY': {'C': 9, 'H': 12.5, 'N': 2.5, 'O': 5.5},
+    'rB': {'C': 9.33, 'H': 12.67, 'N': 3.33, 'O': 5.33},
+    'rD': {'C': 9.67, 'H': 12.67, 'N': 4, 'O': 5},
+    'rH': {'C': 9.33, 'H': 12.67, 'N': 3.33, 'O': 5},
+    'rV': {'C': 9.67, 'H': 13, 'N': 4.33, 'O': 4.67},
+    'rN': {'C': 9.5, 'H': 12.75, 'N': 3.75, 'O': 5},
+
     'fA': {'C': 10, 'H': 12, 'N': 5, 'O': 3, 'F': 1},
     'fC': {'C': 9, 'H': 12, 'N': 3, 'O': 4, 'F': 1},
     'fG': {'C': 10, 'H': 12, 'N': 5, 'O': 4, 'F': 1},
@@ -228,6 +267,8 @@ formula = {
     'po': {'H': 3, 'O': 4, 'P': 1},
     'ps': {'H': 3, 'O': 3, 'P': 1, 'S': 1},
     '*': {'H': 3, 'O': 3, 'P': 1, 'S': 1},
+    'ps2': {'H': 3, 'O': 2, 'P': 1, 'S': 2},
+    'ms': {'C': 1, 'H': 6, 'O': 5, 'N': 1, 'P': 1, 'S': 1},
 }
 
 
@@ -459,6 +500,15 @@ def dna2mix(sequence):
     """
     seq_tup = sequence2tuple(sequence)
     seq_mix = [map_dna2mix[nt] for nt in seq_tup]
+    return ' '.join(seq_mix)
+
+
+def rna2mix(sequence):
+    """
+    Takes a sequence in 'RNA' style format, convert it in 'Therapeutic' style format
+    """
+    seq_tup = sequence2tuple(sequence)
+    seq_mix = [map_rna2mix[nt] for nt in seq_tup]
     return ' '.join(seq_mix)
 
 

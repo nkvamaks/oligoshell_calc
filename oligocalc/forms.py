@@ -4,7 +4,7 @@ from . import validators
 
 
 class CalcForm(forms.ModelForm):
-    STYLE_CHOICES = [('dna', 'DNA'), ('mix', 'Therapeutic')]
+    STYLE_CHOICES = [('dna', 'DNA'), ('rna', 'RNA'), ('mix', 'Therapeutic')]
     PARAM_CHOICES = [('Default', 'Default'), ('qPCR', 'qPCR')]
 
     btnradio = forms.ChoiceField(widget=forms.RadioSelect,
@@ -21,6 +21,10 @@ class CalcForm(forms.ModelForm):
             seq_modifications_validated = validators.validate_seq_mix(seq_input_validated)
         elif self.cleaned_data['btnradio'] == 'mix':
             validators.validate_seq_mix(self.cleaned_data['sequence'])
+        elif self.cleaned_data['btnradio'] == 'rna':
+            seq_regex_validated = validators.validate_seq_rna_regex(self.cleaned_data['sequence'])
+            seq_input_validated = validators.validate_seq_rna(seq_regex_validated)
+            seq_modifications_validated = validators.validate_seq_mix(seq_input_validated)
         else:
             raise forms.ValidationError('Something went wrong...')
 
@@ -34,11 +38,13 @@ class CalcForm(forms.ModelForm):
         fields = ('sequence', 'target', 'absorbance260', 'volume',
                   'mv_conc', 'dv_conc', 'dntp_conc', 'dna_conc',)
         widgets = {'sequence': forms.Textarea(attrs={'rows': 6,
-                                                     'placeholder': 'DNA style:  [VIC]CAAGAGGAAGAGAGAGACC[MGB-ECLIPSE]\nTherapeutic style:  +A * +G * +A * dT * dT * dC * dA * dG * dT * dG * dT * dG * dG * +T * +G * dG',
+                                                     'placeholder': 'Examples:\nDNA:  [VIC]CAAGAGGAAGAGAGAGACC[MGB-ECLIPSE]\nRNA: GUGCGAAGGGACGGUGCGGAGAGGAGAGCAC\nTherapeutic:  +A * +G * +A * dT * dT * dC * dA * dG * dT * dG * dT * dG * dG * +T * +G * dG',
                                                      'class': 'form-control'}),
                    'target': forms.Select(attrs={'class': 'form-select form-select-sm'}),
-                   'absorbance260': forms.NumberInput(attrs={'class': 'form-control form-control-sm'}),
-                   'volume': forms.NumberInput(attrs={'class': 'form-control form-control-sm'}),
+                   'absorbance260': forms.NumberInput(attrs={'placeholder': '0.135',
+                                                             'class': 'form-control form-control-sm'}),
+                   'volume': forms.NumberInput(attrs={'placeholder': '1.23',
+                                                      'class': 'form-control form-control-sm'}),
                    'mv_conc': forms.NumberInput(attrs={'class': 'form-control form-control-sm'}),
                    'dv_conc': forms.NumberInput(attrs={'class': 'form-control form-control-sm'}),
                    'dntp_conc': forms.NumberInput(attrs={'class': 'form-control form-control-sm'}),

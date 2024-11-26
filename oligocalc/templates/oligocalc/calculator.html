@@ -4,7 +4,6 @@
 {% block title %}OligoShell Calculator{% endblock %}
 
 {% block content %}
-
 <div class="row">
     <div class="col-xl">
       <div class="card mb-3">
@@ -38,6 +37,9 @@
                     </tr>
                 </table>
             </div>
+
+
+
         </div>
       </div>
     </div>
@@ -50,105 +52,332 @@
     <div class="col-xl">
       <div class="card mb-4">
         <div class="card-header d-flex justify-content-between align-items-center">
-          <h5 class="col-md-4 mb-0 ms-0"> Enter Oligonucleotide Sequence:</h5>
-          <h5 class="col-md-4 mb-0 ms-0 text-center"> Parameter sets: </h5>
+          <h5 class="col-md-4 mb-0"> Enter Oligonucleotide Sequence</h5>
         </div>
         <div class="card-body">
             <div class="row mb-1">
                 <div class="col-md-5">
-                    <span>
-                        Input style:&nbsp;
-                        <svg data-bs-toggle="tooltip"
+                    Oligonucleotide is &nbsp;
+                    <div class="btn-group btn-group-sm" role="group" aria-label="Radio toggle button group">
+                        <input type="radio" class="btn-check" name="btnradio" id="id_btnradio_0" value="dna" {% if form.btnradio.value == "dna" %}checked{% endif %} />
+                        <label class="btn btn-outline-primary" for="id_btnradio_0">DNA</label>
+                        <input type="radio" class="btn-check" name="btnradio" id="id_btnradio_2" value="rna" {% if form.btnradio.value == "rna" %}checked{% endif %} />
+                        <label class="btn btn-outline-primary" for="id_btnradio_2">RNA</label>
+                        <input type="radio" class="btn-check" name="btnradio" id="id_btnradio_1" value="mix" {% if form.btnradio.value == "mix" %}checked{% endif %} />
+                        <label class="btn btn-outline-primary" for="id_btnradio_1">Therapeutic</label>
+                    </div>&nbsp;
+                    <svg data-bs-toggle="tooltip"
                              data-bs-offset="0,5"
                              data-bs-placement="right"
                              data-bs-html="true"
                              title="<span>
-                                 <p>
-                                     Sequences are 5'&rarr;3' left to right. You may choose one of two input styles: 'DNA' and 'Therapeutic'.
-                                     Use ' * ' as a separator to designate phosphorothioate linkage.
-                                 </p>
-                                 <ul>
-                                     <li>
-                                         <strong>DNA input style</strong>
-                                         <p>
-                                             Four deoxynucleotides (A, C, G, T) as well as eleven degenerate deoxynucleotides (W, S, M, K, R, Y, B, D, H, V, N) can be used with a single letter code. All other nucleotides with different sugar moieties as well as modifications have several letter codes and should be surrounded by square brackets, e.g. [FAM] or [BHQ1].
-                                         </p>
-                                     </li>
-                                     <li>
-                                         <strong>Therapeutic input style</strong>
-                                         <p>
-                                             Every nucleotide, degenerate nucleotide or modification has a specific designation and should be separated with 'space' from the next nucleotide or phosphate entity.
-                                         </p>
-                                     </li>
-                                 </ul>
+                                        <p><strong>Input Guidelines for OligoShell Calculator</strong></p>
+                                        <p>
+                                            Sequences must be entered from 5' to 3'. You can choose whether your oligonucleotide is primarily <strong>DNA</strong>, <strong>RNA</strong>, or <strong>Therapeutic</strong>. For sequences containing phosphorothioate linkages, use an asterisk (*) as a separator.
+                                        </p>
+                                        <ul>
+                                            <li>
+                                                <strong>DNA / RNA Input</strong>
+                                                <p>
+                                                    Use single-letter codes for standard nucleotides (A, C, G, T/U) and degenerate nucleotides (W, S, M, K, R, Y, B, D, H, V, N). These single-letter codes represent deoxy-nucleotides for <strong>DNA</strong> and ribo-nucleotides for <strong>RNA</strong>.
+                                                    For other nucleotides or modifications, use their designated multi-letter codes enclosed in square brackets, e.g., [+Cm], [FAM], or [GALNAC-PRO].
+                                                </p>
+                                            </li>
+                                            <li>
+                                                <strong>Therapeutic Input</strong>
+                                                <p>
+                                                    Enter each nucleotide, degenerate nucleotide, or modification using its specific designation. Separate each entity (nucleotide, modification, or phosphate backbone) with a space.
+                                                </p>
+                                            </li>
+                                        </ul>
+                                        <p>
+                                            To facilitate input, use dropdown menus with modifications of nucleotides from the 'keyboard'.
+                                        </p>
                                     </span>"
+
                              xmlns="http://www.w3.org/2000/svg"
                              width="22"
                              height="22"
                              viewBox="0 0 24 24">
                             <path fill="currentColor" d="M13 9h-2V7h2m0 10h-2v-6h2m-1-9A10 10 0 0 0 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10A10 10 0 0 0 12 2Z"/>
-                        </svg>&nbsp;
-                    </span>
-                    <div class="btn-group btn-group-sm" role="group" aria-label="Radio toggle button group">
-                        <input type="radio" class="btn-check" name="btnradio" id="id_btnradio_0" value="dna" {% if form.btnradio.value == "dna" %}checked{% endif %} />
-                        <label class="btn btn-outline-primary" for="id_btnradio_0">DNA</label>
-                        <input type="radio" class="btn-check" name="btnradio" id="id_btnradio_1" value="mix" {% if form.btnradio.value == "mix" %}checked{% endif %} />
-                        <label class="btn btn-outline-primary" for="id_btnradio_1">Therapeutic</label>
+                        </svg>
+                </div>
+
+
+                <div class="col-md-3">
+                    <div class="input-group">
+                        <!-- 5'-Labels -->
+                        <button class="btn btn-sm btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          5'-Labels
+                        </button>
+                        <ul class="dropdown-menu" id="label5" style="max-height:300px; overflow-y:auto;">
+                            <li><a class="dropdown-item" data-value-DNA="[FAM]" data-value-RNA="[FAM]" data-value-MIX="FAM" href="javascript:void(0);"><strong style="color:#32CD32;">FAM</strong>&emsp;Carboxyfluorescein</a></li>
+                            <li><a class="dropdown-item" data-value-DNA="[TET]" data-value-RNA="[TET]" data-value-MIX="TET" href="javascript:void(0);"><strong style="color:#BBEE00;">TET</strong>&emsp;Tetrachlorofluorescein</a></li>
+                            <li><a class="dropdown-item" data-value-DNA="[JOE]" data-value-RNA="[JOE]" data-value-MIX="JOE" href="javascript:void(0);"><strong style="color:#BBEE00;">JOE</strong>&emsp;Dichlorodimethoxycarboxyfluorescein</a></li>
+                            <li><a class="dropdown-item" data-value-DNA="[VIC]" data-value-RNA="[VIC]" data-value-MIX="VIC" href="javascript:void(0);"><strong style="color:#FFEE00;">VIC</strong>&emsp;2'-Chloro-7'-phenyl-1,4-dichloro-6-carboxyfluorescein</a></li>
+                            <li><a class="dropdown-item" data-value-DNA="[HEX]" data-value-RNA="[HEX]" data-value-MIX="HEX" href="javascript:void(0);"><strong style="color:#FFEE00;">HEX</strong>&emsp;Hexachlorofluorescein</a></li>
+                            <li><a class="dropdown-item" data-value-DNA="[R6G]" data-value-RNA="[R6G]" data-value-MIX="R6G" href="javascript:void(0);"><strong style="color:#FFEE00;">R6G</strong>&emsp;Carboxyrhodamine 6G</a></li>
+                            <li><a class="dropdown-item" data-value-DNA="[R6G-ACH]" data-value-RNA="[R6G-ACH]" data-value-MIX="R6G-ACH" href="javascript:void(0);"><strong style="color:#FFEE00;">R6G-ACH</strong>&emsp;Carboxyrhodamine 6G, aminocyclohexanol linker</a></li>
+                            <li><a class="dropdown-item" data-value-DNA="[CY3-ACH]" data-value-RNA="[CY3-ACH]" data-value-MIX="CY3-ACH" href="javascript:void(0);"><strong style="color:#FFBF00;">CY3-ACH</strong>&emsp;Indocarbocyanine 3, aminocyclohexanol linker</a></li>
+                            <li><a class="dropdown-item" data-value-DNA="[TMR-ACH]" data-value-RNA="[TMR-ACH]" data-value-MIX="TMR-ACH" href="javascript:void(0);"><strong style="color:#FFBF00;">TMR-ACH</strong>&emsp;Tetramethylcarboxyrhodamine, aminocyclohexanol linker</a></li>
+                            <li><a class="dropdown-item" data-value-DNA="[ROX-CLK]" data-value-RNA="[ROX-CLK]" data-value-MIX="ROX-CLK" href="javascript:void(0);"><strong style="color:#F28500;">ROX-CLK</strong>&emsp;Carboxyrhodamine X, via click with ALKYNE</a></li>
+                            <li><a class="dropdown-item" data-value-DNA="[TR-CLK]" data-value-RNA="[TR-CLK]" data-value-MIX="TR-CLK" href="javascript:void(0);"><strong style="color:#F28500;">TR-CLK</strong>&emsp;Texas Red, via click with ALKYNE</a></li>
+                            <li><a class="dropdown-item" data-value-DNA="[AF594-CLK]" data-value-RNA="[AF594-CLK]" data-value-MIX="AF594-CLK" href="javascript:void(0);"><strong style="color:#F28500;">AF594-CLK</strong>&emsp;Alexa Fluor 594, via click with ALKYNE</a></li>
+                            <li><a class="dropdown-item" data-value-DNA="[CY5-CLK]" data-value-RNA="[CY5-CLK]" data-value-MIX="CY5-CLK" href="javascript:void(0);"><strong style="color:red;">CY5-CLK</strong>&emsp;Indodicarbocyanine 5, via click with ALKYNE</a></li>
+                            <li><a class="dropdown-item" data-value-DNA="[ATTO647N-CLK]" data-value-RNA="[ATTO647N-CLK]" data-value-MIX="ATTO647N-CLK" href="javascript:void(0);"><strong style="color:red;">ATTO647N-CLK</strong>&emsp;ATTO-647N, via click with ALKYNE</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" data-value-DNA="[po]" data-value-RNA="[po]" data-value-MIX="po" href="javascript:void(0);"><strong>po</strong>&emsp;Phosphate</a></li>
+                            <li><a class="dropdown-item" data-value-DNA="[ALKYNE]" data-value-RNA="[ALKYNE]" data-value-MIX="ALKYNE" href="javascript:void(0);"><strong>ALKYNE</strong>&emsp;5'-terminal alkyne, aminocyclohexanol linker</a></li>
+                            <li><a class="dropdown-item" data-value-DNA="[CHOL-PRO]" data-value-RNA="[CHOL-PRO]" data-value-MIX="CHOL-PRO" href="javascript:void(0);"><strong>CHOL-PRO</strong>&emsp;Cholesterol, hydroxyprolinol linker</a></li>
+                            <li><a class="dropdown-item" data-value-DNA="[GALNAC-PRO]" data-value-RNA="[GALNAC-PRO]" data-value-MIX="GALNAC-PRO" href="javascript:void(0);"><strong>GALNAC-PRO</strong>&emsp;Monomer GalNAc, hydroxyprolinol linker</a></li>
+                        </ul>
+
+                        <!-- Internal Labels -->
+                        <button class="btn btn-sm btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Internal
+                        </button>
+                        <ul class="dropdown-menu" id="labelInt" style="max-height:300px; overflow-y:auto;">
+                            <li><a class="dropdown-item" data-value-DNA="[ECLIPSE]" data-value-RNA="[ECLIPSE]" data-value-MIX="ECLIPSE" href="javascript:void(0);"><strong style="color:red;">ECLIPSE</strong>&emsp;Eclipse Quencher</a></li>
+                            <li><a class="dropdown-item" data-value-DNA="[BHQ1]" data-value-RNA="[BHQ1]" data-value-MIX="BHQ1" href="javascript:void(0);"><strong style="color:brown;">BHQ1</strong>&emsp;Black Hole Quencher 1</a></li>
+                            <li><a class="dropdown-item" data-value-DNA="[BHQ2]" data-value-RNA="[BHQ2]" data-value-MIX="BHQ2" href="javascript:void(0);"><strong style="color:darkblue;">BHQ2</strong>&emsp;Black Hole Quencher 2</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" data-value-DNA="[GALNAC-PRO]" data-value-RNA="[GALNAC-PRO]" data-value-MIX="GALNAC-PRO" href="javascript:void(0);"><strong>GALNAC-PRO</strong>&emsp;Monomer GalNAc, hydroxyprolinol linker</a></li>
+                        </ul>
+
+                        <!-- 3'-Labels -->
+                        <button class="btn btn-sm btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          3'-Labels
+                        </button>
+                        <ul class="dropdown-menu" id="label3" style="max-height:300px; overflow-y:auto;">
+                            <li><a class="dropdown-item" data-value-DNA="[ECLIPSE]" data-value-RNA="[ECLIPSE]" data-value-MIX="ECLIPSE" href="javascript:void(0);"><strong style="color:red;">ECLIPSE</strong>&emsp;Eclipse Quencher</a></li>
+                            <li><a class="dropdown-item" data-value-DNA="[MGB-ECLIPSE]" data-value-RNA="[MGB-ECLIPSE]" data-value-MIX="MGB-ECLIPSE" href="javascript:void(0);"><strong style="color:red;">MGB-ECLIPSE</strong>&emsp;MGB-Eclipse Quencher</a>
+                            <li><a class="dropdown-item" data-value-DNA="[BHQ1]" data-value-RNA="[BHQ1]" data-value-MIX="BHQ1" href="javascript:void(0);"><strong style="color:brown;">BHQ1</strong>&emsp;Black Hole Quencher 1</a></li>
+                            <li><a class="dropdown-item" data-value-DNA="[BHQ2]" data-value-RNA="[BHQ2]" data-value-MIX="BHQ2" href="javascript:void(0);"><strong style="color:darkblue;">BHQ2</strong>&emsp;Black Hole Quencher 2</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" data-value-DNA="[po]" data-value-RNA="[po]" data-value-MIX="po" href="javascript:void(0);"><strong>po</strong>&emsp;Phosphate</a></li>
+                            <li><a class="dropdown-item" data-value-DNA="[MGB]" data-value-RNA="[MGB]" data-value-MIX="MGB" href="javascript:void(0);"><strong>MGB</strong>&emsp;CDPI3 Minor groove binder</a></li>
+                            <li><a class="dropdown-item" data-value-DNA="[CHOL-PRO]" data-value-RNA="[CHOL-PRO]" data-value-MIX="CHOL-PRO" href="javascript:void(0);"><strong>CHOL-PRO</strong>&emsp;Cholesterol, hydroxyprolinol linker</a></li>
+                            <li><a class="dropdown-item" data-value-DNA="[GALNAC-PRO]" data-value-RNA="[GALNAC-PRO]" data-value-MIX="GALNAC-PRO" href="javascript:void(0);"><strong>GALNAC-PRO</strong>&emsp;Monomer GalNAc, hydroxyprolinol linker</a></li>
+                            <li><a class="dropdown-item" data-value-DNA="[GALNAC3-ALN]" data-value-RNA="[GALNAC3-ALN]" data-value-MIX="GALNAC3-ALN" href="javascript:void(0);"><strong>GALNAC3-ALN</strong>&emsp;Trimer GalNAc, Alnylam design</a></li>
+                        </ul>
                     </div>
                 </div>
+
+                <!-- Show all available nucleotides and modifications -->
                 <div class="col-md-4">
                     <a href="{% url 'oligocalc:modifications' %}" target="_blank" type="button" class="btn btn-sm btn-outline-dark mb-1 ms-0">
-                        Available nucleotides and modifications
+                        Show all available nucleotides and modifications
                     </a>
-                </div>
-                <div class="col-md-2">
-                    {{form.param_set}}
                 </div>
             </div>
 
                 <div class="row mt-1">
                     <div class="col-md-8">
                         {{form.sequence}}
+
+                         <!-- Output for form errors -->
+                        {% if form.errors %}
+                            {% for field_error, error in form.errors.items %}
+                                <div>{{ error }}</div>
+                            {% endfor %}
+                        {% endif %}
+
+                        <div class="row mt-2">
+                            <!-- Parameters for melting temperature -->
+                            <div class="col-md-6">
+                                <div class="card border">
+                                    <div class="card-body">
+                                        <h6 class="mb-3"><strong>Parameters for Tm estimation</strong></h6>
+                                        <div class="row mb-1">
+                                            <label class="col-sm-6 mt-1" for="id_param_set"><strong>Parameter sets</strong></label>
+                                            <div class="col-sm-4">{{form.param_set}}</div>
+                                            <div class="col-sm-2 mt-1 text-muted"></div>
+                                        </div>
+                                        <div class="row mb-1">
+                                            <label class="col-sm-6 mt-1" for="id_target">Target type</label>
+                                            <div class="col-sm-4">{{form.target}}</div>
+                                            <div class="col-sm-2 mt-1 text-muted"></div>
+                                        </div>
+                                        <div class="row mb-1">
+                                            <label class="col-sm-6 mt-1" for="id_dna_conc">Oligo Conc</label>
+                                            <div class="col-sm-4">{{form.dna_conc}}</div>
+                                            <div class="col-sm-2 mt-1 text-muted">&mu;M</div>
+                                        </div>
+                                        <div class="row mb-1">
+                                            <label class="col-sm-6 mt-1" for="id_mv_conc">Na<sup>+</sup> Conc</label>
+                                            <div class="col-sm-4">{{form.mv_conc}}</div>
+                                            <div class="col-sm-2 mt-1 text-muted">mM</div>
+                                        </div>
+                                        <div class="row mb-1">
+                                            <label class="col-sm-6 mt-1" for="id_dv_conc">Mg<sup>2+</sup> Conc</label>
+                                            <div class="col-sm-4">{{form.dv_conc}}</div>
+                                            <div class="col-sm-2 mt-1 text-muted">mM</div>
+                                        </div>
+                                        <div class="row mb-1">
+                                            <label class="col-sm-6 mt-1" for="id_dntp_conc">dNTPs Conc</label>
+                                            <div class="col-sm-4">{{form.dntp_conc}}</div>
+                                            <div class="col-sm-2 mt-1 text-muted">mM</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--Quantification  -->
+                            <div class="col-md-6">
+                                <div class="card border">
+                                    <div class="card-body">
+                                        <h6 class="mb-3"><strong>Quantification</strong></h6>
+
+                                        <div class="row mb-1">
+                                            <label class="col-sm-6 mt-1" for="{{ form.absorbance260.id_for_label }}">OD<sub>260</sub> (10 mm)</label>
+                                            <div class="col-sm-4">{{form.absorbance260}}</div>
+                                            <div class="col-sm-2 mt-1 text-muted">AU</div>
+                                        </div>
+                                        <div class="row mb-1">
+                                            <label class="col-sm-6 mt-1" for="{{ form.volume.id_for_label }}">Volume</label>
+                                            <div class="col-sm-4">{{form.volume}}</div>
+                                            <div class="col-sm-2 mt-1 text-muted">mL</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--End of quantification-->
+                        </div>
+
                     </div>
                     <div class="col-md-4">
-                        <table>
-                            <tr>
-                                <td style="text-align: right;" width="50%">Target type&nbsp;</td>
-                                <td width="25%">{{form.target}}</td>
-                                <td width="25%"></td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: right;" width="50%">Oligo Conc&nbsp;</td>
-                                <td width="25%">{{form.dna_conc}}</td>
-                                <td width="25%">&nbsp;&mu;M</td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: right;">Na<sup>+</sup> Conc&nbsp;</td>
-                                <td>{{form.mv_conc}}</td>
-                                <td>&nbsp;mM</td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: right;">Mg<sup>2+</sup> Conc&nbsp;</td>
-                                <td>{{form.dv_conc}}</td>
-                                <td>&nbsp;mM</td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: right;">dNTPs Conc&nbsp;</td>
-                                <td>{{form.dntp_conc}}</td>
-                                <td>&nbsp;mM</td>
-                            </tr>
-                        </table>
+                        <div id="nucleotide1Container" class="calc-grid-container overflow-auto">
+                          <div class="calc-item" data-value-DNA="A" data-value-RNA="[dA]" data-value-MIX="dA"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>DNA-A</small>">dA</div>
+                          <div class="calc-item" data-value-DNA="C" data-value-RNA="[dC]" data-value-MIX="dC"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>DNA-C</small>">dC</div>
+                          <div class="calc-item" data-value-DNA="G" data-value-RNA="[dG]" data-value-MIX="dG"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>DNA-G</small>">dG</div>
+                          <div class="calc-item" data-value-DNA="T" data-value-RNA="[dT]" data-value-MIX="dT"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>DNA-T</small>">dT</div>
+                          <div class="calc-item-rare" data-value-DNA="[dCm]" data-value-RNA="[dCm]" data-value-MIX="dCm"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>DNA-5Me-C</small>">dCm</div>
+                          <div class="calc-item" data-value-DNA="[rA]" data-value-RNA="A" data-value-MIX="rA"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>RNA-A</small>">rA</div>
+                          <div class="calc-item" data-value-DNA="[rC]" data-value-RNA="C" data-value-MIX="rC"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>RNA-C</small>">rC</div>
+                          <div class="calc-item" data-value-DNA="[rG]" data-value-RNA="G" data-value-MIX="rG"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>RNA-G</small>">rG</div>
+                          <div class="calc-item" data-value-DNA="[rU]" data-value-RNA="U" data-value-MIX="rU"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>RNA-U</small>">rU</div>
+                          <div class="calc-item-invis"></div>
+                          <div class="calc-item" data-value-DNA="[mA]" data-value-RNA="[mA]" data-value-MIX="mA"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>2'-OMe-A</small>">mA</div>
+                          <div class="calc-item" data-value-DNA="[mC]" data-value-RNA="[mC]" data-value-MIX="mC"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>2'-OMe-C</small>">mC</div>
+                          <div class="calc-item" data-value-DNA="[mG]" data-value-RNA="[mG]" data-value-MIX="mG"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>2'-OMe-G</small>">mG</div>
+                          <div class="calc-item" data-value-DNA="[mU]" data-value-RNA="[mU]" data-value-MIX="mU"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>2'-OMe-U</small>">mU</div>
+                          <div class="calc-item-invis"></div>
+                          <div class="calc-item" data-value-DNA="[fA]" data-value-RNA="[fA]" data-value-MIX="fA"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>2'-F-A</small>">fA</div>
+                          <div class="calc-item" data-value-DNA="[fC]" data-value-RNA="[fC]" data-value-MIX="fC"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>2'-F-C</small>">fC</div>
+                          <div class="calc-item" data-value-DNA="[fG]" data-value-RNA="[fG]" data-value-MIX="fG"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>2'-F-G</small>">fG</div>
+                          <div class="calc-item" data-value-DNA="[fU]" data-value-RNA="[fU]" data-value-MIX="fU"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>2'-F-U</small>">fU</div>
+                          <div class="calc-item-invis"></div>
+                          <div class="calc-item" data-value-DNA="[moeA]" data-value-RNA="[moeA]" data-value-MIX="moeA"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>2'-MOE-A</small>">moeA</div>
+                          <div class="calc-item" data-value-DNA="[moeCm]" data-value-RNA="[moeCm]" data-value-MIX="moeCm"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>2'-MOE-5Me-C</small>">moeCm</div>
+                          <div class="calc-item" data-value-DNA="[moeG]" data-value-RNA="[moeG]" data-value-MIX="moeG"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>2'-MOE-G</small>">moeG</div>
+                          <div class="calc-item" data-value-DNA="[moeT]" data-value-RNA="[moeT]" data-value-MIX="moeT"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>2'-MOE-T</small>">moeT</div>
+                          <div class="calc-item-invis"></div>
+                          <div class="calc-item" data-value-DNA="[+A]" data-value-RNA="[+A]" data-value-MIX="+A"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>LNA-A</small>">+A</div>
+                          <div class="calc-item" data-value-DNA="[+Cm]" data-value-RNA="[+Cm]" data-value-MIX="+Cm"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>LNA-5Me-C</small>">+Cm</div>
+                          <div class="calc-item" data-value-DNA="[+G]" data-value-RNA="[+G]" data-value-MIX="+G"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>LNA-G</small>">+G</div>
+                          <div class="calc-item" data-value-DNA="[+T]" data-value-RNA="[+T]" data-value-MIX="+T"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>LNA-T</small>">+T</div>
+                          <div class="calc-item-invis"></div>
+                          <div class="calc-item-backbone" data-value-DNA="*" data-value-RNA="*" data-value-MIX="*"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>Phosphorothioate backbone<br/>PS</small>">ps / &#10035;</div>
+                          <div class="calc-item-backbone" data-value-DNA="[ps2]" data-value-RNA="[ps2]" data-value-MIX="ps2"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>Phosphorodithioate backbone<br/>PS<sub>2</sub></small>">ps2</div>
+                          <div class="calc-item-backbone" data-value-DNA="[ms]" data-value-RNA="[ms]" data-value-MIX="ms"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>Mesyl phosphoramidate backbone<br/>MeSO<sub>2</sub>N=P</small>">ms</div>
+                          <div class="calc-item-invis"></div>
+                          <div class="calc-item-invis"></div>
+                        </div>
+
+                        <div id="degenerateContainer" class="calc-grid-container overflow-auto">
+                          <div class="calc-item" data-value-DNA="W" data-value-RNA="W" data-value-MIX=""
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>A+T/U</small>">W</div>
+                          <div class="calc-item" data-value-DNA="S" data-value-RNA="S" data-value-MIX=""
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>C+G</small>">S</div>
+                          <div class="calc-item" data-value-DNA="M" data-value-RNA="M" data-value-MIX=""
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>A+C</small>">M</div>
+                          <div class="calc-item" data-value-DNA="K" data-value-RNA="K" data-value-MIX=""
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>G+T/U</small>">K</div>
+                          <div class="calc-item" data-value-DNA="R" data-value-RNA="R" data-value-MIX=""
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>A+G</small>">R</div>
+                          <div class="calc-item" data-value-DNA="Y" data-value-RNA="Y" data-value-MIX=""
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>C+T/U</small>">Y</div>
+                          <div class="calc-item-invis"></div>
+                          <div class="calc-item-invis"></div>
+                          <div class="calc-item-invis"></div>
+                          <div class="calc-item-invis"></div>
+                          <div class="calc-item" data-value-DNA="B" data-value-RNA="B" data-value-MIX=""
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>C+G+T/U</small>">B</div>
+                          <div class="calc-item" data-value-DNA="D" data-value-RNA="D" data-value-MIX=""
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>A+G+T/U</small>">D</div>
+                          <div class="calc-item" data-value-DNA="H" data-value-RNA="H" data-value-MIX=""
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>A+C+T/U</small>">H</div>
+                          <div class="calc-item" data-value-DNA="V" data-value-RNA="V" data-value-MIX=""
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>A+C+G</small>">V</div>
+                          <div class="calc-item-invis"></div>
+                          <div class="calc-item" data-value-DNA="N" data-value-RNA="N" data-value-MIX=""
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>A+C+G+T/U</small>">N</div>
+                          <div class="calc-item-invis"></div>
+                          <div class="calc-item-invis"></div>
+                          <div class="calc-item-invis"></div>
+                          <div class="calc-item-invis"></div>
+                          <div class="calc-item-invis"></div>
+                          <div class="calc-item-invis"></div>
+                          <div class="calc-item-invis"></div>
+                          <div class="calc-item-invis"></div>
+                          <div class="calc-item-invis"></div>
+                          <div class="calc-item-invis"></div>
+                          <div class="calc-item-invis"></div>
+                          <div class="calc-item-invis"></div>
+                          <div class="calc-item-invis"></div>
+                          <div class="calc-item-invis"></div>
+                          <div class="calc-item-backbone" data-value-DNA="*" data-value-RNA="*" data-value-MIX="*"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>Phosphorothioate backbone<br/>PS</small>">ps / &#10035;</div>
+                          <div class="calc-item-backbone" data-value-DNA="[ps2]" data-value-RNA="[ps2]" data-value-MIX="ps2"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>Phosphorodithioate backbone<br/>PS<sub>2</sub></small>">ps2</div>
+                          <div class="calc-item-backbone" data-value-DNA="[ms]" data-value-RNA="[ms]" data-value-MIX="ms"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>Mesyl phosphoramidate backbone<br/>MeSO<sub>2</sub>N=P</small>">ms</div>
+                          <div class="calc-item-invis"></div>
+                          <div class="calc-item-invis"></div>
+                        </div>
+
+                        <!-- Navigation through nucleotides keyboard -->
+                        <nav aria-label="Page navigation">
+                          <ul class="pagination pagination-sm mt-2">
+                            <li id="nucleotidesBtn" class="page-item active">
+                              <a class="page-link" href="javascript:void(0);" onclick="showNucleotides();">Nucleotides</a>
+                            </li>
+                            <li id="degenerateBtn" class="page-item">
+                              <a class="page-link" href="javascript:void(0);" onclick="showDegenerate();">Degenerate NTs</a>
+                            </li>
+                          </ul>
+                        </nav>
                     </div>
                 </div>
-                <div class="mb-2 col-md-8">
-                    {% if form.errors %}
-                        {% for field_error, error in form.errors.items %}
-                            <div>{{ error }}</div>
-                        {% endfor %}
-                    {% endif %}
-                </div>
-
-            <button type="submit" class="ms-0 btn btn-primary submit">Calculate</button>
+            <button type="submit" class="mt-3 btn btn-primary submit">Calculate</button>
 
         </div>
       </div>
@@ -206,7 +435,7 @@
           <div class="tab-pane fade show active" id="navs-pills-top-properties" role="tabpanel">
              <div class="row">
                 <!--Sequence properties                 -->
-                <div class="col-md-9 mb-3">
+                <div class="col-md-12">
                   <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">
@@ -289,6 +518,37 @@
                                         {% endif %}
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td><strong>Molar Concentration: </strong></td>
+                                    <td>
+                                        {% if concentration_molar > 0 %}
+                                        {{ concentration_molar|floatformat:1 }} <span class="text-muted">&mu;M</span>
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Mass Concentration: </strong></td>
+                                    <td>
+                                        {% if concentration_mass > 0 %}
+                                            {{ concentration_mass|floatformat:1 }} <span class="text-muted">&mu;g/mL</span>
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Quantity: </strong></td>
+                                    <td>
+                                        {% if quantity > 0 %}
+                                            {{ quantity|floatformat:1 }} <span class="text-muted">nmol</span>
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    </td>
+                                </tr>
+
                             </table>
                         </div>
 
@@ -300,48 +560,6 @@
                   </div>
                 </div>
                 <!--End of Sequence properties     -->
-
-                <!--Quantification  -->
-                <div class="col-md-3">
-                  <div class="card">
-                    <div class="card-body">
-                        <div class="mb-2"><strong>Quantification</strong></div>
-                        <label for="{{ form.absorbance260.id_for_label }}">
-                            <small>OD<sub>260</sub> (10 mm) </small>
-                        </label>
-                        <div>{{ form.absorbance260 }}</div>
-                        <label class="mt-2" for="{{ form.volume.id_for_label }}">
-                            <small>Volume, mL</small>
-                        </label>
-                        <div>{{ form.volume }}</div>
-
-                        <div class="mt-3 mb-2"><strong>Quantity:</strong></div>
-                        <div>
-                            {% if quantity %}
-                                {{ quantity|floatformat:2 }} <span class="text-muted">nmol</span>
-                            {% else %}
-                                -
-                            {% endif %}
-                        </div>
-                        <div class="mt-3 mb-2"><strong>Concentration:</strong></div>
-                        <div>
-                            {% if concentration_molar %}
-                                <div class="mb-2">
-                                    {{ concentration_molar|floatformat:2 }} <span class="text-muted">&mu;M (pmol/&mu;L)</span>
-                                </div>
-                                <div>
-                                    {{ concentration_mass|floatformat:2 }} <span class="text-muted">&mu;g/mL</span>
-                                </div>
-                            {% else %}
-                                    -
-                                {% endif %}
-                        </div>
-
-                        <button type="submit" class="mt-3 btn btn-sm btn-primary submit"> Quantify </button>
-                    </div>
-                  </div>
-                </div>
-                <!--End of quantification-->
 
              </div>
           </div>
@@ -581,7 +799,10 @@
 <!-- Parameter Sets in Calculator form -->
 <script src="{% static 'js/parametersets.js'%}"></script>
 
-<!-- Parameter Sets in Calculator form -->
+<!-- Formatting of formulas -->
 <script src="{% static 'js/formula.js'%}"></script>
+
+<!-- Handles nucleotides and modifications -->
+<script src="{% static 'js/nt_modification.js'%}"></script>
 
 {% endblock %}

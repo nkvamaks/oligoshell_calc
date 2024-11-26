@@ -27,7 +27,12 @@ class CalcView(FormView):
         quantity, melting_t, esi_series, mass_fragments_array = 0, -1, [], []
 
         btnradio = form.cleaned_data['btnradio']
-        sequence = utils.dna2mix(form.cleaned_data['sequence']) if btnradio == 'dna' else form.cleaned_data['sequence']
+        if btnradio == 'dna':
+            sequence = utils.dna2mix(form.cleaned_data['sequence'])
+        elif btnradio == 'rna':
+            sequence = utils.rna2mix(form.cleaned_data['sequence'])
+        else:
+            sequence = form.cleaned_data['sequence']
 
         sequence_dna = utils.mix2dna_wo_mod_phosph(utils.wo_phosph(sequence))
         sequence_dna_rev_compl = utils.rev_compl(sequence_dna)
@@ -97,7 +102,7 @@ class CalcView(FormView):
 
 
 def about(request):
-    with open(r'README.md', 'r') as fh:
+    with open(settings.BASE_DIR / 'README.md', 'r') as fh:
         return render(request, 'oligocalc/about.html', {'about_osh_calc': ''.join(line for line in fh)})
 
 

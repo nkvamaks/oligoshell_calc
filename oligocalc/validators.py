@@ -31,12 +31,12 @@ def validate_seq_mix(sequence):
         raise ValidationError('Zero-length sequence is not allowed')
     if sequence_spl[0] not in {*utils.modification_5_position, *utils.nucleotide_any_position}:
         modification_errors.append("5'-Modification does not exist: " + sequence_spl[0])
-    if utils.get_length(sequence) > 1:
+    if utils.get_length(sequence) >= 1:
         if sequence_spl[-1] not in {*utils.modification_3_position, *utils.nucleotide_any_position}:
             modification_errors.append("3'-Modification does not exist: " + sequence_spl[-1])
         for i in range(len(sequence_spl)-1):
             if (sequence_spl[i] in utils.modification_phosphorus) and (sequence_spl[i+1] in utils.modification_phosphorus):
-                modification_errors.append("Two phosphate residues at positions " + str(i+1) + " and " + str(i+2) + " cannot be nearby")
+                modification_errors.append("Two backbones at positions " + str(i+1) + " and " + str(i+2) + " cannot be nearby")
             if i == 0: continue
             if sequence_spl[i] not in {*utils.modification_int_position,
                                        *utils.modification_phosphorus,
@@ -50,7 +50,7 @@ def validate_seq_mix(sequence):
 
 def validate_seq_dna_regex(sequence):
     sequence_pattern = r'^(((\[[-+\._a-zA-Z0-9 ]+\])*?[ACGTWSMKRYBDHVN* ]*?)*?)$'
-    message = ('Sequence should contain A/C/G/T, degenerate bases W/S/M/K/R/Y/B/D/H/V/N, phosphorothioate linkage *'
+    message = ('Sequence should contain A/C/G/T, degenerate bases W/S/M/K/R/Y/B/D/H/V/N, backbones e.g. *, [ps2]'
                ' and modifications e.g. [FAM], [BHQ1] etc.')
     if not re.match(sequence_pattern, sequence):
         raise ValidationError(message)
@@ -76,6 +76,42 @@ def validate_seq_dna(sequence):
     for index, nt in enumerate(seq_dna_tup):
         if nt in utils.map_dna2mix:
             seq_mix_list.append(utils.map_dna2mix[nt])
+        else:
+            modification_errors.append('Unknown nucleotide ' + nt + ' position ' + str(index+1))
+    if modification_errors:
+        raise ValidationError(modification_errors)
+    else:
+        return ' '.join(seq_mix_list)
+
+
+def validate_seq_rna_regex(sequence):
+    sequence_pattern = r'^(((\[[-+\._a-zA-Z0-9 ]+\])*?[ACGUWSMKRYBDHVN* ]*?)*?)$'
+    message = ('Sequence should contain A/C/G/U, degenerate bases W/S/M/K/R/Y/B/D/H/V/N, backbones e.g. *, [ps2]'
+               ' and modifications e.g. [FAM], [BHQ1] etc.')
+    if not re.match(sequence_pattern, sequence):
+        raise ValidationError(message)
+    else:
+        return sequence
+
+
+def validate_seq_rna(sequence):
+    """
+    Validates a sting of sequence on a right syntax. It is case-sensitive.
+    String should be presented in a format: [FAM]CU*A[moeG]UGAAGCUUUUCGGGGAUC[BHQ1]
+    where A, C, G and U are RNA nucleosides. All others non-'ribo' nucleotides and
+    modifications are given in square brackets.
+    """
+    seq_mix_list = []
+    modification_errors = []
+
+    # Convert rna-style sequence to a tuple: ACGU[BHQ1] -> ('A', 'C', 'G', 'U', '[BHQ1]')
+    seq_rna_tup = utils.sequence2tuple(sequence)
+
+    # Map every nucleoitde from seq_rna_tup to a 'mix' style. If nucleotide doesn't exist, raise
+    # ValidationError
+    for index, nt in enumerate(seq_rna_tup):
+        if nt in utils.map_rna2mix:
+            seq_mix_list.append(utils.map_rna2mix[nt])
         else:
             modification_errors.append('Unknown nucleotide ' + nt + ' position ' + str(index+1))
     if modification_errors:

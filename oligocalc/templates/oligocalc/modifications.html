@@ -5,479 +5,774 @@
 
 {% block content %}
 
-<h4 class="fw-bold py-3 mb-3 text-center">Available Nucleotide Alphabet</h4>
+<h4 class="fw-bold py-3 mb-3 text-center">Available Nucleotides</h4>
 
 <div class="row">
-    <div class="col-md-6">
-        <div class="card mb-2">
-
-            <h5 class="card-header text-center">Deoxynucleotides</h5>
-            <div class="table-responsive text-nowrap">
-              <table class="table table-hover table-sm">
-
-                <thead>
-                  <tr>
-                    <th><strong>Description</strong></th>
-                    <th><strong>'DNA' Code</strong></th>
-                    <th><strong>'Therapeutic' Code</strong></th>
-                  </tr>
-                </thead>
-
-                <tbody class="table-border-bottom-0">
-                    <tr>
-                        <td>Deoxy-Adenosine</td>
-                        <td class="fw-bold">A</td>
-                        <td class="fw-bold">dA</td>
-                    </tr>
-                    <tr>
-                        <td>Deoxy-Cytidine</td>
-                        <td class="fw-bold">C</td>
-                        <td class="fw-bold">dC</td>
-                    </tr>
-                    <tr>
-                        <td>Deoxy-Guanosine</td>
-                        <td class="fw-bold">G</td>
-                        <td class="fw-bold">dG</td>
-                    </tr>
-                    <tr>
-                        <td>Deoxy-Thimidine</td>
-                        <td class="fw-bold">T</td>
-                        <td class="fw-bold">dT</td>
-                    </tr>
-                    <tr>
-                        <td>Deoxy-A/T</td>
-                        <td class="fw-bold">W</td>
-                        <td class="fw-bold">dW</td>
-                    </tr>
-                    <tr>
-                        <td>Deoxy-C/G</td>
-                        <td class="fw-bold">S</td>
-                        <td class="fw-bold">dS</td>
-                    </tr>
-                    <tr>
-                        <td>Deoxy-A/C</td>
-                        <td class="fw-bold">M</td>
-                        <td class="fw-bold">dM</td>
-                    </tr>
-                    <tr>
-                        <td>Deoxy-G/T</td>
-                        <td class="fw-bold">K</td>
-                        <td class="fw-bold">dK</td>
-                    </tr>
-                    <tr>
-                        <td>Deoxy-A/G</td>
-                        <td class="fw-bold">R</td>
-                        <td class="fw-bold">dR</td>
-                    </tr>
-                    <tr>
-                        <td>Deoxy-C/T</td>
-                        <td class="fw-bold">Y</td>
-                        <td class="fw-bold">dY</td>
-                    </tr>
-                    <tr>
-                        <td>Deoxy-C/G/T</td>
-                        <td class="fw-bold">B</td>
-                        <td class="fw-bold">dB</td>
-                    </tr>
-                    <tr>
-                        <td>Deoxy-A/G/T</td>
-                        <td class="fw-bold">D</td>
-                        <td class="fw-bold">dD</td>
-                    </tr>
-                    <tr>
-                        <td>Deoxy-A/C/T</td>
-                        <td class="fw-bold">H</td>
-                        <td class="fw-bold">dH</td>
-                    </tr>
-                    <tr>
-                        <td>Deoxy-A/C/G</td>
-                        <td class="fw-bold">V</td>
-                        <td class="fw-bold">dV</td>
-                    </tr>
-                    <tr>
-                        <td>Deoxy-A/C/G/T</td>
-                        <td class="fw-bold">N</td>
-                        <td class="fw-bold">dN</td>
-                    </tr>
-                    <tr>
-                        <td>5-Me-Deoxy-Cytidine</td>
-                        <td class="fw-bold">[dCm]</td>
-                        <td class="fw-bold">dCm</td>
-                    </tr>
-                    <tr>
-                        <td>Deoxy-Uridine</td>
-                        <td class="fw-bold">[dU]</td>
-                        <td class="fw-bold">dU</td>
-                    </tr>
-                </tbody>
-              </table>
+    <div class="col-xl">
+        <!-- Deoxyribonucleotides, DNA -->
+        <div class="card mb-1">
+            <div class="card-header text-center">
+                <h5 class="mb-0"><strong>Deoxynucleotides (DNA)</strong></h5>
             </div>
+            <div class="card-body">
 
-            <h5 class="card-header text-center mt-4">2'-MOE Ribonucleotides</h5>
-            <div class="table-responsive text-nowrap">
-                <table class="table table-hover table-sm">
+                <div class="table-responsive text-nowrap">
+                  <table class="table table-hover table-sm">
 
                     <thead>
-                      <tr>
-                        <th><strong>Description</strong></th>
-                        <th><strong>'DNA' Code</strong></th>
-                        <th><strong>'Therapeutic' Code</strong></th>
-                      </tr>
+                        <tr>
+                            <th><strong>Description</strong></th>
+                            <th><strong>'DNA' Code</strong></th>
+                            <th><strong>'RNA' Code</strong></th>
+                            <th><strong>'Therapeutic' Code</strong></th>
+                        </tr>
                     </thead>
 
                     <tbody class="table-border-bottom-0">
                         <tr>
-                            <td>2'-MOE-Adenosine</td>
-                            <td class="fw-bold">[moeA]</td>
-                            <td class="fw-bold">moeA</td>
+                            <td>Deoxy-Adenosine</td>
+                            <td class="fw-bold">A</td>
+                            <td class="fw-bold">[dA]</td>
+                            <td class="fw-bold">dA</td>
                         </tr>
                         <tr>
-                            <td>2'-MOE-5-Me-Cytidine</td>
-                            <td class="fw-bold">[moeCm]</td>
-                            <td class="fw-bold">moeCm</td>
+                            <td>Deoxy-Cytidine</td>
+                            <td class="fw-bold">C</td>
+                            <td class="fw-bold">[dC]</td>
+                            <td class="fw-bold">dC</td>
                         </tr>
                         <tr>
-                            <td>2'-MOE-Guanosine</td>
-                            <td class="fw-bold">[moeG]</td>
-                            <td class="fw-bold">moeG</td>
+                            <td>Deoxy-Guanosine</td>
+                            <td class="fw-bold">G</td>
+                            <td class="fw-bold">[dG]</td>
+                            <td class="fw-bold">dG</td>
                         </tr>
                         <tr>
-                            <td>2'-MOE-Thymidine</td>
-                            <td class="fw-bold">[moeT]</td>
-                            <td class="fw-bold">moeT</td>
+                            <td>Deoxy-Thimidine</td>
+                            <td class="fw-bold">T</td>
+                            <td class="fw-bold">[dT]</td>
+                            <td class="fw-bold">dT</td>
+                        </tr>
+                        <tr>
+                            <td>Deoxy-A/T</td>
+                            <td class="fw-bold">W</td>
+                            <td class="fw-bold">[dW]</td>
+                            <td class="fw-bold">dW</td>
+                        </tr>
+                        <tr>
+                            <td>Deoxy-C/G</td>
+                            <td class="fw-bold">S</td>
+                            <td class="fw-bold">[dS]</td>
+                            <td class="fw-bold">dS</td>
+                        </tr>
+                        <tr>
+                            <td>Deoxy-A/C</td>
+                            <td class="fw-bold">M</td>
+                            <td class="fw-bold">[dM]</td>
+                            <td class="fw-bold">dM</td>
+                        </tr>
+                        <tr>
+                            <td>Deoxy-G/T</td>
+                            <td class="fw-bold">K</td>
+                            <td class="fw-bold">[dK]</td>
+                            <td class="fw-bold">dK</td>
+                        </tr>
+                        <tr>
+                            <td>Deoxy-A/G</td>
+                            <td class="fw-bold">R</td>
+                            <td class="fw-bold">[dR]</td>
+                            <td class="fw-bold">dR</td>
+                        </tr>
+                        <tr>
+                            <td>Deoxy-C/T</td>
+                            <td class="fw-bold">Y</td>
+                            <td class="fw-bold">[dY]</td>
+                            <td class="fw-bold">dY</td>
+                        </tr>
+                        <tr>
+                            <td>Deoxy-C/G/T</td>
+                            <td class="fw-bold">B</td>
+                            <td class="fw-bold">[dB]</td>
+                            <td class="fw-bold">dB</td>
+                        </tr>
+                        <tr>
+                            <td>Deoxy-A/G/T</td>
+                            <td class="fw-bold">D</td>
+                            <td class="fw-bold">[dD]</td>
+                            <td class="fw-bold">dD</td>
+                        </tr>
+                        <tr>
+                            <td>Deoxy-A/C/T</td>
+                            <td class="fw-bold">H</td>
+                            <td class="fw-bold">[dH]</td>
+                            <td class="fw-bold">dH</td>
+                        </tr>
+                        <tr>
+                            <td>Deoxy-A/C/G</td>
+                            <td class="fw-bold">V</td>
+                            <td class="fw-bold">[dV]</td>
+                            <td class="fw-bold">dV</td>
+                        </tr>
+                        <tr>
+                            <td>Deoxy-A/C/G/T</td>
+                            <td class="fw-bold">N</td>
+                            <td class="fw-bold">[dN]</td>
+                            <td class="fw-bold">dN</td>
+                        </tr>
+                        <tr>
+                            <td>5-Me-Deoxy-Cytidine</td>
+                            <td class="fw-bold">[dCm]</td>
+                            <td class="fw-bold">[dCm]</td>
+                            <td class="fw-bold">dCm</td>
+                        </tr>
+                        <tr>
+                            <td>Deoxy-Uridine</td>
+                            <td class="fw-bold">[dU]</td>
+                            <td class="fw-bold">[dU]</td>
+                            <td class="fw-bold">dU</td>
                         </tr>
                     </tbody>
-                </table>
+                  </table>
+                </div>
+
+
             </div>
-
         </div>
-    </div>
-    <div class="col-md-6">
-        <div class="card mb-2">
 
-            <h5 class="card-header text-center">Ribonucleotides</h5>
-            <div class="table-responsive text-nowrap">
-                <table class="table table-hover table-sm">
+        <!-- Ribonucleotides, RNA -->
+        <div class="card mb-1">
+            <div class="card-header text-center">
+                <h5 class="mb-0"><strong>Ribonucleotides (RNA)</strong></h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive text-nowrap">
+                  <table class="table table-hover table-sm">
 
                     <thead>
-                      <tr>
-                        <th><strong>Description</strong></th>
-                        <th><strong>'DNA' Code</strong></th>
-                        <th><strong>'Therapeutic' Code</strong></th>
-                      </tr>
+                        <tr>
+                            <th><strong>Description</strong></th>
+                            <th><strong>'DNA' Code</strong></th>
+                            <th><strong>'RNA' Code</strong></th>
+                            <th><strong>'Therapeutic' Code</strong></th>
+                        </tr>
                     </thead>
 
                     <tbody class="table-border-bottom-0">
                         <tr>
                             <td>Ribo-Adenosine</td>
                             <td class="fw-bold">[rA]</td>
+                            <td class="fw-bold">A</td>
                             <td class="fw-bold">rA</td>
                         </tr>
                         <tr>
                             <td>Ribo-Cytidine</td>
                             <td class="fw-bold">[rC]</td>
+                            <td class="fw-bold">C</td>
                             <td class="fw-bold">rC</td>
                         </tr>
                         <tr>
                             <td>Ribo-Guanosine</td>
                             <td class="fw-bold">[rG]</td>
+                            <td class="fw-bold">G</td>
                             <td class="fw-bold">rG</td>
                         </tr>
                         <tr>
                             <td>Ribo-Uridine</td>
                             <td class="fw-bold">[rU]</td>
+                            <td class="fw-bold">U</td>
                             <td class="fw-bold">rU</td>
                         </tr>
-
+                        <tr>
+                            <td>Ribo-A/U</td>
+                            <td class="fw-bold">[rW]</td>
+                            <td class="fw-bold">W</td>
+                            <td class="fw-bold">rW</td>
+                        </tr>
+                        <tr>
+                            <td>Ribo-C/G</td>
+                            <td class="fw-bold">[rS]</td>
+                            <td class="fw-bold">S</td>
+                            <td class="fw-bold">rS</td>
+                        </tr>
+                        <tr>
+                            <td>Ribo-A/C</td>
+                            <td class="fw-bold">[rM]</td>
+                            <td class="fw-bold">M</td>
+                            <td class="fw-bold">rM</td>
+                        </tr>
+                        <tr>
+                            <td>Ribo-G/U</td>
+                            <td class="fw-bold">[rK]</td>
+                            <td class="fw-bold">K</td>
+                            <td class="fw-bold">rK</td>
+                        </tr>
+                        <tr>
+                            <td>Ribo-A/G</td>
+                            <td class="fw-bold">[rR]</td>
+                            <td class="fw-bold">R</td>
+                            <td class="fw-bold">rR</td>
+                        </tr>
+                        <tr>
+                            <td>Ribo-C/U</td>
+                            <td class="fw-bold">[rY]</td>
+                            <td class="fw-bold">Y</td>
+                            <td class="fw-bold">rY</td>
+                        </tr>
+                        <tr>
+                            <td>Ribo-C/G/U</td>
+                            <td class="fw-bold">[rB]</td>
+                            <td class="fw-bold">B</td>
+                            <td class="fw-bold">rB</td>
+                        </tr>
+                        <tr>
+                            <td>Ribo-A/G/U</td>
+                            <td class="fw-bold">[rD]</td>
+                            <td class="fw-bold">D</td>
+                            <td class="fw-bold">rD</td>
+                        </tr>
+                        <tr>
+                            <td>Ribo-A/C/U</td>
+                            <td class="fw-bold">[rH]</td>
+                            <td class="fw-bold">H</td>
+                            <td class="fw-bold">rH</td>
+                        </tr>
+                        <tr>
+                            <td>Ribo-A/C/G</td>
+                            <td class="fw-bold">[rV]</td>
+                            <td class="fw-bold">V</td>
+                            <td class="fw-bold">rV</td>
+                        </tr>
+                        <tr>
+                            <td>Ribo-A/C/G/U</td>
+                            <td class="fw-bold">[rN]</td>
+                            <td class="fw-bold">N</td>
+                            <td class="fw-bold">rN</td>
+                        </tr>
                     </tbody>
-                </table>
+                  </table>
+                </div>
             </div>
+        </div>
 
-            <h5 class="card-header text-center mt-4">2'-Fluoro Deoxynucleotides</h5>
-            <div class="table-responsive text-nowrap">
-                <table class="table table-hover table-sm">
+        <!-- 2'-OMe -->
+        <div class="card mb-1">
+            <div class="card-header text-center">
+                <h5 class="mb-0"><strong>2'-OMe Ribonucleotides</strong></h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive text-nowrap">
+                  <table class="table table-hover table-sm">
 
                     <thead>
-                      <tr>
-                        <th><strong>Description</strong></th>
-                        <th><strong>'DNA' Code</strong></th>
-                        <th><strong>'Therapeutic' Code</strong></th>
-                      </tr>
-                    </thead>
-
-                    <tbody class="table-border-bottom-0">
                         <tr>
-                            <td>2'-Fluoro-Adenosine</td>
-                            <td class="fw-bold">[fA]</td>
-                            <td class="fw-bold">fA</td>
+                            <th><strong>Description</strong></th>
+                            <th><strong>'DNA' Code</strong></th>
+                            <th><strong>'RNA' Code</strong></th>
+                            <th><strong>'Therapeutic' Code</strong></th>
                         </tr>
-                        <tr>
-                            <td>2'-Fluoro-Cytidine</td>
-                            <td class="fw-bold">[fC]</td>
-                            <td class="fw-bold">fC</td>
-                        </tr>
-                        <tr>
-                            <td>2'-Fluoro-Guanosine</td>
-                            <td class="fw-bold">[fG]</td>
-                            <td class="fw-bold">fG</td>
-                        </tr>
-                        <tr>
-                            <td>2'-Fluoro-Uridine</td>
-                            <td class="fw-bold">[fU]</td>
-                            <td class="fw-bold">fU</td>
-                        </tr>
-
-                    </tbody>
-                </table>
-            </div>
-
-            <h5 class="card-header text-center mt-4">2'-OMe Ribonucleotides</h5>
-            <div class="table-responsive text-nowrap">
-                <table class="table table-hover table-sm">
-
-                    <thead>
-                      <tr>
-                        <th><strong>Description</strong></th>
-                        <th><strong>'DNA' Code</strong></th>
-                        <th><strong>'Therapeutic' Code</strong></th>
-                      </tr>
                     </thead>
 
                     <tbody class="table-border-bottom-0">
                         <tr>
                             <td>2'-OMe-Adenosine</td>
                             <td class="fw-bold">[mA]</td>
+                            <td class="fw-bold">[mA]</td>
                             <td class="fw-bold">mA</td>
                         </tr>
                         <tr>
                             <td>2'-OMe-Cytidine</td>
+                            <td class="fw-bold">[mC]</td>
                             <td class="fw-bold">[mC]</td>
                             <td class="fw-bold">mC</td>
                         </tr>
                         <tr>
                             <td>2'-OMe-Guanosine</td>
                             <td class="fw-bold">[mG]</td>
+                            <td class="fw-bold">[mG]</td>
                             <td class="fw-bold">mG</td>
                         </tr>
                         <tr>
                             <td>2'-OMe-Uridine</td>
                             <td class="fw-bold">[mU]</td>
+                            <td class="fw-bold">[mU]</td>
                             <td class="fw-bold">mU</td>
                         </tr>
-
                     </tbody>
-                </table>
+                  </table>
+                </div>
             </div>
+        </div>
 
-            <h5 class="card-header text-center mt-4">LNA Nucleotides</h5>
-            <div class="table-responsive text-nowrap">
-                <table class="table table-hover table-sm">
+        <!-- 2'-F -->
+        <div class="card mb-1">
+            <div class="card-header text-center">
+                <h5 class="mb-0"><strong>2'-F Ribonucleotides</strong></h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive text-nowrap">
+                  <table class="table table-hover table-sm">
 
                     <thead>
-                      <tr>
-                        <th><strong>Description</strong></th>
-                        <th><strong>'DNA' Code</strong></th>
-                        <th><strong>'Therapeutic' Code</strong></th>
-                      </tr>
+                        <tr>
+                            <th><strong>Description</strong></th>
+                            <th><strong>'DNA' Code</strong></th>
+                            <th><strong>'RNA' Code</strong></th>
+                            <th><strong>'Therapeutic' Code</strong></th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="table-border-bottom-0">
+                        <tr>
+                            <td>2'-F-Adenosine</td>
+                            <td class="fw-bold">[fA]</td>
+                            <td class="fw-bold">[fA]</td>
+                            <td class="fw-bold">fA</td>
+                        </tr>
+                        <tr>
+                            <td>2'-F-Cytidine</td>
+                            <td class="fw-bold">[fC]</td>
+                            <td class="fw-bold">[fC]</td>
+                            <td class="fw-bold">fC</td>
+                        </tr>
+                        <tr>
+                            <td>2'-F-Guanosine</td>
+                            <td class="fw-bold">[fG]</td>
+                            <td class="fw-bold">[fG]</td>
+                            <td class="fw-bold">fG</td>
+                        </tr>
+                        <tr>
+                            <td>2'-F-Uridine</td>
+                            <td class="fw-bold">[fU]</td>
+                            <td class="fw-bold">[fU]</td>
+                            <td class="fw-bold">fU</td>
+                        </tr>
+                    </tbody>
+                  </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2'-MOE -->
+        <div class="card mb-1">
+            <div class="card-header text-center">
+                <h5 class="mb-0"><strong>2'-MOE Ribonucleotides</strong></h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive text-nowrap">
+                  <table class="table table-hover table-sm">
+
+                    <thead>
+                        <tr>
+                            <th><strong>Description</strong></th>
+                            <th><strong>'DNA' Code</strong></th>
+                            <th><strong>'RNA' Code</strong></th>
+                            <th><strong>'Therapeutic' Code</strong></th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="table-border-bottom-0">
+                        <tr>
+                            <td>2'-MOE-Adenosine</td>
+                            <td class="fw-bold">[moeA]</td>
+                            <td class="fw-bold">[moeA]</td>
+                            <td class="fw-bold">moeA</td>
+                        </tr>
+                        <tr>
+                            <td>2'-MOE-5-Me-Cytidine</td>
+                            <td class="fw-bold">[moeCm]</td>
+                            <td class="fw-bold">[moeCm]</td>
+                            <td class="fw-bold">moeCm</td>
+                        </tr>
+                        <tr>
+                            <td>2'-MOE-Guanosine</td>
+                            <td class="fw-bold">[moeG]</td>
+                            <td class="fw-bold">[moeG]</td>
+                            <td class="fw-bold">moeG</td>
+                        </tr>
+                        <tr>
+                            <td>2'-MOE-Thymidine</td>
+                            <td class="fw-bold">[moeT]</td>
+                            <td class="fw-bold">[moeT]</td>
+                            <td class="fw-bold">moeT</td>
+                        </tr>
+                    </tbody>
+                  </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- LNA -->
+        <div class="card mb-1">
+            <div class="card-header text-center">
+                <h5 class="mb-0"><strong>LNA Nucleotides</strong></h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive text-nowrap">
+                  <table class="table table-hover table-sm">
+
+                    <thead>
+                        <tr>
+                            <th><strong>Description</strong></th>
+                            <th><strong>'DNA' Code</strong></th>
+                            <th><strong>'RNA' Code</strong></th>
+                            <th><strong>'Therapeutic' Code</strong></th>
+                        </tr>
                     </thead>
 
                     <tbody class="table-border-bottom-0">
                         <tr>
                             <td>LNA Adenosine</td>
                             <td class="fw-bold">[+A]</td>
+                            <td class="fw-bold">[+A]</td>
                             <td class="fw-bold">+A</td>
                         </tr>
                         <tr>
                             <td>LNA 5-Me-Cytidine</td>
+                            <td class="fw-bold">[+Cm]</td>
                             <td class="fw-bold">[+Cm]</td>
                             <td class="fw-bold">+Cm</td>
                         </tr>
                         <tr>
                             <td>LNA Guanosine</td>
                             <td class="fw-bold">[+G]</td>
+                            <td class="fw-bold">[+G]</td>
                             <td class="fw-bold">+G</td>
                         </tr>
                         <tr>
                             <td>LNA Thymidine</td>
                             <td class="fw-bold">[+T]</td>
+                            <td class="fw-bold">[+T]</td>
                             <td class="fw-bold">+T</td>
                         </tr>
                     </tbody>
-                </table>
+                  </table>
+                </div>
             </div>
-
         </div>
+
+
+
     </div>
 </div>
 
-<h4 class="fw-bold py-3 mb-3 mt-3 text-center">Available Modifications</h4>
+<!-- Modifications block-->
+<h4 class="fw-bold py-3 mt-3 text-center">Available Modifications</h4>
+
 <div class="row">
-    <div class="col-md-6">
-        <div class="card mb-2">
-
-            <div class="table-responsive text-nowrap">
-              <table class="table table-hover table-sm">
-
-                <thead>
-                  <tr>
-                    <th><strong>Description</strong></th>
-                    <th><strong>'DNA' Code</strong></th>
-                    <th><strong>'Therapeutic' Code</strong></th>
-                  </tr>
-                </thead>
-
-                <tbody class="table-border-bottom-0">
-                    <tr>
-                        <td class="text-wrap">Fluorescein</td>
-                        <td class="fw-bold">[FAM]</td>
-                        <td class="fw-bold">FAM</td>
-                    </tr>
-                    <tr>
-                        <td class="text-wrap">Tetrachlorofluorescein</td>
-                        <td class="fw-bold">[TET]</td>
-                        <td class="fw-bold">TET</td>
-                    </tr>
-                    <tr>
-                        <td class="text-wrap">Hexachlorofluorescein</td>
-                        <td class="fw-bold">[HEX]</td>
-                        <td class="fw-bold">HEX</td>
-                    </tr>
-                    <tr>
-                        <td class="text-wrap">Dichloro-dimethoxyfluorescein</td>
-                        <td class="fw-bold">[JOE]</td>
-                        <td class="fw-bold">JOE</td>
-                    </tr>
-                    <tr>
-                        <td class="text-wrap">Phenyl-trichlorofluorescein</td>
-                        <td class="fw-bold">[VIC]</td>
-                        <td class="fw-bold">VIC</td>
-                    </tr>
-                    <tr>
-                        <td class="text-wrap">Tetramethylrhodamine, ACH linker</td>
-                        <td class="fw-bold">[TMR-ACH]</td>
-                        <td class="fw-bold">TMR-ACH</td>
-                    </tr>
-                    <tr>
-                        <td class="text-wrap">Rhodamine 6G</td>
-                        <td class="fw-bold">[R6G]</td>
-                        <td class="fw-bold">R6G</td>
-                    </tr>
-                    <tr>
-                        <td class="text-wrap">Rhodamine 6G, ACH linker</td>
-                        <td class="fw-bold">[R6G-ACH]</td>
-                        <td class="fw-bold">R6G-ACH</td>
-                    </tr>
-                    <tr>
-                        <td class="text-wrap">Rhodamine X (ROX), via 'click'</td>
-                        <td class="fw-bold">[ROX-CLK]</td>
-                        <td class="fw-bold">ROX-CLK</td>
-                    </tr>
-                    <tr>
-                        <td class="text-wrap">Texas Red, via 'click'</td>
-                        <td class="fw-bold">[TR-CLK]</td>
-                        <td class="fw-bold">TR-CLK</td>
-                    </tr>
-                    <tr>
-                        <td class="text-wrap">Alexa Fluor 594 (AF594), via 'click'</td>
-                        <td class="fw-bold">[AF594-CLK]</td>
-                        <td class="fw-bold">AF594-CLK</td>
-                    </tr>
-                    <tr>
-                        <td class="text-wrap">ATTO-647N-PEG3, via 'click'</td>
-                        <td class="fw-bold">[ATTO647N-CLK]</td>
-                        <td class="fw-bold">ATTO647N-CLK</td>
-                    </tr>
-                    <tr>
-                        <td class="text-wrap">Cyanine3, ACH linker</td>
-                        <td class="fw-bold">[CY3-ACH]</td>
-                        <td class="fw-bold">CY3-ACH</td>
-                    </tr>
-                    <tr>
-                        <td class="text-wrap">Cyanine5, via 'click'</td>
-                        <td class="fw-bold">[CY5-CLK]</td>
-                        <td class="fw-bold">CY5-CLK</td>
-                    </tr>
-                    <tr>
-                        <td class="text-wrap">Black Hole Quencher 1</td>
-                        <td class="fw-bold">[BHQ1]</td>
-                        <td class="fw-bold">BHQ1</td>
-                    </tr>
-                    <tr>
-                        <td class="text-wrap">Black Hole Quencher 2</td>
-                        <td class="fw-bold">[BHQ2]</td>
-                        <td class="fw-bold">BHQ2</td>
-                    </tr>
-                    <tr>
-                        <td class="text-wrap">Eclipse Quencher</td>
-                        <td class="fw-bold">[ECLIPSE]</td>
-                        <td class="fw-bold">ECLIPSE</td>
-                    </tr>
-                    <tr>
-                        <td class="text-wrap">Minor Groove Binder Eclipse Quencher</td>
-                        <td class="fw-bold">[MGB-ECLIPSE]</td>
-                        <td class="fw-bold">MGB-ECLIPSE</td>
-                    </tr>
-                    <tr>
-                        <td class="text-wrap">Minor Groove Binder</td>
-                        <td class="fw-bold">[MGB]</td>
-                        <td class="fw-bold">MGB</td>
-                    </tr>
-                </tbody>
-              </table>
+    <div class="col-xl">
+        <!-- Modifications -->
+        <div class="card">
+            <div class="card-header text-center">
+                <h5 class="mb-0"><strong>Fluorescent dyes</strong></h5>
             </div>
-
-        </div>
-    </div>
-
-    <div class="col-md-6">
-        <div class="card mb-2">
-
-            <div class="table-responsive text-nowrap">
-                <table class="table table-hover table-sm">
+            <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover table-sm">
 
                     <thead>
-                      <tr>
-                        <th><strong>Description</strong></th>
-                        <th><strong>'DNA' Code</strong></th>
-                        <th><strong>'Therapeutic' Code</strong></th>
-                      </tr>
+                        <tr>
+                            <th><strong>Description</strong></th>
+                            <th><strong>5'-position</strong></th>
+                            <th><strong>Internal</strong></th>
+                            <th><strong>3'-position</strong></th>
+                            <th><strong>'DNA / RNA' Code</strong></th>
+                            <th><strong>'Therapeutic' Code</strong></th>
+                        </tr>
                     </thead>
 
                     <tbody class="table-border-bottom-0">
                         <tr>
-                            <td class="text-wrap">Phosphate (5' or/and 3')</td>
+                            <td>Carboxyfluorescein</td>
+                            <td class="fw-bold" style="color: green;">&#9745;</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold">[FAM]</td>
+                            <td class="fw-bold">FAM</td>
+                        </tr>
+                        <tr>
+                            <td>Tetrachlorofluorescein</td>
+                            <td class="fw-bold" style="color: green;">&#9745;</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold">[TET]</td>
+                            <td class="fw-bold">TET</td>
+                        </tr>
+                        <tr>
+                            <td>Dichlorodimethoxyfluorescein</td>
+                            <td class="fw-bold" style="color: green;">&#9745;</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold">[JOE]</td>
+                            <td class="fw-bold">JOE</td>
+                        </tr>
+                        <tr>
+                            <td>2'-Chloro-7'-phenyl-1,4-dichloro-6-carboxyfluorescein</td>
+                            <td class="fw-bold" style="color: green;">&#9745;</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold">[VIC]</td>
+                            <td class="fw-bold">VIC</td>
+                        </tr>
+                        <tr>
+                            <td>Hexachlorofluorescein</td>
+                            <td class="fw-bold" style="color: green;">&#9745;</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold">[HEX]</td>
+                            <td class="fw-bold">HEX</td>
+                        </tr>
+                        <tr>
+                            <td>Carboxyrhodamine 6G</td>
+                            <td class="fw-bold" style="color: green;">&#9745;</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold">[R6G]</td>
+                            <td class="fw-bold">R6G</td>
+                        </tr>
+                        <tr>
+                            <td>Carboxyrhodamine 6G, aminocyclohexanol linker</td>
+                            <td class="fw-bold" style="color: green;">&#9745;</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold">[R6G-ACH]</td>
+                            <td class="fw-bold">R6G-ACH</td>
+                        </tr>
+                        <tr>
+                            <td>Indocarbocyanine 3, aminocyclohexanol linker</td>
+                            <td class="fw-bold" style="color: green;">&#9745;</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold">[CY3-ACH]</td>
+                            <td class="fw-bold">CY3-ACH</td>
+                        </tr>
+                        <tr>
+                            <td>Tetramethylcarboxyrhodamine, aminocyclohexanol linker</td>
+                            <td class="fw-bold" style="color: green;">&#9745;</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold">[TMR-ACH]</td>
+                            <td class="fw-bold">TMR-ACH</td>
+                        </tr>
+                        <tr>
+                            <td>Carboxyrhodamine X, via 'click' with ALKYNE</td>
+                            <td class="fw-bold" style="color: green;">&#9745;</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold">[ROX-CLK]</td>
+                            <td class="fw-bold">ROX-CLK</td>
+                        </tr>
+                        <tr>
+                            <td>Texas Red, via 'click' with ALKYNE</td>
+                            <td class="fw-bold" style="color: green;">&#9745;</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold">[TR-CLK]</td>
+                            <td class="fw-bold">TR-CLK</td>
+                        </tr>
+                        <tr>
+                            <td>Alexa Fluor 594, via 'click' with ALKYNE</td>
+                            <td class="fw-bold" style="color: green;">&#9745;</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold">[AF594-CLK]</td>
+                            <td class="fw-bold">AF594-CLK</td>
+                        </tr>
+                        <tr>
+                            <td>Indodicarbocyanine 5, via 'click' with ALKYNE</td>
+                            <td class="fw-bold" style="color: green;">&#9745;</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold">[CY5-CLK]</td>
+                            <td class="fw-bold">CY5-CLK</td>
+                        </tr>
+                        <tr>
+                            <td>ATTO-647N, via 'click' with ALKYNE</td>
+                            <td class="fw-bold" style="color: green;">&#9745;</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold">[ATTO647N-CLK]</td>
+                            <td class="fw-bold">ATTO647N-CLK</td>
+                        </tr>
+                    </tbody>
+                  </table>
+                </div>
+            </div>
+
+            <!-- Quenchers -->
+            <div class="card-header text-center">
+                <h5 class="mb-0"><strong>Quenchers</strong></h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover table-sm">
+
+                    <thead>
+                        <tr>
+                            <th><strong>Description</strong></th>
+                            <th><strong>5'-position</strong></th>
+                            <th><strong>Internal</strong></th>
+                            <th><strong>3'-position</strong></th>
+                            <th><strong>'DNA / RNA' Code</strong></th>
+                            <th><strong>'Therapeutic' Code</strong></th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="table-border-bottom-0">
+                        <tr>
+                            <td>Eclipse Quencher</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold" style="color: green;">&#9745;</td>
+                            <td class="fw-bold" style="color: green;">&#9745;</td>
+                            <td class="fw-bold">[ECLIPSE]</td>
+                            <td class="fw-bold">ECLIPSE</td>
+                        </tr>
+                        <tr>
+                            <td>MGB-Eclipse Quencher</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold" style="color: green;">&#9745;</td>
+                            <td class="fw-bold">[MGB-ECLIPSE]</td>
+                            <td class="fw-bold">MGB-ECLIPSE</td>
+                        </tr>
+                        <tr>
+                            <td>Black Hole Quencher 1</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold" style="color: green;">&#9745;</td>
+                            <td class="fw-bold" style="color: green;">&#9745;</td>
+                            <td class="fw-bold">[BHQ1]</td>
+                            <td class="fw-bold">BHQ1</td>
+                        </tr>
+                        <tr>
+                            <td>Black Hole Quencher 2</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold" style="color: green;">&#9745;</td>
+                            <td class="fw-bold" style="color: green;">&#9745;</td>
+                            <td class="fw-bold">[BHQ2]</td>
+                            <td class="fw-bold">BHQ2</td>
+                        </tr>
+
+                    </tbody>
+                  </table>
+                </div>
+            </div>
+
+            <!-- Attachment, anchor, delivery and others -->
+            <div class="card-header text-center">
+                <h5 class="mb-0"><strong>Attachment, anchor, delivery and others</strong></h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover table-sm">
+
+                    <thead>
+                        <tr>
+                            <th><strong>Description</strong></th>
+                            <th><strong>5'-position</strong></th>
+                            <th><strong>Internal</strong></th>
+                            <th><strong>3'-position</strong></th>
+                            <th><strong>'DNA / RNA' Code</strong></th>
+                            <th><strong>'Therapeutic' Code</strong></th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="table-border-bottom-0">
+                        <tr>
+                            <td>Phosphate</td>
+                            <td class="fw-bold" style="color: green;">&#9745;</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold" style="color: green;">&#9745;</td>
                             <td class="fw-bold">[po]</td>
                             <td class="fw-bold">po</td>
                         </tr>
                         <tr>
-                            <td class="text-wrap">Phosphorothioate (internal)</td>
-                            <td class="fw-bold">*</td>
-                            <td class="fw-bold">*</td>
-                        </tr>
-                        <tr>
-                            <td class="text-wrap">Alkyne, ACH linker</td>
+                            <td>5'-Terminal alkyne, aminocyclohexanol linker</td>
+                            <td class="fw-bold" style="color: green;">&#9745;</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
                             <td class="fw-bold">[ALKYNE]</td>
                             <td class="fw-bold">ALKYNE</td>
                         </tr>
                         <tr>
-                            <td class="text-wrap">Cholesterol, prolinol linker</td>
+                            <td>CDPI3 Minor groove binder</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold" style="color: green;">&#9745;</td>
+                            <td class="fw-bold">[MGB]</td>
+                            <td class="fw-bold">MGB</td>
+                        </tr>
+
+                        <tr>
+                            <td>Cholesterol, hydroxyprolinol linker</td>
+                            <td class="fw-bold" style="color: green;">&#9745;</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold" style="color: green;">&#9745;</td>
                             <td class="fw-bold">[CHOL-PRO]</td>
                             <td class="fw-bold">CHOL-PRO</td>
                         </tr>
                         <tr>
-                            <td class="text-wrap">Monomeric GalNAc, prolinol linker</td>
+                            <td>Monomer GalNAc, hydroxyprolinol linker</td>
+                            <td class="fw-bold" style="color: green;">&#9745;</td>
+                            <td class="fw-bold" style="color: green;">&#9745;</td>
+                            <td class="fw-bold" style="color: green;">&#9745;</td>
                             <td class="fw-bold">[GALNAC-PRO]</td>
                             <td class="fw-bold">GALNAC-PRO</td>
                         </tr>
                         <tr>
-                            <td class="text-wrap">Trimeric GalNAc, prolinol linker (Alnylam)</td>
+                            <td>Trimer GalNAc, Alnylam design</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold" style="color: red;">&#9746;</td>
+                            <td class="fw-bold" style="color: green;">&#9745;</td>
                             <td class="fw-bold">[GALNAC3-ALN]</td>
                             <td class="fw-bold">GALNAC3-ALN</td>
                         </tr>
 
                     </tbody>
-                </table>
+                  </table>
+                </div>
             </div>
+
+            <!-- Backbone -->
+            <div class="card-header text-center">
+                <h5 class="mb-0"><strong>Backbone</strong></h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover table-sm">
+                    <thead>
+                        <tr>
+                            <th><strong>Description</strong></th>
+                            <th><strong>'DNA / RNA' Code</strong></th>
+                            <th><strong>'Therapeutic' Code</strong></th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="table-border-bottom-0">
+                        <tr>
+                            <td>Phosphate</td>
+                            <td class="fw-bold">No any symbol by default / [po]</td>
+                            <td class="fw-bold">No any symbol by default / po</td>
+                        </tr>
+                        <tr>
+                            <td>Phosphorothioate</td>
+                            <td class="fw-bold">* / [ps]</td>
+                            <td class="fw-bold">* / ps</td>
+                        </tr>
+                        <tr>
+                            <td>Phosphorodithioate</td>
+                            <td class="fw-bold">[ps2]</td>
+                            <td class="fw-bold">ps2</td>
+                        </tr>
+
+                        <tr>
+                            <td>Mesyl phosphoramidate</td>
+                            <td class="fw-bold">[ms]</td>
+                            <td class="fw-bold">ms</td>
+                        </tr>
+                    </tbody>
+                  </table>
+                </div>
+            </div>
+
 
         </div>
     </div>

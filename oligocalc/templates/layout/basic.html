@@ -16,9 +16,9 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>{% block title %}OligoShell Calculator  | DNA / RNA Analysis Tool{% endblock %}</title>
-
-    <meta name="description" content="OligoShell is an advanced DNA sequence analysis tool offering precise oligonucleotide calculations for qPCR and other applications. Try it now!" />
+    <title>{% block title %}{{ meta.title }}{% endblock %}</title>
+    <meta name="description" content="{{ meta.description }}">
+    <meta name="keywords" content="{{ meta.keywords|join:', ' }}">
 
     <!-- Favicon
     <link rel="icon" type="image/x-icon" href="./assets/img/favicon/favicon.ico" />

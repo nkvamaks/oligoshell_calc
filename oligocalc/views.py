@@ -5,18 +5,26 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse, reverse_lazy
 from django.views.generic import FormView
 from django.template.loader import render_to_string
+from meta.views import MetadataMixin
 
 
 from . import forms
 from . import utils
 from . import tm
 from . import taqman_find_utils
+from . import metadata
 
 
-class CalcView(FormView):
+class CalcView(MetadataMixin, FormView):
     template_name = 'oligocalc/calculator.html'
     form_class = forms.CalcForm
     success_url = reverse_lazy('oligocalc:calculator')
+    title = 'Oligonucleotide Properties Calculator | OligoShell'
+    description = 'Calculate nucleic acid properties online. Determine melting temperature, molecular weight, extinction coefficient for DNA, RNA and therapeutic oligonucleotides.'
+    keywords = ['oligo calculator', 'oligonucleotide calculator', 'oligocalculator', 'oligo mass calculator', 'oligocalc',
+                'oligonucleotide properties', 'nucleic acids', 'melting temperature', 'Tm', 'extinction coefficient',
+                'exact mass', 'molecular weight', 'DNA', 'RNA', 'modified oligonucleotides', 'therapeutic oligonucleotides',
+                'minor groove binder', 'MGB', 'modifications', 'conjugates', 'bioconjugates']
 
     def form_valid(self, form):
         context = self.calculate_results(form)
@@ -98,12 +106,14 @@ class CalcView(FormView):
             'brutto_formula': brutto_formula,
             'nmol_OD260': nmol_OD260,
             'ug_OD260': ug_OD260,
+
         }
 
 
 def about(request):
     with open(settings.BASE_DIR / 'README.md', 'r') as fh:
-        return render(request, 'oligocalc/about.html', {'about_osh_calc': ''.join(line for line in fh)})
+        return render(request, 'oligocalc/about.html', {'about_osh_calc': ''.join(line for line in fh),
+                                                        'meta': metadata.get_about_meta(request)})
 
 
 def contact(request):
@@ -129,7 +139,8 @@ def contact(request):
 
     else:
         form = forms.ContactForm()
-    return render(request, 'oligocalc/contact.html', {"form": form})
+    return render(request, 'oligocalc/contact.html', {'form': form,
+                                                      'meta': metadata.get_contact_meta(request)})
 
 
 def success(request):
@@ -137,12 +148,17 @@ def success(request):
 
 
 def modifications(request):
-    return render(request, 'oligocalc/modifications.html')
+    return render(request, 'oligocalc/modifications.html', {'meta': metadata.get_modifications_meta(request)})
 
 
-class TaqManFindView(FormView):
+class TaqManFindView(MetadataMixin, FormView):
     template_name = 'oligocalc/taqman_find.html'
     form_class = forms.TaqManFindForm
+    title = 'TaqMan Assays Finder | OligoShell'
+    description = 'Find primers and probes for TaqMan assays within your target sequence by providing masses of primers and probe, chemical modifications, length of the amplicon, and reference sequence (RefSeq).'
+    keywords = ['TaqMan probe', 'primer', 'real-time PCR', 'qPCR', 'PCR', 'RT-qPCR', 'probe finder', 'PCR probes',
+                'minor groove binder', 'MGB', 'modifications', 'exact mass', 'TaqMan assay', 'gene expression',
+                'gene expression analysis', 'transcript', 'oligonucleotide', 'DNA', 'RNA']
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

@@ -3,7 +3,7 @@ from meta.views import Meta
 
 def get_about_meta(request):
     return Meta(
-        title="About Oligonucleotide Properties Calculator | OligoShell",
+        title="About Oligonucleotide Properties Calculator",
         description="OligoShell is a free online calculator for oligonucleotide properties. It can calculate melting temperatures (Tm) of duplexes, the exact mass, molecular weight, ESI series and MS/MS fragments, extinction coefficients and it can also be used for quantification.",
         keywords=['oligonucleotide', 'melting temperature', 'Tm', 'MGB', 'minor groove binder', 'exact mass', 'molecular weight', 'ESI', 'MS/MS', 'extinction coefficient', 'DNA', 'RNA', 'modified', 'therapeutic'],
     )

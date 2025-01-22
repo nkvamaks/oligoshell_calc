@@ -49,13 +49,56 @@ def validate_seq_mix(sequence):
 
 
 def validate_seq_dna_regex(sequence):
-    sequence_pattern = r'^(((\[[-+\._a-zA-Z0-9 ]+\])*?[ACGTWSMKRYBDHVN* ]*?)*?)$'
-    message = ('Sequence should contain A/C/G/T, degenerate bases W/S/M/K/R/Y/B/D/H/V/N, backbones e.g. *, [ps2]'
-               ' and modifications e.g. [FAM], [BHQ1] etc.')
-    if not re.match(sequence_pattern, sequence):
-        raise ValidationError(message)
-    else:
-        return sequence
+    """
+    Validates a DNA sequence ensuring it contains only allowed characters,
+    degenerate bases, backbones, modifications, and correctly formatted
+    bracketed sections.
+
+    Allowed elements:
+    - Single characters: A, C, G, T, W, S, M, K, R, Y, B, D, H, V, N, *, space
+    - Bracketed modifications: e.g., [FAM], [BHQ1], etc.
+    - Allowed symbols inside brackets: -, +, ., _, a-z, A-Z, 0-9, space
+    """
+    # Define the set of allowed single characters
+    allowed_chars = set("ACGTWSMKRYBDHVN* ")
+
+    # Precompile the regex for validating bracket contents
+    bracket_content_pattern = re.compile(r'^[-+\._a-zA-Z0-9 ]+$')
+
+    errors = []  # List to collect all error messages
+    i = 0
+    n = len(sequence)
+
+    while i < n:
+        char = sequence[i]
+        if char == '[':
+            # Find the closing bracket
+            end = sequence.find(']', i)
+            if end == -1:
+                errors.append('Unmatched "[" in sequence.')
+                break  # Cannot proceed further without closing bracket
+
+            # Extract the content inside brackets
+            content = sequence[i+1:end]
+            if not content:
+                errors.append('Empty brackets in sequence.')
+            else:
+                # Validate the content inside brackets
+                if not bracket_content_pattern.match(content):
+                    errors.append(f'Invalid characters inside brackets: [{content}]')
+
+            # Move the index past the closing bracket
+            i = end + 1
+        else:
+            # Check if the character is allowed
+            if char not in allowed_chars:
+                errors.append(f'Invalid character "{char}" in sequence.')
+            i += 1
+
+    if errors:
+        raise ValidationError(errors)
+
+    return sequence
 
 
 def validate_seq_dna(sequence):
@@ -85,13 +128,56 @@ def validate_seq_dna(sequence):
 
 
 def validate_seq_rna_regex(sequence):
-    sequence_pattern = r'^(((\[[-+\._a-zA-Z0-9 ]+\])*?[ACGUWSMKRYBDHVN* ]*?)*?)$'
-    message = ('Sequence should contain A/C/G/U, degenerate bases W/S/M/K/R/Y/B/D/H/V/N, backbones e.g. *, [ps2]'
-               ' and modifications e.g. [FAM], [BHQ1] etc.')
-    if not re.match(sequence_pattern, sequence):
-        raise ValidationError(message)
-    else:
-        return sequence
+    """
+    Validates a DNA sequence ensuring it contains only allowed characters,
+    degenerate bases, backbones, modifications, and correctly formatted
+    bracketed sections.
+
+    Allowed elements:
+    - Single characters: A, C, G, U, W, S, M, K, R, Y, B, D, H, V, N, *, space
+    - Bracketed modifications: e.g., [FAM], [BHQ1], etc.
+    - Allowed symbols inside brackets: -, +, ., _, a-z, A-Z, 0-9, space
+    """
+    # Define the set of allowed single characters
+    allowed_chars = set("ACGUWSMKRYBDHVN* ")
+
+    # Precompile the regex for validating bracket contents
+    bracket_content_pattern = re.compile(r'^[-+\._a-zA-Z0-9 ]+$')
+
+    errors = []  # List to collect all error messages
+    i = 0
+    n = len(sequence)
+
+    while i < n:
+        char = sequence[i]
+        if char == '[':
+            # Find the closing bracket
+            end = sequence.find(']', i)
+            if end == -1:
+                errors.append('Unmatched "[" in sequence.')
+                break  # Cannot proceed further without closing bracket
+
+            # Extract the content inside brackets
+            content = sequence[i+1:end]
+            if not content:
+                errors.append('Empty brackets in sequence.')
+            else:
+                # Validate the content inside brackets
+                if not bracket_content_pattern.match(content):
+                    errors.append(f'Invalid characters inside brackets: [{content}]')
+
+            # Move the index past the closing bracket
+            i = end + 1
+        else:
+            # Check if the character is allowed
+            if char not in allowed_chars:
+                errors.append(f'Invalid character "{char}" in sequence.')
+            i += 1
+
+    if errors:
+        raise ValidationError(errors)
+
+    return sequence
 
 
 def validate_seq_rna(sequence):
@@ -122,7 +208,7 @@ def validate_seq_rna(sequence):
 
 def validate_dna_conc(value):
     message = 'The oligo concentration is invalid, it must be within the range 0.0001 - 5000 uM.'
-    if 0.0001 < value < 5000:
+    if 0.0001 < value <= 5000:
         return value
     else:
         raise ValidationError(message)

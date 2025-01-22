@@ -1,0 +1,107 @@
+{% extends "account/base_entrance.html" %}
+{% load i18n %}
+{% load allauth account %}
+{% block head_title %}Sign In{% endblock head_title %}
+{% block content %}
+  <div class="row">
+    <div class="col-md-3"></div> <!-- Optional offset -->
+    <div class="col-md-6">
+      <!-- Login Card -->
+      <div class="card">
+        <div class="card-body">
+          <!-- Logo -->
+          <div class="app-brand justify-content-center">
+              <span class="app-brand-text demo text-body fw-bolder">
+                <span style="text-transform:uppercase;">L</span>ogin
+              </span>
+          </div>
+          <!-- /Logo -->
+
+          <!-- If user does not have an account -->
+          <div class="mt-4 mb-4">
+            If you have not created an account yet, <a href="{{ signup_url }}">Sign up</a> first
+          </div>
+
+          {% if not SOCIALACCOUNT_ONLY %}
+            <!-- Allauth Login Form -->
+            {% url 'account_login' as login_url %}
+            <form id="formAuthentication" class="mb-3" action="{{ login_url }}" method="POST">
+              {% csrf_token %}
+
+              <!-- Login field (Email) -->
+              <div class="row mb-2">
+                <label for="{{ form.login.id_for_label }}" class="col-sm-4 form-label mt-2">
+                  Email
+                </label>
+                <div class="col-sm-8">
+                  <div class="input-group input-group-merge">
+                    <span class="input-group-text"><i class="bx bx-envelope"></i></span>
+                    {{ form.login }}
+                  </div>
+                  {% if form.login.errors %}
+                    {% for error in form.login.errors %}
+                      <div class="text-danger small mt-1">{{ error }}</div>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+              </div>
+
+              <!-- Password field -->
+              <div class="row mb-2">
+                <label for="{{ form.password.id_for_label }}" class="col-sm-4 form-label mt-2">
+                  Password
+                </label>
+                <div class="col-sm-8">
+                  <div class="form-password-toggle">
+                    <div class="input-group input-group-merge">
+                      {{ form.password }}
+                      <!-- Toggling icon (like in your signup) -->
+                      <span class="input-group-text cursor-pointer" id="signin-password"><i class="bx bx-hide"></i></span>
+                    </div>
+                  </div>
+                  {% if form.password.errors %}
+                    {% for error in form.password.errors %}
+                      <div class="text-danger small mt-1">{{ error }}</div>
+                    {% endfor %}
+                  {% endif %}
+                  {% if form.non_field_errors %}
+                    {% for error in form.non_field_errors %}
+                      <div class="text-danger small mt-1">{{ error }}</div>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+              </div>
+
+              <!-- Hidden redirect_field if present -->
+              {{ redirect_field }}
+
+              <div class="mt-4">
+                <a href="{% url 'account_reset_password' %}">Forgot Password?</a>
+              </div>
+
+              <!-- Submit button -->
+              <button class="btn btn-primary col-sm-12 mt-3 mb-1" type="submit">
+                <strong>Login</strong>
+              </button>
+            </form>
+          {% endif %}
+
+          <!-- Social login (if enabled) -->
+          {% if SOCIALACCOUNT_ENABLED %}
+            <div class="mt-2">
+              {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+
+{% block extra_body %}
+  {{ block.super }}
+  {% if PASSKEY_LOGIN_ENABLED %}
+    <!-- If using WebAuthn snippet for passkey authentication -->
+    {% include "mfa/webauthn/snippets/login_script.html" with button_id="passkey_login" %}
+  {% endif %}
+{% endblock %}

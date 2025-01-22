@@ -2,55 +2,17 @@
 {% load static %}
 
 {% block content %}
-<div class="row">
-    <div class="col-xl">
-      <div class="card mb-3">
-        <div class="card-body">
-            <h3 class="mb-2 text-center">Oligonucleotide Properties Calculator</h3>
-            <div class="table-responsive text-nowrap">
-                <table class="table table-borderless table-sm">
-                    <tr>
-                        <td>
-                            <ul class="list-unstyled mb-0">
-                                <ul>
-                                    <small>
-                                        <li>Calculator for natural, modified and therapeutic oligonucleotides</li>
-                                        <li>Melting temperature (Tm) of DNA/DNA duplexes with salt correction</li>
-                                        <li>Minor groove binder (MGB) contribution</li>
-                                    </small>
-                                </ul>
-                            </ul>
-                        </td>
-                        <td>
-                            <ul class="list-unstyled mb-0">
-                                <ul>
-                                    <small>
-                                        <li>Exact mass, molecular weight, ESI series and MS/MS fragments</li>
-                                        <li>Extinction coefficient, µg/OD, nmol/OD, quantification tool</li>
-                                        <li>Molecular formula calculator</li>
-                                    </small>
-                                </ul>
-                            </ul>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-
-
-
-        </div>
-      </div>
-    </div>
-</div>
-
 <form method="POST" action=".">
 {% csrf_token %}
 
 <div class="row">
     <div class="col-xl">
       <div class="card mb-4">
+        <div class="card-header  justify-content-between align-items-center">
+          <h2 class="mb-0 text-center">Oligonucleotide Properties Calculator</h2>
+        </div>
         <div class="card-header d-flex justify-content-between align-items-center">
-          <h5 class="col-md-4 mb-0"> Enter Oligonucleotide Sequence</h5>
+          <h4 class="col-md-4 mb-0"> Enter Oligonucleotide Sequence</h4>
         </div>
         <div class="card-body">
             <div class="row mb-1">
@@ -301,7 +263,7 @@
                                data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>LNA-T</small>">+T</div>
                           <div class="calc-item-invis"></div>
                           <div class="calc-item-backbone" data-value-DNA="*" data-value-RNA="*" data-value-MIX="*"
-                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>Phosphorothioate backbone<br/>PS</small>">ps / &#10035;</div>
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>Phosphorothioate backbone<br/>PS</small>">* / ps</div>
                           <div class="calc-item-backbone" data-value-DNA="[ps2]" data-value-RNA="[ps2]" data-value-MIX="ps2"
                                data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>Phosphorodithioate backbone<br/>PS<sub>2</sub></small>">ps2</div>
                           <div class="calc-item-backbone" data-value-DNA="[ms]" data-value-RNA="[ms]" data-value-MIX="ms"
@@ -353,7 +315,7 @@
                           <div class="calc-item-invis"></div>
                           <div class="calc-item-invis"></div>
                           <div class="calc-item-backbone" data-value-DNA="*" data-value-RNA="*" data-value-MIX="*"
-                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>Phosphorothioate backbone<br/>PS</small>">ps / &#10035;</div>
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>Phosphorothioate backbone<br/>PS</small>">* / ps</div>
                           <div class="calc-item-backbone" data-value-DNA="[ps2]" data-value-RNA="[ps2]" data-value-MIX="ps2"
                                data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>Phosphorodithioate backbone<br/>PS<sub>2</sub></small>">ps2</div>
                           <div class="calc-item-backbone" data-value-DNA="[ms]" data-value-RNA="[ms]" data-value-MIX="ms"

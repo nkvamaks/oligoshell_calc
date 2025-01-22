@@ -1,0 +1,102 @@
+{% extends "account/base_manage_email.html" %}
+{% load i18n %}
+{% load allauth %}
+{% load widget_tweaks %}
+{% block head_title %}Email Address{% endblock head_title %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-3"></div>
+  <div class="col-md-6">
+    <!-- Card -->
+    <div class="card">
+      <div class="card-body">
+        <!-- Page Title -->
+        <h1>Email Address</h1>
+
+        <!-- If user has no associated email addresses -->
+        {% if not emailaddresses %}
+          <div class="mb-2">{% include "account/snippets/warn_no_email.html" %}</div>
+        {% endif %}
+
+        <!-- Main form: POST to the email endpoint -->
+        {% url 'account_email' as action_url %}
+        <form method="post" action="{{ action_url }}">
+          {% csrf_token %}
+
+          <!-- If user already has a 'current_emailaddress' -->
+          {% if current_emailaddress %}
+            <div class="row mt-4 mb-2">
+              <label for="current_email" class="form-label col-sm-3 mt-2">Current email:</label>
+              <div class="col-sm-9">
+                <input type="email" id="current_email" disabled value="{{ current_emailaddress.email }}" class="form-control" />
+              </div>
+            </div>
+          {% endif %}
+
+          <!-- If there's a pending 'new_emailaddress' waiting for verification -->
+          {% if new_emailaddress %}
+            <div class="row">
+              <label for="new_email" class="form-label col-sm-3 mt-2">
+                {% if not current_emailaddress %}
+                  Current email:
+                {% else %}
+                  Changing to:
+                {% endif %}
+              </label>
+              <div class="col-sm-9">
+                <input type="email" id="new_email" disabled value="{{ new_emailaddress.email }}" class="form-control" />
+              </div>
+              <div class="offset-sm-3 mt-1">
+                <small class="text-muted">Your email address is still pending verification.</small>
+              </div>
+            </div>
+              <!-- Help text / re-send / cancel buttons -->
+
+              <div class="mt-2 mb-4">
+                <button type="submit" form="pending-email" name="action_send" class="btn btn-secondary me-2">
+                  Re-send Verification
+                </button>
+                {% if current_emailaddress %}
+                  <button type="submit" form="pending-email" name="action_remove" class="btn btn-danger">
+                    Cancel Change
+                  </button>
+                {% endif %}
+              </div>
+          {% endif %}
+
+          <!-- Allauth field for new email input -->
+          <div class="row">
+            <label for="{{ form.email.id_for_label }}" class="form-label col-sm-3 mt-2">Change to:</label>
+            <div class="col-sm-9">
+              {{ form.email|add_class:"form-control" }}
+            </div>
+            {% if form.email.errors %}
+              {% for error in form.email.errors %}
+                <div class="text-danger mt-1 offset-sm-3 small">{{ error }}</div>
+              {% endfor %}
+            {% endif %}
+          </div>
+
+          <!-- Submit button -->
+          <button type="submit" name="action_add" class="btn btn-primary mt-3">Change Email</button>
+        </form>
+
+        <!-- Hidden form to re-send or remove the pending email -->
+        {% if new_emailaddress %}
+          <form
+            style="display: none"
+            id="pending-email"
+            method="post"
+            action="{% url 'account_email' %}"
+          >
+            {% csrf_token %}
+            <input type="hidden" name="email" value="{{ new_emailaddress.email }}">
+          </form>
+        {% endif %}
+
+      </div><!-- /card-body -->
+    </div><!-- /card -->
+  </div><!-- /col-md-6 -->
+</div><!-- /row -->
+{% endblock content %}

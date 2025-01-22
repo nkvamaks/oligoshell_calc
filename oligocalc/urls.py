@@ -20,6 +20,7 @@ urlpatterns = [
     path('success/', views.success, name='success'),
     path('modifications/', views.modifications, name='modifications'),
     path('taqman_find/', views.TaqManFindView.as_view(), name='taqman_find'),
+    path('profile/details/', views.ProfileDetails.as_view(), name='profile_details'),
     path('robots.txt', views.robots_txt, name='robots_txt'),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap')
 ]

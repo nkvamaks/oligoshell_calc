@@ -1,0 +1,31 @@
+{% extends "account/base_manage.html" %}
+{% load i18n %}
+{% load allauth %}
+{% block head_title %}Verify Your Email Address{% endblock head_title %}
+{% block content %}
+<div class="row">
+  <div class="col-md-3"></div>
+  <div class="col-md-6">
+    <!-- Card -->
+    <div class="card">
+      <div class="card-body">
+        {% element h1 %}Verify Your Email Address{% endelement %}
+        {% url 'account_email' as email_url %}
+        {% element p %}
+            This part of the site requires us to verify that
+    you are who you claim to be. For this purpose, we require that you
+    verify ownership of your email address.
+        {% endelement %}
+        {% element p %}
+            We have sent an email to you for
+    verification. Please click on the link inside that email. If you do not see the verification email in your main inbox, check your spam folder. Otherwise
+    contact us if you do not receive it within a few minutes.
+        {% endelement %}
+        {% element p %}
+            <strong>Note:</strong> you can still <a href="{{ email_url }}">change your email address</a>.
+        {% endelement %}
+      </div><!-- /card-body -->
+    </div><!-- /card -->
+  </div><!-- /col-md-6 -->
+</div><!-- /row -->
+{% endblock content %}

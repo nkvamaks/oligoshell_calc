@@ -1,0 +1,43 @@
+{% extends "account/base_entrance.html" %}
+{% load allauth %}
+{% load i18n %}
+{% block head_title %}Confirm Access{% endblock head_title %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <!-- Card -->
+      <div class="card">
+        <div class="card-body">
+          <!-- Title -->
+          {% element h1 %}Confirm Access{% endelement %}
+
+          <!-- Subtitle / Explanation -->
+          <div class="mb-4">Please reauthenticate to safeguard your account.</div>
+
+          <!-- Reauthentication form or content -->
+          {% block reauthenticate_content %}
+          {% endblock %}
+
+          {% if reauthentication_alternatives %}
+             {% element hr %}
+             {% endelement %}
+             {% element h2 %}
+                {% translate "Alternative options" %}
+             {% endelement %}
+             {% element button_group %}
+                {% for alt in reauthentication_alternatives %}
+                   {% element button href=alt.url tags="primary,outline" %}
+                    {{ alt.description }}
+                   {% endelement %}
+                {% endfor %}
+             {% endelement %}
+          {% endif %}
+        </div>
+      </div>
+      <!-- /Card -->
+    </div>
+  </div>
+{% endblock content %}
+

@@ -1,13 +1,21 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.core.mail import EmailMessage
 from django.conf import settings
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse, reverse_lazy
-from django.views.generic import FormView
+from django.views.generic import DetailView, FormView, DeleteView
 from django.template.loader import render_to_string
 from meta.views import MetadataMixin
+# from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
+# from django.shortcuts import get_object_or_404
+# from django.views.generic import ListView
+from allauth.account.models import EmailAddress
+# from django.contrib import messages
 
 
+# from . import models
 from . import forms
 from . import utils
 from . import tm
@@ -19,7 +27,7 @@ class CalcView(MetadataMixin, FormView):
     template_name = 'oligocalc/calculator.html'
     form_class = forms.CalcForm
     success_url = reverse_lazy('oligocalc:calculator')
-    title = 'Oligonucleotide Properties Calculator | OligoShell'
+    title = 'Oligonucleotide Properties Calculator'
     description = 'Calculate nucleic acid properties online. Determine melting temperature, molecular weight, extinction coefficient for DNA, RNA and therapeutic oligonucleotides.'
     keywords = ['oligo calculator', 'oligonucleotide calculator', 'oligocalculator', 'oligo mass calculator', 'oligocalc',
                 'oligonucleotide properties', 'nucleic acids', 'melting temperature', 'Tm', 'extinction coefficient',
@@ -27,8 +35,9 @@ class CalcView(MetadataMixin, FormView):
                 'minor groove binder', 'MGB', 'modifications', 'conjugates', 'bioconjugates']
 
     def form_valid(self, form):
-        context = self.calculate_results(form)
-        return render(self.request, self.template_name, context)
+        context = self.get_context_data(form=form)
+        context.update(self.calculate_results(form))
+        return self.render_to_response(context)
 
     def calculate_results(self, form):
         sequence, mass_monoisotopic, concentration_molar, concentration_mass = '', 0, 0, 0
@@ -105,9 +114,7 @@ class CalcView(MetadataMixin, FormView):
             'gc_content': int(gc_content * 100),
             'brutto_formula': brutto_formula,
             'nmol_OD260': nmol_OD260,
-            'ug_OD260': ug_OD260,
-
-        }
+            'ug_OD260': ug_OD260}
 
 
 def about(request):
@@ -130,7 +137,7 @@ def contact(request):
             email = EmailMessage(
                 subject=subject,
                 body=body,
-                from_email='OligoShell App',
+                from_email='OligoShell Contact Form',
                 to=[settings.EMAIL_HOST_USER, ],
                 reply_to=[reply_to, ],
             )
@@ -154,7 +161,7 @@ def modifications(request):
 class TaqManFindView(MetadataMixin, FormView):
     template_name = 'oligocalc/taqman_find.html'
     form_class = forms.TaqManFindForm
-    title = 'TaqMan Assays Finder | OligoShell'
+    title = 'TaqMan Assay Finder'
     description = 'Find primers and probes for TaqMan assays within your target sequence by providing masses of primers and probe, chemical modifications, length of the amplicon, and reference sequence (RefSeq).'
     keywords = ['TaqMan probe', 'primer', 'real-time PCR', 'qPCR', 'PCR', 'RT-qPCR', 'probe finder', 'PCR probes',
                 'minor groove binder', 'MGB', 'modifications', 'exact mass', 'TaqMan assay', 'gene expression',
@@ -257,4 +264,32 @@ def robots_txt(request):
     sitemap_url = request.build_absolute_uri(reverse('oligocalc:django.contrib.sitemaps.views.sitemap'))
     content = render_to_string('oligocalc/robots.txt', {'sitemap_url': sitemap_url})
     return HttpResponse(content, content_type='text/plain')
+
+
+class ProfileDetails(MetadataMixin, LoginRequiredMixin, DeleteView):
+    model = User
+    template_name = 'oligocalc/profile_details.html'
+    success_url = reverse_lazy('oligocalc:calculator')
+    title = 'Profile Details'
+    description = 'Manage your personal information, associated email addresses, and connected social accounts securely. Update your profile details or delete your account with ease.'
+    keywords = ['user profile', 'account management', 'associated emails', 'social accounts', 'manage profile', 'personal information', 'update profile',
+                'oligonucleotide', 'DNA', 'RNA']
+
+    def get_object(self, **kwargs):
+        return self.request.user
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['email_addresses'] = EmailAddress.objects.filter(user=self.request.user)
+        context['delete_account_form'] = forms.DeleteAccountForm()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = forms.DeleteAccountForm(request.POST)
+        if form.is_valid():
+            user = self.get_object()
+            user.delete()
+            return redirect(reverse_lazy('account_logout'))
+        else:
+            return self.get(request, *args, **kwargs)
 

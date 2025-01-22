@@ -1,4 +1,11 @@
 from django import forms
+# from django.conf import settings
+from django.contrib.auth.models import User
+# from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from allauth.account.forms import SignupForm, LoginForm
+from django_recaptcha.fields import ReCaptchaField
+from django_recaptcha.widgets import ReCaptchaV2Checkbox
+
 from . import models
 from . import validators
 
@@ -55,20 +62,21 @@ class CalcForm(forms.ModelForm):
 class ContactForm(forms.Form):
     subject = forms.CharField(required=False,
                               max_length=200,
-                              widget=forms.TextInput(attrs={'placeholder': 'Subject',
+                              widget=forms.TextInput(attrs={'placeholder': 'Describe your issue briefly',
                                                             'class': 'form-control'}))
     name = forms.CharField(required=False,
                            max_length=100,
-                           widget=forms.TextInput(attrs={'placeholder': 'Your Name',
+                           widget=forms.TextInput(attrs={'placeholder': 'John Doe',
                                                          'class': 'form-control'}))
     reply_to = forms.EmailField(required=False,
-                                widget=forms.TextInput(attrs={'placeholder': 'Your Email',
+                                widget=forms.TextInput(attrs={'placeholder': 'john.doe@example.com',
                                                               'class': 'form-control'}))
     message = forms.CharField(required=True,
                               widget=forms.Textarea(attrs={'rows': 4,
-                                                           'placeholder': 'Your message (Required)',
+                                                           'placeholder': 'Enter your message here...',
                                                            'class': 'form-control'
                                                            }))
+    recaptcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
 
 
 class TaqManFindForm(forms.ModelForm):
@@ -91,7 +99,7 @@ class TaqManFindForm(forms.ModelForm):
         model = models.TaqManFind
         fields = '__all__'
         widgets = {'fasta': forms.Textarea(attrs={'rows': 7,
-                                                  'placeholder': 'Fetch NCBI RefSeq or paste DNA/RNA target sequence as a plain text or FASTA format',
+                                                  'placeholder': '>NM_001101.3 Homo sapiens actin beta (ACTB), mRNA\nACCGCCGAGACCGCGTCCGCCCCGCGAGCACAGAGCCTCGCCTTTGCCGATCCGCCGCCCGTCCACACCC\nGCCGCCAGCTCACCATGGATGATGATATCGCCGCGCTCGTCGTCGACAACGGCTCCGGCATGTGCAAGGC\nCGGCTTCGCGGGCGACGATGCCCCCCGGGCCGTCTTCCCCTCCATCGTGGGGCGCCCCAGGCACCAGGGC',
                                                   'class': 'form-control',
                                                   'id': 'output',
                                                   'style': 'font-family: monospace,monospace;'}),
@@ -105,3 +113,61 @@ class TaqManFindForm(forms.ModelForm):
                    'amp_size': forms.NumberInput(attrs={'placeholder': '120',
                                                         'class': 'form-control'}),
                    }
+
+
+class DeleteAccountForm(forms.Form):
+    confirm_deletion = forms.BooleanField(required=True,
+                                          label="I confirm my account deactivation",
+                                          widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}))
+
+
+class CustomSignupForm(SignupForm):
+    first_name = forms.CharField(max_length=150, label='First Name', required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'John'}))
+    last_name = forms.CharField(max_length=150, label='Last Name', required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Doe'}))
+    recaptcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['first_name'].widget.attrs.update({'class': 'form-control'})
+        self.fields['last_name'].widget.attrs.update({'class': 'form-control'})
+        self.fields['username'].widget.attrs.update({'class': 'form-control'})
+        self.fields['email'].widget.attrs.update({'class': 'form-control'})
+        self.fields['password1'].widget.attrs.update({'class': 'form-control'})
+        self.fields['password2'].widget.attrs.update({'class': 'form-control'})
+
+    class Meta:
+        model = User
+        fields = '__all__'
+
+    def save(self, request):
+        user = super(SignupForm, self).save(request)
+        user.first_name = self.cleaned_data['first_name']
+        user.last_name = self.cleaned_data['last_name']
+        user.save()
+        return user
+
+    def signup(self, request, user):
+        """ This function is required otherwise you will get an ImproperlyConfigured exception """
+        pass
+
+
+class CustomLoginForm(LoginForm):
+    """
+    A custom LoginForm that adds 'form-control' classes to fields,
+    changes labels/attributes, or overrides certain methods if needed.
+    """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['login'].widget.attrs.update({
+            'class': 'form-control',
+            'placeholder': 'john.doe@example.com',
+        })
+        self.fields['login'].label = "Email"
+        self.fields['password'].widget.attrs.update({
+            'class': 'form-control',
+            'placeholder': '············',
+        })
+        self.fields['password'].label = "Password"
+
+    def login(self, *args, **kwargs):
+        return super().login(*args, **kwargs)

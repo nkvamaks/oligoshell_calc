@@ -1,0 +1,10 @@
+{% load static %}
+<div>
+    <!-- Show different logos based on provider_id -->
+    {% if attrs.provider_id == "google" %}
+        <a title="{{ attrs.name }}" href="{{ attrs.href }}" class="btn rounded-pill btn-outline-secondary">
+            <img src="{% static 'assets/img/icons/brands/google.png' %}" alt="Google" class="me-3" height="30">
+            {{ attrs.name }}
+        </a>
+    {% endif %}
+</div>

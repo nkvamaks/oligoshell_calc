@@ -1,0 +1,74 @@
+{% extends "socialaccount/base_entrance.html" %}
+{% load i18n %}
+{% load allauth %}
+{% block head_title %}Signup{% endblock head_title %}
+{% block content %}
+<div class="row">
+  <div class="col-md-3"></div>
+  <div class="col-md-6">
+    <!-- Card -->
+    <div class="card">
+      <div class="card-body">
+        {% element h1 %}Sign Up{% endelement %}
+        {% element p %}
+            {% blocktrans with provider_name=account.get_provider.name site_name=site.name %}You are about to use your {{provider_name}} account to login to
+    {{site_name}}. As a final step, please complete the following form:{% endblocktrans %}
+        {% endelement %}
+
+        <!-- Signup Form -->
+        {% url 'socialaccount_signup' as action_url %}
+        <form method="post" action="{{ action_url }}">
+          {% csrf_token %}
+          {{ redirect_field }}
+
+          <!-- Loop through each form field -->
+          {% for field in form %}
+            <div class="mb-3">
+              <!-- Label for the field -->
+              <label for="{{ field.id_for_label }}" class="form-label">
+                {{ field.label }}
+                {% if field.field.required %}
+                  <span class="text-danger">*</span>
+                {% endif %}
+              </label>
+
+              <!-- Input Group for the field -->
+              <div class="input-group">
+                <!-- Optional: Add an icon based on the field type or name -->
+                {% if field.name == "email" %}
+                  <span class="input-group-text"><i class="bx bx-envelope"></i></span>
+                {% elif field.name == "username" %}
+                  <span class="input-group-text"><i class="bx bx-user"></i></span>
+                {% endif %}
+
+                <!-- Render the form field with Bootstrap classes -->
+                {{ field|add_class:"form-control" }}
+              </div>
+
+              <!-- Field Help Text -->
+              {% if field.help_text %}
+                <small class="form-text text-muted">{{ field.help_text }}</small>
+              {% endif %}
+
+              <!-- Field Errors -->
+              {% if field.errors %}
+                {% for error in field.errors %}
+                  <div class="text-danger small mt-1">{{ error }}</div>
+                {% endfor %}
+              {% endif %}
+            </div>
+          {% endfor %}
+
+          <!-- Submit Button -->
+          <div class="d-flex align-items-center mt-4">
+            <button type="submit" class="btn btn-primary me-3">
+              {% trans "Sign Up" %}
+            </button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

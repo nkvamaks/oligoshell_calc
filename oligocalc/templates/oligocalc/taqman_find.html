@@ -45,40 +45,43 @@
     <div class="col-md-8">
         <div class="card">
             <div class="card-body">
+                <!-- Form for fetching RefSeq -->
+                <form method="POST" action="{% url 'oligocalc:taqman_find' %}">
+                    {% csrf_token %}
+                    <div class="row mb-3">
+                        <label class="mb-1" for="accInput">Enter an accession number and fetch sequence:</label>
+                        <div class="col-md-7">
+                            <div class="input-group">
+                                <input class="form-control" type="text" id="accInput" placeholder="NM_009417">
+                                <button id="fetchButton" class="btn btn-secondary" name="fetchRefSeq">Fetch RefSeq</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl">
+                            <div id="errorFetchSeq" class="error"></div>
+                        </div>
+                    </div>
 
-                <div class="table-responsive">
-                    <!-- Form for fetching RefSeq -->
-                    <form method="POST" action="{% url 'oligocalc:taqman_find' %}">
-                        {% csrf_token %}
-                        <table class="table table-borderless" style="table-layout: fixed; width: 100%">
-                            <tr class="p-0 m-0">
-                                <td width="45%">
-                                    <input class="form-control" type="text" id="accInput" placeholder="NM_009417">
-                                </td>
-                                <td>
-                                    <button id="fetchButton" class="ms-0 btn btn-secondary" name="fetchRefSeq">Fetch RefSeq</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2"><div id="errorFetchSeq" class="error"></div></td>
-                            </tr>
-                        </table>
-                    </form>
-                </div>
+                </form>
+
 
                 <!-- Form for TaqMan Finder -->
 
                 <form method="POST" action="{% url 'oligocalc:taqman_find' %}">
                     {% csrf_token %}
-                    <div class="col-md-12 p-1">
-                        {{form_taqman.fasta}}
-                    </div>
-                    <div class="col-md-12 p-1">
-                        {% if form_taqman.errors %}
-                            {% for field_error, error in form_taqman.errors.items %}
-                                <div>{{ error }}</div>
-                            {% endfor %}
-                        {% endif %}
+                    <div class="row">
+                        <div class="col-xl">
+                            <label class="mb-1" for="output">Or paste DNA/RNA target sequence as a plain text ot FASTA format:</label>
+                            {{form_taqman.fasta}}
+                        </div>
+                        <div class="col-md-12 p-1">
+                            {% if form_taqman.errors %}
+                                {% for field_error, error in form_taqman.errors.items %}
+                                    <div>{{ error }}</div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
                     </div>
 
             </div>

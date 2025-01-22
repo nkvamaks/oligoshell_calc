@@ -1,0 +1,145 @@
+{% extends "layout/basic.html" %}
+{% load static %}
+{% load i18n %}
+{% load allauth %}
+
+{% block content %}
+  <div class="row">
+
+    <!-- Profile details -->
+    <div class="col-md-8">
+      <div class="card mb-4">
+        <div style="display:flex; align-items: center;">
+          <h4 class="card-header">Profile Details for User:<b>&ensp;{{ user.username }}</b></h4>
+        </div>
+
+        <hr class="my-0" />
+        <div class="card-body">
+          <div class="row mb-2">
+            <div class="col-md-4">
+              <b>First Name</b>
+            </div>
+            <div class="col-md-8">
+              {{ user.first_name }}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <b>Last Name</b>
+            </div>
+            <div class="col-md-8">
+              {{ user.last_name }}
+            </div>
+          </div>
+        </div>
+        <hr class="my-0" />
+        <div class="card-body">
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <h5>Associated Emails</h5>
+            </div>
+            <div class="col-md-3">
+              <b>Primary</b>
+            </div>
+            <div class="col-md-3">
+              <b>Verified</b>
+            </div>
+          </div>
+
+          {% for email in email_addresses %}
+          <div class="row">
+            <div class="col-md-6">
+              {{ email.email }}
+            </div>
+            <div class="col-md-3">
+              {% if email.primary %}
+                <i class="bx bx-check-circle" style="color:green;"></i>
+              {% else %}
+                <i class="bx bx-x-circle" style="color:red;"></i>
+              {% endif %}
+            </div>
+            <div class="col-md-3">
+              {% if email.verified %}
+                <i class="bx bx-check-circle" style="color:green;"></i>
+              {% else %}
+                <i class="bx bx-x-circle" style="color:red;"></i>
+              {% endif %}
+            </div>
+          </div>
+          {% endfor %}
+
+          <!-- Action Buttons -->
+          <div class="mb-4">
+            <a class="btn btn-primary mt-4" type="button" href="{% url 'account_email' %}">Manage email addresses</a>
+            <a class="btn btn-primary ms-3 mt-4" type="button" href="{% url 'account_change_password' %}">Change password</a>
+            <a class="btn btn-primary ms-3 mt-4" type="button" href="{% url 'socialaccount_connections' %}">Connect to social account</a>
+          </div>
+
+          <hr class="my-0" />
+
+          <!-- New Section: Associated Emails from Social Accounts -->
+          {% if user.socialaccount_set.exists %}
+          <div class="mt-4">
+            <h5>Associated Emails from Social Accounts</h5>
+
+              {% for social_account in user.socialaccount_set.all %}
+                <div class="row mt-4">
+                  <div class="col-md-4">
+                    <b>{{ social_account.get_provider.name }}</b>
+                  </div>
+                  <div class="col-md-8">
+                    {% if social_account.extra_data.email %}
+                      <span class="badge bg-label-success">{{ social_account.extra_data.email }}</span>
+                    {% else %}
+                      <span class="badge bg-label-warning">No Email Provided</span>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endfor %}
+
+          </div>
+          {% else %}
+            <div class="mt-4">
+              <h5>No Social Accounts Connected</h5>
+              <p>You have not connected any social accounts.</p>
+            </div>
+          {% endif %}
+          <!-- End of New Section -->
+
+        </div>
+      </div>
+    </div>
+    <!-- /Profile details -->
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <h4 class="card-header">Delete Account</h4>
+        <div class="card-body">
+          <div class="mb-3 col-12 mb-0">
+            <div class="alert alert-warning">
+              <h6 class="alert-heading fw-bold mb-1">Are you sure you want to delete your account?</h6>
+              <p class="mb-0">Once you delete your account, there is no going back. Please be certain.</p>
+            </div>
+          </div>
+          <form method="POST" action=".">
+            {% csrf_token %}
+            <div class="form-check mt-3 mb-3">
+              {{ delete_account_form.confirm_deletion }}
+              <label class="form-check-label" for="id_confirm_deletion">I confirm my account deletion</label>
+            </div>
+            <button type="submit" class="btn btn-danger deactivate-account" onclick="return confirmDeletion()">Delete Account</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+function confirmDeletion() {
+    return confirm("Are you sure you want to delete your account?");
+}
+</script>
+
+{% endblock %}

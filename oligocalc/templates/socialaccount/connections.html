@@ -1,0 +1,77 @@
+{% extends "socialaccount/base_manage.html" %}
+{% load i18n %}
+{% load allauth %}
+{% block head_title %}Account Connections{% endblock head_title %}
+{% block content %}
+<div class="row">
+  <div class="col-md-3"></div>
+  <div class="col-md-6">
+    <!-- Card -->
+    <div class="card">
+      <div class="card-body">
+        {% element h1 %}Account Connections{% endelement %}
+
+        {% if form.accounts %}
+          <!-- Informational Message -->
+          <p class="card-text">You can sign in to your account using any of the following third-party accounts:</p>
+
+          <!-- Connections Form -->
+          {% url 'socialaccount_connections' as action_url %}
+          <form method="post" action="{{ action_url }}">
+            {% csrf_token %}
+            {{ redirect_field }}
+
+            <!-- Loop through each connected account -->
+            {% for acc in form.fields.account.choices %}
+              {% with account=acc.0.instance.get_provider_account %}
+                <div class="form-check mb-3">
+                  <!-- Radio Input -->
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="account"
+                    id="account_{{ account.account.pk }}"
+                    value="{{ account.account.pk }}"
+                  >
+                  <!-- Label with Badge -->
+                  <label class="form-check-label d-flex justify-content-between align-items-center" for="account_{{ account.account.pk }}">
+                    {{ account }}
+                    <span class="badge bg-secondary">
+                      {{ account.get_brand.name }}
+                    </span>
+                  </label>
+                </div>
+              {% endwith %}
+            {% endfor %}
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-danger">
+              Remove
+            </button>
+            {% if form.non_field_errors %}
+              {% for error in form.non_field_errors %}
+                <div class="text-danger small mt-1">{{ error }}</div>
+              {% endfor %}
+            {% endif %}
+          </form>
+        {% else %}
+          <!-- No Connected Accounts Message -->
+          <p class="card-text">You currently have no third-party accounts connected to this account.</p>
+        {% endif %}
+
+        <!-- Divider -->
+        <hr class="my-4">
+
+        <!-- Add a Third-Party Account Section -->
+        <h2 class="card-title mb-3">Add a Third-Party Account</h2>
+
+        <!-- Provider List -->
+        {% include "socialaccount/snippets/provider_list.html" with process="connect" %}
+
+        <!-- Additional Login Options -->
+        {% include "socialaccount/snippets/login_extra.html" %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

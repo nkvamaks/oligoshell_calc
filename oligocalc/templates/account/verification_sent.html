@@ -1,0 +1,26 @@
+{% extends "account/base_entrance.html" %}
+{% load i18n %}
+{% load allauth %}
+{% block head_title %}Verify Your Email Address{% endblock head_title %}
+{% block content %}
+
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <!-- Confirm Email Card -->
+      <div class="card">
+        <div class="card-body">
+          <!-- Title & Subtitle -->
+          <div class="text-center">{% element h1 %}Verify Your Email Address{% endelement %}</div>
+          <div class="text-center">
+            We have sent an email to you for verification. Follow the link provided to finalize the signup process.
+            If you do not see the verification email in your main inbox, check your spam folder. Please <a href="{% url 'oligocalc:contact' %}">contact us</a>
+            if you do not receive the verification email within a few minutes.
+          </div>
+
+        </div>
+      </div>
+      <!-- /Confirm Email Card -->
+    </div>
+  </div>
+{% endblock content %}

@@ -1,21 +1,18 @@
+import io
 from django.shortcuts import render, redirect
 from django.core.mail import EmailMessage
 from django.conf import settings
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse, reverse_lazy
-from django.views.generic import DetailView, FormView, DeleteView
+from django.views.generic import FormView, DeleteView
 from django.template.loader import render_to_string
 from meta.views import MetadataMixin
-# from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-# from django.shortcuts import get_object_or_404
-# from django.views.generic import ListView
 from allauth.account.models import EmailAddress
-# from django.contrib import messages
+from openpyxl import Workbook
 
 
-# from . import models
 from . import forms
 from . import utils
 from . import tm
@@ -35,9 +32,67 @@ class CalcView(MetadataMixin, FormView):
                 'minor groove binder', 'MGB', 'modifications', 'conjugates', 'bioconjugates']
 
     def form_valid(self, form):
+        if 'export_excel' in self.request.POST:
+            sequence_data = self.calculate_results(form)
+            ms_frag_array = sequence_data.get('mass_fragments_array')
+            return self.export_to_excel(ms_frag_array)
+
         context = self.get_context_data(form=form)
         context.update(self.calculate_results(form))
         return self.render_to_response(context)
+
+    def export_to_excel(self, ms_frag_array):
+        """
+        Create an Excel file (using openpyxl) and return it as an attachment.
+        """
+        wb = Workbook()
+        wb.remove(wb.active)    # Remove active sheet
+
+        # If ms_frag_array is empty or None, handle the "no data" scenario
+        if not ms_frag_array:
+            ws_empty = wb.create_sheet(title='NoData')
+            ws_empty.append(['No MS2 data'])
+        else:
+
+            # Loop through each charge state with its index
+            for idx, charge_state_data in enumerate(ms_frag_array, start=1):
+                ws = wb.create_sheet(title=f'z-{idx}')
+                # Add a header row
+                headers = ['d', 'c', 'b', 'a', 'a-B', "5'-Index", 'Sequence', "3'-Index", 'w', 'x', 'y', 'z']
+                ws.append(headers)
+
+                n = len(charge_state_data)
+
+                for row_idx, row_data_tup in enumerate(charge_state_data):
+                    d, c, b, a, a_B, seq, w, x, y, z = row_data_tup
+                    row_data = [
+                        d if d >= 0 else None,
+                        c if c >= 0 else None,
+                        b if b >= 0 else None,
+                        a if a >= 0 else None,
+                        a_B if a_B >= 0 else None,
+                        row_idx + 1,                # 5'-Index
+                        seq,                        # Sequence
+                        n - row_idx,                # 3'-Index
+                        w if w >= 0 else None,
+                        x if x >= 0 else None,
+                        y if y >= 0 else None,
+                        z if z >= 0 else None,
+                    ]
+                    ws.append(row_data)
+
+        # Save workbook to an in-memory stream
+        excel_buffer = io.BytesIO()
+        wb.save(excel_buffer)
+        excel_buffer.seek(0)  # Move cursor to the beginning of the stream
+
+        # Build an HttpResponse with the correct headers
+        response = HttpResponse(
+            excel_buffer.getvalue(),
+            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+        response['Content-Disposition'] = 'attachment; filename="ms2_fragments.xlsx"'
+        return response
 
     def calculate_results(self, form):
         sequence, mass_monoisotopic, concentration_molar, concentration_mass = '', 0, 0, 0

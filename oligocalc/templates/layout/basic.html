@@ -275,8 +275,10 @@
                     </div>
 
                     <div>
+                      {%comment%}
                       <a href="https://themeselection.com/license/" class="footer-link me-4" target="_blank">License</a>
                       <a href="javascript:void(0)" class="footer-link">Terms &amp; Conditions</a>
+                      {%endcomment%}
                       {% if request.user.is_authenticated %}
                         <a href="/accounts/logout/" class="ms-3 footer-link"><i class="bx bx-log-out-circle"></i>Logout</a>
                       {% endif %}

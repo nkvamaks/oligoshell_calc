@@ -519,8 +519,7 @@ def calc_tm(seq, target, dna_conc, mv_conc, dv_conc, dntp_conc):
 
 
 def calculate_melting_temp(seq_wo_phosph_tup, sequence, target, dna_conc, mv_conc, dv_conc, dntp_conc):
-    allowed_for_calc_tm_mgb = set(
-        utils.dna_nucleotides + utils.modification_5_position + utils.modification_3_position)
+    allowed_for_calc_tm_mgb = utils.dna_nucleotides | utils.modification_5_position | utils.modification_3_position
     allowed_for_calc_tm = allowed_for_calc_tm_mgb - {'MGB', 'MGB-ECLIPSE'}
 
     dna_mon = all(nt in allowed_for_calc_tm for nt in seq_wo_phosph_tup)

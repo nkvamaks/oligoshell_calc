@@ -1,7 +1,7 @@
 .calc-grid-container {
   display: grid;
   grid-template-columns: repeat(6, 55px);
-  grid-template-rows: repeat(7, 29px);
+  grid-template-rows: repeat(9, 29px);
   grid-column-gap: 2px;
   grid-row-gap: 2px;
   -webkit-user-select: none; /* Safari */
@@ -43,13 +43,13 @@
   align-items: center;
   font-size: small;
   color: #4682B4;
-  border: 1px solid #50C878;
+  border: 1px solid purple;
   border-radius: 4px;
 }
 
 .calc-item-rare:hover {
     background-color: #F5F5F5;
-    border-color: #50C878;
+    border-color: purple;
     box-shadow: 0 0.125rem 0.25rem 0 rgba(105, 108, 255, 0.4);
 }
 .calc-item-rare:active {

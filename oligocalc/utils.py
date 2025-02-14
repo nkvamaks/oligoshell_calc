@@ -1,3 +1,6 @@
+import numpy as np
+
+
 # Monoisotopic and average masses of elements and some molecules
 mass_mono = {
     'H': 1.007825035, 'Li': 7.016003, 'B': 11.0093055, 'C': 12, 'N': 14.003074, 'O': 15.99491463,
@@ -23,7 +26,9 @@ nucleotide_extinction_260 = {'dA': 15400, 'dC': 7400,  'dG': 11500, 'dT': 8700, 
                              'fA': 15400, 'fC': 7200, 'fG': 11500, 'fU': 9900,
                              'mA': 15400, 'mC': 7200, 'mG': 11500, 'mU': 9900,
                              '+A': 15400, '+Cm': 7200, '+G': 11500, '+T': 8700,
+                             'cetA': 15400, 'cetC': 7200, 'cetG': 11500, 'cetU': 9900,
                              'moeA': 15400, 'moeCm': 7200, 'moeG': 11500, 'moeT': 8700,
+                             'morA': 15400, 'morC': 7200, 'morG': 11500, 'morT': 8700,
                              'A': 15400, 'C': 7400, 'G': 11500, 'T': 8700, 'U': 9900}
 
 # Michael J. Cavaluzzi and Philip N. Borer. Revised UV extinction coefficients for nucleoside-5′-monophosphates
@@ -62,7 +67,9 @@ modification_extinction_260 = {
 
     'GALNAC-PRO': 0, 'CHOL-PRO': 0, 'GALNAC3-ALN': 0,
 
-    'po': 0, 'ps': 0, '*': 0, 'ps2': 0, 'ms': 0,
+    'MOR-TEG': 0,
+
+    'po': 0, 'ps': 0, '*': 0, 'ps2': 0, 'ms': 0, '#': 0, 'dma': 0
 }
 
 map_compl = {
@@ -77,6 +84,8 @@ map_nucleoside = {
     'mA': 'A', 'mC': 'C', 'mG': 'G', 'mU': 'U',
     '+A': 'A', '+Cm': 'C', '+G': 'G', '+T': 'T',
     'moeA': 'A', 'moeCm': 'C', 'moeG': 'G', 'moeT': 'T',
+    'morA': 'A', 'morC': 'C', 'morG': 'G', 'morT': 'T',
+    'cetA': 'A', 'cetC': 'C', 'cetG': 'G', 'cetU': 'U',
 }
 
 map_deg_nucleoside = {
@@ -93,7 +102,10 @@ map_nucleobase = {
     'mA': 'baseA', 'mC': 'baseC', 'mG': 'baseG', 'mU': 'baseU',
     '+A': 'baseA', '+Cm': 'baseCm', '+G': 'baseG', '+T': 'baseT',
     'moeA': 'baseA', 'moeCm': 'baseCm', 'moeG': 'baseG', 'moeT': 'baseT',
+    'cetA': 'baseA', 'cetC': 'baseC', 'cetG': 'baseG', 'cetU': 'baseU',
 }
+
+map_backbone = {'#': 'NMe2', 'dma': 'NMe2'}
 
 map_dna2mix = {
     'A': 'dA', 'C': 'dC', 'G': 'dG', 'T': 'dT',
@@ -105,12 +117,15 @@ map_dna2mix = {
     '[mA]': 'mA', '[mC]': 'mC', '[mG]': 'mG', '[mU]': 'mU',
     '[+A]': '+A', '[+Cm]': '+Cm', '[+G]': '+G', '[+T]': '+T',
     '[moeA]': 'moeA', '[moeCm]': 'moeCm', '[moeG]': 'moeG', '[moeT]': 'moeT',
+    '[morA]': 'morA', '[morC]': 'morC', '[morG]': 'morG', '[morT]': 'morT',
+    '[cetA]': 'cetA', '[cetC]': 'cetC', '[cetG]': 'cetG', '[cetU]': 'cetU',
     '[ALKYNE]': 'ALKYNE', '[FAM]': 'FAM', '[TET]': 'TET', '[HEX]': 'HEX', '[JOE]': 'JOE', '[VIC]': 'VIC',
     '[TMR-ACH]': 'TMR-ACH', '[R6G]': 'R6G', '[R6G-ACH]': 'R6G-ACH', '[ROX-CLK]': 'ROX-CLK', '[CY3-ACH]': 'CY3-ACH',
     '[CY5-CLK]': 'CY5-CLK', '[CHOL-PRO]': 'CHOL-PRO', '[GALNAC-PRO]': 'GALNAC-PRO', '[GALNAC3-ALN]': 'GALNAC3-ALN',
     '[TR-CLK]': 'TR-CLK', '[AF594-CLK]': 'AF594-CLK', '[ATTO647N-CLK]': 'ATTO647N-CLK',
     '[BHQ1]': 'BHQ1', '[BHQ2]': 'BHQ2', '[MGB]': 'MGB', '[MGB-ECLIPSE]': 'MGB-ECLIPSE', '[ECLIPSE]': 'ECLIPSE',
-    '*': '*', '[po]': 'po', '[ps]': 'ps', '[ps2]': 'ps2', '[ms]': 'ms',
+    '[MOR-TEG]': 'MOR-TEG',
+    '*': '*', '[po]': 'po', '[ps]': 'ps', '[ps2]': 'ps2', '[ms]': 'ms', '#': '#', '[dma]': 'dma',
 }
 
 map_rna2mix = {
@@ -122,13 +137,16 @@ map_rna2mix = {
     '[fA]': 'fA', '[fC]': 'fC', '[fG]': 'fG', '[fU]': 'fU',
     '[mA]': 'mA', '[mC]': 'mC', '[mG]': 'mG', '[mU]': 'mU',
     '[+A]': '+A', '[+Cm]': '+Cm', '[+G]': '+G', '[+T]': '+T',
+    '[cetA]': 'cetA', '[cetC]': 'cetC', '[cetG]': 'cetG', '[cetU]': 'cetU',
     '[moeA]': 'moeA', '[moeCm]': 'moeCm', '[moeG]': 'moeG', '[moeT]': 'moeT',
+    '[morA]': 'morA', '[morC]': 'morC', '[morG]': 'morG', '[morT]': 'morT',
     '[ALKYNE]': 'ALKYNE', '[FAM]': 'FAM', '[TET]': 'TET', '[HEX]': 'HEX', '[JOE]': 'JOE', '[VIC]': 'VIC',
     '[TMR-ACH]': 'TMR-ACH', '[R6G]': 'R6G', '[R6G-ACH]': 'R6G-ACH', '[ROX-CLK]': 'ROX-CLK', '[CY3-ACH]': 'CY3-ACH',
     '[CY5-CLK]': 'CY5-CLK', '[CHOL-PRO]': 'CHOL-PRO', '[GALNAC-PRO]': 'GALNAC-PRO', '[GALNAC3-ALN]': 'GALNAC3-ALN',
     '[TR-CLK]': 'TR-CLK', '[AF594-CLK]': 'AF594-CLK', '[ATTO647N-CLK]': 'ATTO647N-CLK',
     '[BHQ1]': 'BHQ1', '[BHQ2]': 'BHQ2', '[MGB]': 'MGB', '[MGB-ECLIPSE]': 'MGB-ECLIPSE', '[ECLIPSE]': 'ECLIPSE',
-    '*': '*', '[po]': 'po', '[ps]': 'ps', '[ps2]': 'ps2', '[ms]': 'ms',
+    '[MOR-TEG]': 'MOR-TEG',
+    '*': '*', '[po]': 'po', '[ps]': 'ps', '[ps2]': 'ps2', '[ms]': 'ms', '#': '#', '[dma]': 'dma',
 }
 
 
@@ -139,7 +157,7 @@ map_rna2mix = {
 # m -     2'-methoxy
 # + -     LNA
 # moe -   2-MOE
-nucleotide_any_position = (
+nucleotide_any_position = {
     'dA', 'dC', 'dG', 'dT', 'dCm', 'dU',
     'dW', 'dS', 'dM', 'dK', 'dR', 'dY', 'dB', 'dD', 'dH', 'dV', 'dN',
     'rA', 'rC', 'rG', 'rU',
@@ -148,31 +166,36 @@ nucleotide_any_position = (
     'mA', 'mC', 'mG', 'mU',
     '+A', '+Cm', '+G', '+T',
     'moeA', 'moeCm', 'moeG', 'moeT',
-)
+    'morA', 'morC', 'morG', 'morT',
+    'cetA', 'cetC', 'cetG', 'cetU',
+}
 
 # Modifications available only at 5'-position
-modification_5_position = ['FAM', 'TET', 'HEX', 'JOE', 'VIC',
+modification_5_position = {'FAM', 'TET', 'HEX', 'JOE', 'VIC',
                            'TMR-ACH', 'R6G', 'R6G-ACH', 'ROX-CLK', 'TR-CLK', 'AF594-CLK',
                            'CY3-ACH', 'CY5-CLK', 'ATTO647N-CLK',
                            'ALKYNE',
                            'CHOL-PRO', 'GALNAC-PRO',
-                           'po']
+                           'MOR-TEG',
+                           'po'}
 
 # Modifications available only at 3'-position
-modification_3_position = ['BHQ1', 'BHQ2', 'MGB', 'MGB-ECLIPSE', 'ECLIPSE',
+modification_3_position = {'BHQ1', 'BHQ2', 'MGB', 'MGB-ECLIPSE', 'ECLIPSE',
                            'CHOL-PRO', 'GALNAC-PRO', 'GALNAC3-ALN',
-                           'po']
+                           'po'}
 
 # Modifications available only at internal position
-modification_int_position = ['BHQ1', 'BHQ2', 'ECLIPSE', 'GALNAC-PRO']
+modification_int_position = {'BHQ1', 'BHQ2', 'ECLIPSE', 'GALNAC-PRO'}
 
 # Modifications available on phosphate
-modification_phosphorus = ['po', 'ps', '*', 'ps2', 'ms']
+modification_phosphorus = {'po', 'ps', '*', 'ps2', 'ms', '#', 'dma'}
 
-degenerate_nucleotide = ['dW', 'dS', 'dM', 'dK', 'dR', 'dY', 'dB', 'dD', 'dH', 'dV', 'dN',
-                         'rW', 'rS', 'rM', 'rK', 'rR', 'rY', 'rB', 'rD', 'rH', 'rV', 'rN']
+degenerate_nucleotide = {'dW', 'dS', 'dM', 'dK', 'dR', 'dY', 'dB', 'dD', 'dH', 'dV', 'dN',
+                         'rW', 'rS', 'rM', 'rK', 'rR', 'rY', 'rB', 'rD', 'rH', 'rV', 'rN'}
 
-dna_nucleotides = ['dA', 'dC', 'dG', 'dT', 'dCm', 'dU']
+dna_nucleotides = {'dA', 'dC', 'dG', 'dT', 'dCm', 'dU'}
+mor_nucleotides = {'morA', 'morC', 'morG', 'morT', 'MOR-TEG'}
+ms2_backbones = {'#', 'dma'}
 
 all_nucleotide = {*nucleotide_any_position,
                   *modification_5_position,
@@ -226,10 +249,20 @@ formula = {
     '+Cm': {'C': 11, 'H': 15, 'N': 3, 'O': 5},
     '+G': {'C': 11, 'H': 13, 'N': 5, 'O': 5},
     '+T': {'C': 11, 'H': 14, 'N': 2, 'O': 6},
+    'cetA': {'C': 12, 'H': 15, 'N': 5, 'O': 4},
+    'cetC': {'C': 11, 'H': 15, 'N': 3, 'O': 5},
+    'cetG': {'C': 12, 'H': 15, 'N': 5, 'O': 5},
+    'cetU': {'C': 11, 'H': 14, 'N': 2, 'O': 6},
     'moeA': {'C': 13, 'H': 19, 'N': 5, 'O': 5},
     'moeCm': {'C': 13, 'H': 21, 'N': 3, 'O': 6},
     'moeG': {'C': 13, 'H': 19, 'N': 5, 'O': 6},
     'moeT': {'C': 13, 'H': 20, 'N': 2, 'O': 7},
+
+    'morA': {'C': 10, 'H': 14, 'N': 6, 'O': 2},
+    'morC': {'C': 9, 'H': 14, 'N': 4, 'O': 3},
+    'morG': {'C': 10, 'H': 14, 'N': 6, 'O': 3},
+    'morT': {'C': 10, 'H': 15, 'N': 3, 'O': 4},
+
     'ALKYNE': {'C': 12, 'H': 19, 'N': 1, 'O': 2},
     'FAM': {'C': 27, 'H': 25, 'N': 1, 'O': 7},
     'TMR-ACH': {'C': 31, 'H': 33, 'N': 3, 'O': 5},
@@ -256,6 +289,8 @@ formula = {
     'GALNAC-PRO': {'C': 24, 'H': 43, 'N': 3, 'O': 10},
     'GALNAC3-ALN': {'C': 78, 'H': 139, 'N': 11, 'O': 31},
 
+    'MOR-TEG': {'C': 11, 'H': 22, 'N': 2, 'O': 5},
+
     'baseA': {'C': 5, 'H': 5, 'N': 5},
     'baseC': {'C': 4, 'H': 5, 'N': 3, 'O': 1},
     'baseCm': {'C': 5, 'H': 7, 'N': 3, 'O': 1},
@@ -269,6 +304,9 @@ formula = {
     '*': {'H': 3, 'O': 3, 'P': 1, 'S': 1},
     'ps2': {'H': 3, 'O': 2, 'P': 1, 'S': 2},
     'ms': {'C': 1, 'H': 6, 'O': 5, 'N': 1, 'P': 1, 'S': 1},
+    '#': {'C': 2, 'H': 8, 'O': 3, 'N': 1, 'P': 1},
+    'dma': {'C': 2, 'H': 8, 'O': 3, 'N': 1, 'P': 1},
+    'NMe2': {'C': 2, 'H': 7, 'N': 1},
 }
 
 
@@ -340,20 +378,21 @@ def get_extinction(sequence):
 
 
 def sequence_explicit(sequence):
-    """Takes sequence as a string and returns another string with explicit phosphates, e.g.
-    'dA dC ps dT fT' --> 'dA po dC ps dT po fT'
+    """Takes a sequence string in Therapeutic format and returns another string with explicit phosphates.
+    Example:
+    'dA dC ps dT fU' --> 'dA po dC ps dT po fU'
     """
-    full_seq = ''
     seq_tup = sequence_split(sequence)
-    for i in range(len(seq_tup)-1):
-        if (    ((seq_tup[i] in all_nucleotide) and (seq_tup[i+1] in modification_phosphorus)) or
-                ((seq_tup[i] in modification_phosphorus) and (seq_tup[i + 1] in all_nucleotide))    ):
-            full_seq += seq_tup[i] + ' '
-        if (seq_tup[i] in all_nucleotide) and (seq_tup[i+1] in all_nucleotide):
-            full_seq += seq_tup[i] + ' po '
-        if i == len(seq_tup) - 2:
-            full_seq += seq_tup[i+1]
-    return full_seq
+    result = []
+
+    for i in range(len(seq_tup)):
+        result.append(seq_tup[i])
+
+        # Add 'po' if the current and next elements are nucleotides
+        if i < len(seq_tup) - 1 and seq_tup[i] in all_nucleotide and seq_tup[i + 1] in all_nucleotide:
+            result.append('po')
+
+    return ' '.join(result)
 
 
 def get_mass_avg(sequence):
@@ -423,75 +462,6 @@ def contain_degenerate_nucleotide(sequence):
         if nt in degenerate_nucleotide:
             return True
     return False
-
-
-def get_ms_fragments(sequence):
-    """
-    Takes a sequence as a string, returns theoretical masses of several charge states of the following ions:
-    d, c, b, a, a-B, w, x, y, z
-    """
-    d = {}
-    c = {}
-    b = {}
-    a = {}
-    a_B = {}
-    w = {}
-    x = {}
-    y = {}
-    z = {}
-    seq_full_tup = sequence_split(sequence_explicit(sequence))
-    mass = get_mass_monoisotopic(sequence)
-    count_nt = 0
-
-    for index in range(len(seq_full_tup)):
-        if seq_full_tup[index] in all_nucleotide and index < len(seq_full_tup)-2:
-            count_nt += 1
-            seq_part_tup_l = seq_full_tup[:index + 1]
-            seq_part_tup_l_plus_phos = seq_full_tup[:index + 2]
-            seq_part_tup_r_plus_phos = seq_full_tup[index + 1:]
-            seq_part_tup_r = seq_full_tup[index + 2:]
-            seq_part_l = ' '.join(seq_part_tup_l)
-            seq_part_l_plus_phos = ' '.join(seq_part_tup_l_plus_phos)
-            seq_part_r_plus_phos = ' '.join(seq_part_tup_r_plus_phos)
-            seq_part_r = ' '.join(seq_part_tup_r)
-            b[count_nt] = get_mass_monoisotopic(seq_part_l)
-            a[count_nt] = round(b[count_nt] - mass_mono['H2O'], 4)
-            d[count_nt] = get_mass_monoisotopic(seq_part_l_plus_phos)
-            c[count_nt] = round(d[count_nt] - mass_mono['H2O'], 4)
-            y[count_nt + 1] = get_mass_monoisotopic(seq_part_r)
-            z[count_nt + 1] = round(y[count_nt + 1] - mass_mono['H2O'], 4)
-            w[count_nt + 1] = get_mass_monoisotopic(seq_part_r_plus_phos)
-            x[count_nt + 1] = round(w[count_nt + 1] - mass_mono['H2O'], 4)
-            if seq_part_tup_l[-1] in map_nucleobase:
-                a_B[count_nt] = round(a[count_nt] - get_mass_monoisotopic(map_nucleobase[seq_part_tup_l[-1]]), 4)
-            else:
-                a_B[count_nt] = 0
-
-        if seq_full_tup[index] in all_nucleotide and (index == len(seq_full_tup)-1 or index == len(seq_full_tup)-2):
-            a[count_nt + 1] = 0
-            a_B[count_nt + 1] = 0
-            b[count_nt + 1] = 0
-            c[count_nt + 1] = 0
-            d[count_nt + 1] = 0
-            w[1] = 0
-            x[1] = 0
-            y[1] = 0
-            z[1] = 0
-    return a, a_B, b, c, d, w, x, y, z
-
-
-def get_ms_fragments_esi_series(frag_dict):
-    """
-    Takes dictionary containing mass fragments and creates another dict containing esi series of fragments,
-    up to half-charged states.
-    """
-    frag_dict_esi = {}
-    for index, mass in frag_dict.items():
-        mass_esi = ()
-        for charge_state in range(1, len(frag_dict)):
-            mass_esi += (round((mass - charge_state * mass_mono['H']) / charge_state, 3), )
-        frag_dict_esi[index] = mass_esi
-    return frag_dict_esi
 
 
 def dna2mix(sequence):
@@ -584,23 +554,151 @@ def calculate_od260(epsilon260, mass_average):
 
 
 def calculate_esi_series(sequence, length, mass_average, mass_monoisotopic):
-    esi_series = []
+    esi_series_neg = []
+    esi_series_pos = []
     for z in range(1, length):
-        esi_series_avg_dmt_off = (mass_average - z * mass_avg['H']) / z
-        esi_series_mono_dmt_off = (mass_monoisotopic - z * mass_mono['H']) / z if not contain_degenerate_nucleotide(sequence) else None
-        esi_series.append((z, esi_series_avg_dmt_off, esi_series_mono_dmt_off))
-    return esi_series
+        esi_series_avg_dmt_off_neg = (mass_average - z * mass_avg['H']) / z
+        esi_series_mono_dmt_off_neg = (mass_monoisotopic - z * mass_mono['H']) / z if not contain_degenerate_nucleotide(sequence) else None
+        esi_series_neg.append((z, esi_series_avg_dmt_off_neg, esi_series_mono_dmt_off_neg))
+
+        esi_series_avg_dmt_off_pos = (mass_average + z * mass_avg['H']) / z
+        esi_series_mono_dmt_off_pos = (mass_monoisotopic + z * mass_mono['H']) / z if not contain_degenerate_nucleotide(sequence) else None
+        esi_series_pos.append((z, esi_series_avg_dmt_off_pos, esi_series_mono_dmt_off_pos))
+    return esi_series_neg, esi_series_pos
 
 
-def calculate_mass_fragments(sequence, length, seq_wo_phosph_tup):
-    mass_fragments_array = []
-    a_esi, a_B_esi, b_esi, c_esi, d_esi, w_esi, x_esi, y_esi, z_esi = map(get_ms_fragments_esi_series,
-                                                                          get_ms_fragments(sequence))
-    for charge in range(1, length):
-        mass_fragments_array.append([
-            (d_esi[seq_ind][charge - 1], c_esi[seq_ind][charge - 1], b_esi[seq_ind][charge - 1],
-             a_esi[seq_ind][charge - 1], a_B_esi[seq_ind][charge - 1], seq_wo_phosph_tup[seq_ind - 1],
-             w_esi[seq_ind][charge - 1], x_esi[seq_ind][charge - 1], y_esi[seq_ind][charge - 1],
-             z_esi[seq_ind][charge - 1]) for seq_ind in range(1, length + 1)
-        ])
-    return mass_fragments_array
+def get_ms_fragments(sequence):
+    """
+    Takes a sequence as a string in Therapeutic format, returns theoretical masses of the following neutral fragments:
+    d, c, b, a, a-B, w, x, y, z
+    """
+    seq_full_tup = sequence_split(sequence_explicit(sequence))
+    n_tokens = len(seq_full_tup)
+    length = get_length(sequence)
+    d = np.zeros(length)
+    d_backbone = np.zeros(length)
+    c = np.zeros(length)
+    b = np.zeros(length)
+    a = np.zeros(length)
+    a_B = np.zeros(length)
+    w = np.zeros(length)
+    x = np.zeros(length)
+    y = np.zeros(length)
+    z = np.zeros(length)
+    z_backbone = np.zeros(length)
+
+    count_nt = 0
+    cumulative_mass = [mass_mono['H2O']]
+    for elem in seq_full_tup:
+        cumulative_mass.append(cumulative_mass[-1] + get_mass_monoisotopic(elem) - mass_mono['H2O'])
+    total_mass = cumulative_mass[-1]
+
+    for i, token in enumerate(seq_full_tup):
+        if token in all_nucleotide and i < (n_tokens - 2):
+            count_nt += 1
+
+            b.put(count_nt - 1, cumulative_mass[i + 1])
+            if token not in mor_nucleotides:
+                a.put(count_nt - 1, b[count_nt - 1] - mass_mono['H2O'])
+            if a[count_nt - 1] and token in map_nucleobase:
+                a_B.put(count_nt - 1, a[count_nt - 1] - get_mass_monoisotopic(map_nucleobase[token]))
+            else:
+                a_B.put(count_nt - 1, 0)
+            d.put(count_nt - 1, cumulative_mass[i + 2])
+            c.put(count_nt - 1, d[count_nt - 1] - mass_mono['H2O'])
+
+            y.put(count_nt, total_mass - cumulative_mass[i + 2] + mass_mono['H2O'])
+            z.put(count_nt, y[count_nt] - mass_mono['H2O'])
+            w.put(count_nt, total_mass - cumulative_mass[i + 1] + mass_mono['H2O'])
+            x.put(count_nt, w[count_nt] - mass_mono['H2O'])
+            if token in mor_nucleotides:
+                w.put(count_nt, 0)
+            if (bb := seq_full_tup[i+1]) in ms2_backbones:
+                d_backbone.put(count_nt - 1, d[count_nt - 1] - get_mass_monoisotopic(map_backbone[bb]))
+                z_backbone.put(count_nt, z[count_nt] - get_mass_monoisotopic(map_backbone[bb]) + 2 * mass_mono['H'])
+
+    return np.array([d, c, b, a, a_B, w, x, y, z, d_backbone, z_backbone])
+
+
+def get_ms_fragments_esi_series_neg(neutral_fragments):
+    """
+    Given a 2D NumPy array of neutral fragment masses, calculate a negative charge-state series for each fragment.
+    Parameters
+    ----------
+    neutral_fragments : np.ndarray
+        2D array of shape (num_ion_types, num_fragments).
+        Example layout:
+          [
+            [d1, d2, ..., dM],
+            [c1, c2, ..., cM],
+            [b1, b2, ..., bM],
+            ...
+            [z1, z2, ..., zM]
+          ]
+        where each row corresponds to an ion type, and each column corresponds
+        to a particular fragment index.
+    Returns
+    -------
+    charge_series_neg : np.ndarray
+        3D array of shape (num_ion_types, num_fragments, num_charge_states), where
+        the last dimension corresponds to charge states from 1 up to MAX_CHARGE_STATE.
+    """
+    MAX_CHARGE_STATE = 20
+
+    num_ion_types, num_fragments = neutral_fragments.shape
+    num_charge_states = min(num_fragments - 1, MAX_CHARGE_STATE)
+
+    charge_series_neg = np.zeros((num_ion_types, num_fragments, num_charge_states), dtype=float)
+
+    for i in range(num_ion_types):
+        for j in range(num_fragments):
+            neutral_mass = neutral_fragments[i, j]
+            for charge_state in range(1, num_charge_states + 1):
+                if neutral_mass:
+                    charged_mass = (neutral_mass - charge_state * mass_mono['H']) / charge_state
+                else:
+                    charged_mass = None
+                charge_series_neg[i, j, charge_state - 1] = charged_mass
+    return charge_series_neg
+
+
+def get_ms_fragments_esi_series_pos(neutral_fragments):
+    """
+    Given a 2D NumPy array of neutral fragment masses, calculate a positive charge-state series for each fragment.
+    Parameters
+    ----------
+    neutral_fragments : np.ndarray
+    Returns
+    -------
+    charge_series_pos : np.ndarray
+        3D array of shape (num_ion_types, num_fragments, num_charge_states), where
+        the last dimension corresponds to charge states from 1 up to MAX_CHARGE_STATE.
+    """
+    # Define maximum charge state up to which calculations are done
+    MAX_CHARGE_STATE = 20
+
+    # Extract the dimensions of the input array and define number of charge states
+    num_ion_types, num_fragments = neutral_fragments.shape
+    num_charge_states = min(num_fragments - 1, MAX_CHARGE_STATE)
+
+    charge_series_pos = np.zeros((num_ion_types, num_fragments, num_charge_states), dtype=float)
+
+    for i in range(num_ion_types):
+        for j in range(num_fragments):
+            neutral_mass = neutral_fragments[i, j]
+            for charge_state in range(1, num_charge_states + 1):
+                if neutral_mass:
+                    charged_mass = (neutral_mass + charge_state * mass_mono['H']) / charge_state
+                else:
+                    charged_mass = None
+                charge_series_pos[i, j, charge_state - 1] = charged_mass
+
+    return charge_series_pos
+
+
+def calculate_mass_fragments(sequence):
+    """Calculate negative and positive charge state series and return them in a right shape"""
+    ms2_frags_neutral = get_ms_fragments(sequence)
+    charge_series_array_neg = get_ms_fragments_esi_series_neg(ms2_frags_neutral)
+    charge_series_array_pos = get_ms_fragments_esi_series_pos(ms2_frags_neutral)
+    return charge_series_array_neg.transpose([2, 1, 0]), charge_series_array_pos.transpose([2, 1, 0])

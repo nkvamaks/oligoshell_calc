@@ -45,7 +45,7 @@ class CalcForm(forms.ModelForm):
         fields = ('sequence', 'target', 'absorbance260', 'volume',
                   'mv_conc', 'dv_conc', 'dntp_conc', 'dna_conc',)
         widgets = {'sequence': forms.Textarea(attrs={'rows': 6,
-                                                     'placeholder': 'Examples:\nDNA:  [VIC]CAAGAGGAAGAGAGAGACC[MGB-ECLIPSE]\nRNA: GUGCGAAGGGACGGUGCGGAGAGGAGAGCAC\nTherapeutic:  +A * +G * +A * dT * dT * dC * dA * dG * dT * dG * dT * dG * dG * +T * +G * dG',
+                                                     'placeholder': 'Examples:\nDNA:  [VIC]CAAGAGGAAGAGAGAGACC[MGB-ECLIPSE]\nRNA: GUGCGAAGGGACGGUGCGGAGAGGAGAGCAC[GALNAC3-ALN]\nTherapeutic:  +A * +G * +A * dT * dT * dC * dA * dG * dT * dG * dT * dG * dG * +T * +G * dG\nTherapeutic (PMO):  morA # morC # morG # morT # morG # morC # morA',
                                                      'class': 'form-control'}),
                    'target': forms.Select(attrs={'class': 'form-select form-select-sm'}),
                    'absorbance260': forms.NumberInput(attrs={'placeholder': '0.135',

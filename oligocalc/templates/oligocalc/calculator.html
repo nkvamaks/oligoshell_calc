@@ -1,5 +1,7 @@
 {% extends "layout/basic.html" %}
 {% load static %}
+{% load custom_filters %}
+
 
 {% block content %}
 <form method="POST" action=".">
@@ -90,6 +92,8 @@
                             <li><a class="dropdown-item" data-value-DNA="[ALKYNE]" data-value-RNA="[ALKYNE]" data-value-MIX="ALKYNE" href="javascript:void(0);"><strong>ALKYNE</strong>&emsp;5'-terminal alkyne, aminocyclohexanol linker</a></li>
                             <li><a class="dropdown-item" data-value-DNA="[CHOL-PRO]" data-value-RNA="[CHOL-PRO]" data-value-MIX="CHOL-PRO" href="javascript:void(0);"><strong>CHOL-PRO</strong>&emsp;Cholesterol, hydroxyprolinol linker</a></li>
                             <li><a class="dropdown-item" data-value-DNA="[GALNAC-PRO]" data-value-RNA="[GALNAC-PRO]" data-value-MIX="GALNAC-PRO" href="javascript:void(0);"><strong>GALNAC-PRO</strong>&emsp;Monomer GalNAc, hydroxyprolinol linker</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" data-value-DNA="[MOR-TEG]" data-value-RNA="[MOR-TEG]" data-value-MIX="MOR-TEG" href="javascript:void(0);"><strong>MOR-TEG</strong>&emsp;Triethylene Glycol for Morpholino</a></li>
                         </ul>
 
                         <!-- Internal Labels -->
@@ -269,13 +273,34 @@
                                data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>LNA-T</small>">+T</div>
                           <div class="calc-item-invis"></div>
                           <div class="calc-item-invis"></div>
+                          <div class="calc-item" data-value-DNA="[cetA]" data-value-RNA="[cetA]" data-value-MIX="cetA"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>Constrained ethyl (cEt) A</small>">cetA</div>
+                          <div class="calc-item" data-value-DNA="[cetC]" data-value-RNA="[cetC]" data-value-MIX="cetC"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>Constrained ethyl (cEt) C</small>">cetC</div>
+                          <div class="calc-item" data-value-DNA="[cetG]" data-value-RNA="[cetG]" data-value-MIX="cetG"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>Constrained ethyl (cEt) G</small>">cetG</div>
+                          <div class="calc-item" data-value-DNA="[cetU]" data-value-RNA="[cetU]" data-value-MIX="cetU"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>Constrained ethyl (cEt) U</small>">cetU</div>
+                          <div class="calc-item-invis"></div>
+                          <div class="calc-item-invis"></div>
+                          <div class="calc-item" data-value-DNA="[morA]" data-value-RNA="[morA]" data-value-MIX="morA"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>Morpholino A</small>">morA</div>
+                          <div class="calc-item" data-value-DNA="[morC]" data-value-RNA="[morC]" data-value-MIX="morC"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>Morpholino C</small>">morC</div>
+                          <div class="calc-item" data-value-DNA="[morG]" data-value-RNA="[morG]" data-value-MIX="morG"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>Morpholino G</small>">morG</div>
+                          <div class="calc-item" data-value-DNA="[morT]" data-value-RNA="[morT]" data-value-MIX="morT"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>Morpholino T</small>">morT</div>
+                          <div class="calc-item-invis"></div>
+                          <div class="calc-item-invis"></div>
                           <div class="calc-item-backbone" data-value-DNA="*" data-value-RNA="*" data-value-MIX="*"
                                data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>Phosphorothioate backbone<br/>PS</small>">* / ps</div>
                           <div class="calc-item-backbone" data-value-DNA="[ps2]" data-value-RNA="[ps2]" data-value-MIX="ps2"
                                data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>Phosphorodithioate backbone<br/>PS<sub>2</sub></small>">ps2</div>
                           <div class="calc-item-backbone" data-value-DNA="[ms]" data-value-RNA="[ms]" data-value-MIX="ms"
                                data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>Mesyl phosphoramidate backbone<br/>MeSO<sub>2</sub>N=P</small>">ms</div>
-                          <div class="calc-item-invis"></div>
+                          <div class="calc-item-backbone" data-value-DNA="#" data-value-RNA="#" data-value-MIX="#"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>Dimethylamino phosphoramidate backbone<br/>Me<sub>2</sub>N-P</small>"># / dma</div>
                           <div class="calc-item-invis"></div>
                           <div class="calc-item-invis"></div>
                         </div>
@@ -305,29 +330,19 @@
                           <div class="calc-item-invis"></div>
                           <div class="calc-item" data-value-DNA="N" data-value-RNA="N" data-value-MIX=""
                                data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>A+C+G+T/U</small>">N</div>
-                          <div class="calc-item-invis"></div>
-                          <div class="calc-item-invis"></div>
-                          <div class="calc-item-invis"></div>
-                          <div class="calc-item-invis"></div>
-                          <div class="calc-item-invis"></div>
-                          <div class="calc-item-invis"></div>
-                          <div class="calc-item-invis"></div>
-                          <div class="calc-item-invis"></div>
-                          <div class="calc-item-invis"></div>
-                          <div class="calc-item-invis"></div>
-                          <div class="calc-item-invis"></div>
-                          <div class="calc-item-invis"></div>
-                          <div class="calc-item-invis"></div>
-                          <div class="calc-item-invis"></div>
-                          <div class="calc-item-invis"></div>
-                          <div class="calc-item-invis"></div>
-                          <div class="calc-item-invis"></div>
+
+                          {% for _ in 35|times %}
+                              <div class="calc-item-invis"></div>
+                          {% endfor %}
+
                           <div class="calc-item-backbone" data-value-DNA="*" data-value-RNA="*" data-value-MIX="*"
                                data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>Phosphorothioate backbone<br/>PS</small>">* / ps</div>
                           <div class="calc-item-backbone" data-value-DNA="[ps2]" data-value-RNA="[ps2]" data-value-MIX="ps2"
                                data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>Phosphorodithioate backbone<br/>PS<sub>2</sub></small>">ps2</div>
                           <div class="calc-item-backbone" data-value-DNA="[ms]" data-value-RNA="[ms]" data-value-MIX="ms"
                                data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>Mesyl phosphoramidate backbone<br/>MeSO<sub>2</sub>N=P</small>">ms</div>
+                          <div class="calc-item-backbone" data-value-DNA="#" data-value-RNA="#" data-value-MIX="#"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>Dimethylamino phosphoramidate backbone<br/>Me<sub>2</sub>N-P</small>"># / dma</div>
                           <div class="calc-item-invis"></div>
                           <div class="calc-item-invis"></div>
                         </div>
@@ -384,19 +399,21 @@
               Molecular Weight and ESI series
             </button>
           </li>
-          <li class="nav-item">
-            <button
-              type="button"
-              class="nav-link"
-              role="tab"
-              data-bs-toggle="tab"
-              data-bs-target="#navs-pills-top-ms2"
-              aria-controls="navs-pills-top-ms2"
-              aria-selected="false"
-            >
-              MS/MS Fragments
-            </button>
-          </li>
+          {% if not contain_degenerate_nucleotide %}
+              <li class="nav-item">
+                <button
+                  type="button"
+                  class="nav-link"
+                  role="tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#navs-pills-top-ms2"
+                  aria-controls="navs-pills-top-ms2"
+                  aria-selected="false"
+                >
+                  MS/MS Fragments
+                </button>
+              </li>
+          {% endif %}
         </ul>
 
         <div class="tab-content">
@@ -532,8 +549,10 @@
              </div>
           </div>
 
+          <!-- ESI Series -->
           <div class="tab-pane fade" id="navs-pills-top-ms" role="tabpanel">
               <div class="row mb-4">
+
                   <div class="col-md-6">
                      <div class="card">
                         <div class="card-body">
@@ -543,13 +562,13 @@
                                     <thead>
                                          <tr>
                                             <th><span class="fw-semibold">Charge State</span></th>
-                                            <th><span class="fw-semibold">Monoisotopic MW </span></th>
-                                            <th><span class="fw-semibold">Average MW </span></th>
+                                            <th><span class="fw-semibold">Monoisotopic Mass </span></th>
+                                            <th><span class="fw-semibold">Average Mass </span></th>
                                          </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td></td>
+                                            <td><strong>0</strong></td>
                                             <td><strong>
                                                 {% if mass_monoisotopic %}
                                                     {{ mass_monoisotopic|floatformat:4 }}
@@ -562,15 +581,15 @@
                                             </strong></td>
                                         </tr>
 
-                                        {% for z, esi_avg_off, esi_mono_off in esi_series %}
+                                        {% for z, esi_avg_off_neg, esi_mono_off_neg in esi_series_neg %}
                                             <tr>
                                                 <td><strong>-{{z}}</strong></td>
                                                 <td>
-                                                    {% if esi_mono_off %}
-                                                        {{esi_mono_off|floatformat:4}}
+                                                    {% if esi_mono_off_neg %}
+                                                        {{esi_mono_off_neg|floatformat:4}}
                                                     {% endif %}
                                                 </td>
-                                                <td>{{esi_avg_off|floatformat:2}}</td>
+                                                <td>{{esi_avg_off_neg|floatformat:2}}</td>
                                             </tr>
                                         {% endfor %}
                                     </tbody>
@@ -579,58 +598,114 @@
                         </div>
                      </div>
                   </div>
+
+                  <div class="col-md-6">
+                     <div class="card">
+                        <div class="card-body">
+
+                            <div class="table-responsive">
+                                <table class="table table-sm table-hover">
+                                    <thead>
+                                         <tr>
+                                            <th><span class="fw-semibold">Charge State</span></th>
+                                            <th><span class="fw-semibold">Monoisotopic Mass </span></th>
+                                            <th><span class="fw-semibold">Average Mass </span></th>
+                                         </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>0</strong></td>
+                                            <td><strong>
+                                                {% if mass_monoisotopic %}
+                                                    {{ mass_monoisotopic|floatformat:4 }}
+                                                {% endif %}
+                                            </strong></td>
+                                            <td><strong>
+                                                {% if mass_average %}
+                                                    {{mass_average|floatformat:2}}
+                                                {% endif %}
+                                            </strong></td>
+                                        </tr>
+
+                                        {% for z, esi_avg_off_pos, esi_mono_off_pos in esi_series_pos %}
+                                            <tr>
+                                                <td><strong>+{{z}}</strong></td>
+                                                <td>
+                                                    {% if esi_mono_off_pos %}
+                                                        {{esi_mono_off_pos|floatformat:4}}
+                                                    {% endif %}
+                                                </td>
+                                                <td>{{esi_avg_off_pos|floatformat:2}}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                     </div>
+                  </div>
+
               </div>
           </div>
 
+          {% if not contain_degenerate_nucleotide %}
+          <!-- MS2 panel -->
           <div class="tab-pane fade" id="navs-pills-top-ms2" role="tabpanel">
-             <div class="row">
+             <div id="navs-top-neg" class="row" style="display:block;">
                 <div class="col-xl">
                   <div class="nav-align-top mb-4">
                     <ul class="nav nav-tabs" role="tablist">
 
+                        <!-- Button NEG -->
+                        <li>
+                            <button id="btn-neg" class="btn btn-sm btn-info mt-1 me-1" type="button">
+                                <b>NEG</b>
+                            </button>
+                        </li>
+
+                        {% for i in charge %}
+                          {% if i <= 10 %}
+
                           <li class="nav-item">
                             <button
                               type="button"
-                              class="nav-link active"
+                              class="nav-link"
                               role="tab"
                               data-bs-toggle="tab"
-                              data-bs-target="#navs-justified-home"
-                              aria-controls="navs-justified-home"
+                              data-bs-target="#charge-state-minus-{{i}}"
+                              aria-controls="charge-state-minus-{{i}}"
+                              aria-selected="false"
+                            >
+                              -{{i}}
+                            </button>
+                          </li>
+                          {% endif %}
+                        {% endfor %}
+
+                          <li class="nav-item">
+                            <button
+                              type="button"
+                              class="nav-link"
+                              role="tab"
+                              data-bs-toggle="tab"
+                              data-bs-target="#frag-scheme-neg"
+                              aria-controls="frag-scheme-neg"
                               aria-selected="true"
                             >
                               Fragmentation Scheme
                             </button>
                           </li>
 
-                      {% for i in charge %}
-                        {% if i <= 10 %}
-
-                          <li class="nav-item">
-                            <button
-                              type="button"
-                              class="nav-link"
-                              role="tab"
-                              data-bs-toggle="tab"
-                              data-bs-target="#navs-top-{{i}}"
-                              aria-controls="navs-top-{{i}}"
-                              aria-selected="false"
-                            >
-                              -{{i}}
-                            </button>
-                          </li>
-                        {% endif %}
-                    {% endfor %}
-
                           <li class="nav-item">
                             <button
                               type="submit"
-                              name="export_excel"
+                              name="export_excel_neg"
                               value="true"
                               class="nav-link"
                               role="tab"
                               data-bs-toggle="tab"
-                              data-bs-target="#navs-top-frag"
-                              aria-controls="navs-top-frag"
+                              data-bs-target="#export-frag-neg"
+                              aria-controls="export-frag-neg"
                               aria-selected="false"
                             >
                               Export to Excel
@@ -640,20 +715,21 @@
                     </ul>
 
                       <div class="tab-content" style="background: #fff;">
-                        <div class="tab-pane fade show active" id="navs-justified-home" role="tabpanel">
+                        <div class="tab-pane fade" id="frag-scheme-neg" role="tabpanel">
                             <p>
                               <img src="{% static 'ms_ms_fragmentation.png' %}" alt="Oligonucleotide Fragmentation Scheme">
                             </p>
                         </div>
-                        {% for charge_array in mass_fragments_array %}
+                        {% for charge_array in mass_fragments_array_neg %}
                             {% if forloop.counter <= 10 %}
-                                <div class="tab-pane fade" id="navs-top-{{forloop.counter}}" role="tabpanel">
+                                <div class="tab-pane fade" id="charge-state-minus-{{forloop.counter}}" role="tabpanel">
                                     <div>
                                         <div class="table-responsive">
                                             <table class="table table-sm table-hover">
                                                 <thead>
                                                      <tr>
                                                         <th><span class="fw-semibold" style="text-transform: none;">d</span></th>
+                                                        <th><span class="fw-semibold" style="text-transform: none;">d-NMe<sub>2</sub></span></th>
                                                         <th><span class="fw-semibold" style="text-transform: none;">c</span></th>
                                                         <th><span class="fw-semibold" style="text-transform: none;">b</span></th>
                                                         <th><span class="fw-semibold" style="text-transform: none;">a</span></th>
@@ -665,16 +741,26 @@
                                                         <th><span class="fw-semibold" style="text-transform: none;">x</span></th>
                                                         <th><span class="fw-semibold" style="text-transform: none;">y</span></th>
                                                         <th><span class="fw-semibold" style="text-transform: none;">z</span></th>
+                                                        <th><span class="fw-semibold" style="text-transform: none;">z-NMe<sub>2</sub></span></th>
                                                      </tr>
                                                 </thead>
 
                                                 <tbody>
-                                                {% for d_esi, c_esi, b_esi, a_esi, a_B_esi, seq, w_esi, x_esi, y_esi, z_esi in charge_array %}
+                                                {% for d_esi, c_esi, b_esi, a_esi, a_B_esi, w_esi, x_esi, y_esi, z_esi, d_bb_esi, z_bb_esi in charge_array %}
                                                     <tr>
                                                         <td>
                                                             <small>
                                                                 {% if d_esi >= 0 %}
                                                                     {{d_esi|floatformat:2}}
+                                                                {% else %}
+                                                                    -
+                                                                {% endif %}
+                                                            </small>
+                                                        </td>
+                                                        <td>
+                                                            <small>
+                                                                {% if d_bb_esi >= 0 %}
+                                                                    {{d_bb_esi|floatformat:2}}
                                                                 {% else %}
                                                                     -
                                                                 {% endif %}
@@ -717,7 +803,9 @@
                                                             </small>
                                                         </td>
                                                         <td>{{forloop.counter}}</td>
-                                                        <td><strong>{{seq}}</strong></td>
+                                                        <td>
+                                                            <strong>{{seq_wo_phosph_tup|get_item:forloop.counter0}}</strong>
+                                                        </td>
                                                         <td>{{forloop.revcounter}}</td>
                                                         <td>
                                                             <small>
@@ -755,6 +843,15 @@
                                                                 {% endif %}
                                                             </small>
                                                         </td>
+                                                        <td>
+                                                            <small>
+                                                                {% if z_bb_esi >= 0 %}
+                                                                    {{z_bb_esi|floatformat:2}}
+                                                                {% else %}
+                                                                    -
+                                                                {% endif %}
+                                                            </small>
+                                                        </td>
                                                     </tr>
                                                 {% endfor %}
                                                 </tbody>
@@ -764,7 +861,7 @@
                                 </div>
                             {% endif %}
                         {% endfor %}
-                        <div class="tab-pane fade" id="navs-top-frag" role="tabpanel">
+                        <div class="tab-pane fade" id="export-frag-neg" role="tabpanel">
                             <div class="mt-4 mb-4 ms-4">
                               Excel File with MS2 fragments downloaded
                             </div>
@@ -774,7 +871,231 @@
                   </div>
                 </div>
               </div>
+
+             <!-- POS panel -->
+             <div id="navs-top-pos" class="row" style="display:none;">
+                <div class="col-xl">
+                  <div class="nav-align-top mb-4">
+                    <ul class="nav nav-tabs" role="tablist">
+
+                        <!-- Button POS -->
+                          <li>
+                              <button id="btn-pos" class="btn btn-sm btn-info mt-1 me-1" type="button">
+                                  <b>POS</b>
+                              </button>
+                          </li>
+
+                      {% for i in charge %}
+                        {% if i <= 10 %}
+
+                          <li class="nav-item">
+                            <button
+                              type="button"
+                              class="nav-link"
+                              role="tab"
+                              data-bs-toggle="tab"
+                              data-bs-target="#charge-state-plus-{{i}}"
+                              aria-controls="charge-state-plus-{{i}}"
+                              aria-selected="false"
+                            >
+                              +{{i}}
+                            </button>
+                          </li>
+                        {% endif %}
+                    {% endfor %}
+
+                          <li class="nav-item">
+                            <button
+                              type="button"
+                              class="nav-link"
+                              role="tab"
+                              data-bs-toggle="tab"
+                              data-bs-target="#frag-scheme-pos"
+                              aria-controls="frag-scheme-pos"
+                              aria-selected="true"
+                            >
+                              Fragmentation Scheme
+                            </button>
+                          </li>
+
+                          <li class="nav-item">
+                            <button
+                              type="submit"
+                              name="export_excel_pos"
+                              value="true"
+                              class="nav-link"
+                              role="tab"
+                              data-bs-toggle="tab"
+                              data-bs-target="#export-frag-pos"
+                              aria-controls="export-frag-pos"
+                              aria-selected="false"
+                            >
+                              Export to Excel
+                            </button>
+                          </li>
+                    </ul>
+
+                      <div class="tab-content" style="background: #fff;">
+                        <div class="tab-pane fade" id="frag-scheme-pos" role="tabpanel">
+                            <p>
+                              <img src="{% static 'ms_ms_fragmentation.png' %}" alt="Oligonucleotide Fragmentation Scheme">
+                            </p>
+                        </div>
+                        {% for charge_array in mass_fragments_array_pos %}
+                            {% if forloop.counter <= 10 %}
+                                <div class="tab-pane fade" id="charge-state-plus-{{forloop.counter}}" role="tabpanel">
+                                    <div>
+                                        <div class="table-responsive">
+                                            <table class="table table-sm table-hover">
+                                                <thead>
+                                                     <tr>
+                                                        <th><span class="fw-semibold" style="text-transform: none;">d</span></th>
+                                                        <th><span class="fw-semibold" style="text-transform: none;">d-NMe<sub>2</sub></span></th>
+                                                        <th><span class="fw-semibold" style="text-transform: none;">c</span></th>
+                                                        <th><span class="fw-semibold" style="text-transform: none;">b</span></th>
+                                                        <th><span class="fw-semibold" style="text-transform: none;">a</span></th>
+                                                        <th><span class="fw-semibold" style="text-transform: none;">a-B</span></th>
+                                                        <th><span class="fw-semibold" style="text-transform: none;">5' Index</span></th>
+                                                        <th><span class="fw-semibold" style="text-transform: none;">Sequence</span></th>
+                                                        <th><span class="fw-semibold" style="text-transform: none;">3' Index</span></th>
+                                                        <th><span class="fw-semibold" style="text-transform: none;">w</span></th>
+                                                        <th><span class="fw-semibold" style="text-transform: none;">x</span></th>
+                                                        <th><span class="fw-semibold" style="text-transform: none;">y</span></th>
+                                                        <th><span class="fw-semibold" style="text-transform: none;">z</span></th>
+                                                        <th><span class="fw-semibold" style="text-transform: none;">z-NMe<sub>2</sub></span></th>
+                                                     </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                {% for d_esi, c_esi, b_esi, a_esi, a_B_esi, w_esi, x_esi, y_esi, z_esi, d_bb_esi, z_bb_esi in charge_array %}
+                                                    <tr>
+                                                        <td>
+                                                            <small>
+                                                                {% if d_esi >= 0 %}
+                                                                    {{d_esi|floatformat:2}}
+                                                                {% else %}
+                                                                    -
+                                                                {% endif %}
+                                                            </small>
+                                                        </td>
+                                                        <td>
+                                                            <small>
+                                                                {% if d_bb_esi >= 0 %}
+                                                                    {{d_bb_esi|floatformat:2}}
+                                                                {% else %}
+                                                                    -
+                                                                {% endif %}
+                                                            </small>
+                                                        </td>
+                                                        <td>
+                                                            <small>
+                                                                {% if c_esi >= 0 %}
+                                                                    {{c_esi|floatformat:2}}
+                                                                {% else %}
+                                                                    -
+                                                                {% endif %}
+                                                            </small>
+                                                        </td>
+                                                        <td>
+                                                            <small>
+                                                                {% if b_esi >= 0 %}
+                                                                    {{b_esi|floatformat:2}}
+                                                                {% else %}
+                                                                    -
+                                                                {% endif %}
+                                                            </small>
+                                                        </td>
+                                                        <td>
+                                                            <small>
+                                                                {% if a_esi >= 0 %}
+                                                                    {{a_esi|floatformat:2}}
+                                                                {% else %}
+                                                                    -
+                                                                {% endif %}
+                                                            </small>
+                                                        </td>
+                                                        <td>
+                                                            <small>
+                                                                {% if a_B_esi >= 0 %}
+                                                                    {{a_B_esi|floatformat:2}}
+                                                                {% else %}
+                                                                    -
+                                                                {% endif %}
+                                                            </small>
+                                                        </td>
+                                                        <td>{{forloop.counter}}</td>
+                                                        <td>
+                                                            <strong>{{seq_wo_phosph_tup|get_item:forloop.counter0}}</strong>
+                                                        </td>
+                                                        <td>{{forloop.revcounter}}</td>
+                                                        <td>
+                                                            <small>
+                                                                {% if w_esi >= 0 %}
+                                                                    {{w_esi|floatformat:2}}
+                                                                {% else %}
+                                                                    -
+                                                                {% endif %}
+                                                            </small>
+                                                        </td>
+                                                        <td>
+                                                            <small>
+                                                                {% if x_esi >= 0 %}
+                                                                    {{x_esi|floatformat:2}}
+                                                                {% else %}
+                                                                    -
+                                                                {% endif %}
+                                                            </small>
+                                                        </td>
+                                                        <td>
+                                                            <small>
+                                                                {% if y_esi >= 0 %}
+                                                                    {{y_esi|floatformat:2}}
+                                                                {% else %}
+                                                                    -
+                                                                {% endif %}
+                                                            </small>
+                                                        </td>
+                                                        <td>
+                                                            <small>
+                                                                {% if z_esi >= 0 %}
+                                                                    {{z_esi|floatformat:2}}
+                                                                {% else %}
+                                                                    -
+                                                                {% endif %}
+                                                            </small>
+                                                        </td>
+                                                        <td>
+                                                            <small>
+                                                                {% if z_bb_esi >= 0 %}
+                                                                    {{z_bb_esi|floatformat:2}}
+                                                                {% else %}
+                                                                    -
+                                                                {% endif %}
+                                                            </small>
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        <div class="tab-pane fade" id="export-frag-pos" role="tabpanel">
+                            <div class="mt-4 mb-4 ms-4">
+                              Excel File with MS2 fragments downloaded
+                            </div>
+                        </div>
+                      </div>
+
+                  </div>
+                </div>
+              </div>
+
           </div>
+          <!-- /MS2 panel-->
+          {% endif %}
 
         </div>
       </div>
@@ -793,5 +1114,8 @@
 
 <!-- Handles nucleotides and modifications -->
 <script src="{% static 'js/nt_modification.js'%}"></script>
+
+<!-- Handles NEG/POS switching in MS2 panel -->
+<script src="{% static 'js/ms2_neg_pos_toggle.js'%}"></script>
 
 {% endblock %}

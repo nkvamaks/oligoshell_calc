@@ -1,4 +1,5 @@
 import io
+import numpy as np
 from django.shortcuts import render, redirect
 from django.core.mail import EmailMessage
 from django.conf import settings
@@ -28,75 +29,73 @@ class CalcView(MetadataMixin, FormView):
     description = 'Calculate nucleic acid properties online. Determine melting temperature, molecular weight, extinction coefficient for DNA, RNA and therapeutic oligonucleotides.'
     keywords = ['oligo calculator', 'oligonucleotide calculator', 'oligocalculator', 'oligo mass calculator', 'oligocalc',
                 'oligonucleotide properties', 'nucleic acids', 'melting temperature', 'Tm', 'extinction coefficient',
-                'exact mass', 'molecular weight', 'DNA', 'RNA', 'modified oligonucleotides', 'therapeutic oligonucleotides',
+                'exact mass', 'molecular weight', 'DNA', 'RNA', 'PMO', 'morpholino', 'modified oligonucleotides', 'therapeutic oligonucleotides',
                 'minor groove binder', 'MGB', 'modifications', 'conjugates', 'bioconjugates']
 
     def form_valid(self, form):
-        if 'export_excel' in self.request.POST:
+        if 'export_excel_neg' in self.request.POST:
             sequence_data = self.calculate_results(form)
-            ms_frag_array = sequence_data.get('mass_fragments_array')
-            return self.export_to_excel(ms_frag_array)
+            ms_frag_array = sequence_data.get('mass_fragments_array_neg')
+            seq_wo_phosph_tup = sequence_data.get('seq_wo_phosph_tup')
+            return self.export_to_excel(ms_frag_array, seq_wo_phosph_tup, mode='neg')
+        if 'export_excel_pos' in self.request.POST:
+            sequence_data = self.calculate_results(form)
+            ms_frag_array = sequence_data.get('mass_fragments_array_pos')
+            seq_wo_phosph_tup = sequence_data.get('seq_wo_phosph_tup')
+            return self.export_to_excel(ms_frag_array, seq_wo_phosph_tup, mode='pos')
 
         context = self.get_context_data(form=form)
         context.update(self.calculate_results(form))
         return self.render_to_response(context)
 
-    def export_to_excel(self, ms_frag_array):
+    def export_to_excel(self, ms_frag_array, seq_wo_phosph_tup, mode):
         """
         Create an Excel file (using openpyxl) and return it as an attachment.
         """
         wb = Workbook()
-        wb.remove(wb.active)    # Remove active sheet
+        wb.remove(wb.active)
 
         # If ms_frag_array is empty or None, handle the "no data" scenario
-        if not ms_frag_array:
+        if ms_frag_array is None or ms_frag_array.size == 0:
             ws_empty = wb.create_sheet(title='NoData')
             ws_empty.append(['No MS2 data'])
         else:
-
-            # Loop through each charge state with its index
             for idx, charge_state_data in enumerate(ms_frag_array, start=1):
-                ws = wb.create_sheet(title=f'z-{idx}')
-                # Add a header row
-                headers = ['d', 'c', 'b', 'a', 'a-B', "5'-Index", 'Sequence', "3'-Index", 'w', 'x', 'y', 'z']
+                if mode == 'neg':
+                    ws = wb.create_sheet(title=f'z-{idx}')
+                else:
+                    ws = wb.create_sheet(title=f'z+{idx}')
+                headers = ['d', 'd-NMe2', 'c', 'b', 'a', 'a-B', "5'-Index", 'Sequence', "3'-Index", 'w', 'x', 'y', 'z', 'z-NMe2']
                 ws.append(headers)
 
                 n = len(charge_state_data)
 
                 for row_idx, row_data_tup in enumerate(charge_state_data):
-                    d, c, b, a, a_B, seq, w, x, y, z = row_data_tup
-                    row_data = [
-                        d if d >= 0 else None,
-                        c if c >= 0 else None,
-                        b if b >= 0 else None,
-                        a if a >= 0 else None,
-                        a_B if a_B >= 0 else None,
-                        row_idx + 1,                # 5'-Index
-                        seq,                        # Sequence
-                        n - row_idx,                # 3'-Index
-                        w if w >= 0 else None,
-                        x if x >= 0 else None,
-                        y if y >= 0 else None,
-                        z if z >= 0 else None,
-                    ]
+                    d, c, b, a, a_B, w, x, y, z, d_backbone, z_backbone = row_data_tup
+
+                    row_data = [d, d_backbone, c, b, a, a_B,
+                                row_idx + 1,                 # 5'-Index
+                                seq_wo_phosph_tup[row_idx],  # Sequence
+                                n - row_idx,                 # 3'-Index
+                                w, x, y, z, z_backbone]
                     ws.append(row_data)
 
-        # Save workbook to an in-memory stream
         excel_buffer = io.BytesIO()
         wb.save(excel_buffer)
-        excel_buffer.seek(0)  # Move cursor to the beginning of the stream
+        excel_buffer.seek(0)
 
-        # Build an HttpResponse with the correct headers
         response = HttpResponse(
             excel_buffer.getvalue(),
             content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         )
-        response['Content-Disposition'] = 'attachment; filename="ms2_fragments.xlsx"'
+        filename = 'ms2_frag_neg.xlsx' if mode == 'neg' else 'ms2_frag_pos.xlsx'
+        response['Content-Disposition'] = f'attachment; filename="{filename}"'
         return response
 
     def calculate_results(self, form):
         sequence, mass_monoisotopic, concentration_molar, concentration_mass = '', 0, 0, 0
-        quantity, melting_t, esi_series, mass_fragments_array = 0, -1, [], []
+        quantity, melting_t, esi_series_neg, esi_series_pos = 0, -1, [], []
+        mass_fragments_array_neg, mass_fragments_array_pos = None, None
 
         btnradio = form.cleaned_data['btnradio']
         if btnradio == 'dna':
@@ -128,7 +127,7 @@ class CalcView(MetadataMixin, FormView):
         if not utils.contain_degenerate_nucleotide(sequence):
             mass_monoisotopic = utils.get_mass_monoisotopic(sequence)
 
-        esi_series = utils.calculate_esi_series(sequence, length, mass_average, mass_monoisotopic)
+        esi_series_neg, esi_series_pos = utils.calculate_esi_series(sequence, length, mass_average, mass_monoisotopic)
 
         if absorbance260 and epsilon260:
             concentration_molar = absorbance260 / epsilon260 * 1e6
@@ -138,7 +137,7 @@ class CalcView(MetadataMixin, FormView):
             quantity = concentration_molar * volume
 
         if not utils.contain_degenerate_nucleotide(sequence):
-            mass_fragments_array = utils.calculate_mass_fragments(sequence, length, seq_wo_phosph_tup)
+            mass_fragments_array_neg, mass_fragments_array_pos = utils.calculate_mass_fragments(sequence)
 
         melting_t = tm.calculate_melting_temp(seq_wo_phosph_tup, sequence, target, dna_conc, mv_conc, dv_conc,
                                               dntp_conc)
@@ -163,13 +162,16 @@ class CalcView(MetadataMixin, FormView):
             'quantity': quantity,
             'mass_monoisotopic': mass_monoisotopic,
             'mass_average': mass_average,
-            'esi_series': esi_series,
-            'mass_fragments_array': mass_fragments_array,
+            'esi_series_neg': esi_series_neg,
+            'esi_series_pos': esi_series_pos,
+            'mass_fragments_array_neg': mass_fragments_array_neg,
+            'mass_fragments_array_pos': mass_fragments_array_pos,
             'melting_t': melting_t,
             'gc_content': int(gc_content * 100),
             'brutto_formula': brutto_formula,
             'nmol_OD260': nmol_OD260,
-            'ug_OD260': ug_OD260}
+            'ug_OD260': ug_OD260,
+            'contain_degenerate_nucleotide': utils.contain_degenerate_nucleotide(sequence)}
 
 
 def about(request):

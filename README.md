@@ -1,12 +1,22 @@
 <h4 class="mb-4"> About OligoShell Calculator: </h4>
 <p>
-OligoShell Calculator is a comprehensive web application designed for calculating various properties of natural (DNA, RNA), modified, and therapeutic oligonucleotides. Our tool offers advanced features that meet the needs of researchers and professionals in the fields of nucleic acid chemistry and molecular biology.</p>
+OligoShell Calculator is a comprehensive web application designed for calculating various properties of natural (DNA, RNA), 
+modified, therapeutic oligonucleotides, as well as phosphorodiamidate morpholino oligos (PMO), 
+thiomorpholino oligos (TMO), morpholino oligos (MO), and different chimeras with available nucleic acids. Our tool offers 
+advanced features that meet the needs of researchers and professionals in the fields of nucleic acid chemistry and molecular biology.
+</p>
 <p>
 <strong>Key Features:</strong>
 </p>
 <ul>
     <li>
         <sup><strong>NEW!</strong></sup>
+        Calculate properties of phosphorodiamidate morpholino oligos (PMO), thiomorpholino oligos (TMO), morpholino oligos (MO), and various chimeric oligonucleotides.
+    </li>
+    <li>
+        Compose oligonucleotides with different backbones including phosphodiester, phosphorothioate, phosphorodithioate, mesyl phosphoramidate, and dimethylamino phosphoramidate.
+    </li>
+    <li>
         Calculate melting temperatures of MGB-modified oligonucleotide probes, similar to Primer Express 3.0 software.
     </li>
     <li>
@@ -32,7 +42,7 @@ OligoShell Calculator is a comprehensive web application designed for calculatin
     <strong>New Tool: TaqMan Finder</strong>
 </p>
 <p>
-    This tool simplifies the process of finding matching primers and probes for TaqMan assays within your specified target sequence. By providing the exact (single isotope) masses of both primers and the probe, chemical modifications of the probe, length of the amplicon, and the reference sequence (RefSeq), you can easily identify compatible components for your assay.
+    This tool simplifies the process of finding matching primers and probes for TaqMan assays within your specified target sequence. By providing the exact (single isotope) masses of both primers and the probe, chemical modifications of the probe, length of the amplicon, and the reference sequence (RefSeq), you can easily identify compatible components of your assay.
 </p>
 <p>
     <strong>Sequence Input Guidelines:</strong>
@@ -54,7 +64,9 @@ OligoShell Calculator is a comprehensive web application designed for calculatin
             Enter each nucleotide, degenerate nucleotide, or modification using its specific designation. Separate each entity (nucleotide, modification, or phosphate backbone) with a space.
         </p>
     </li>
-    To facilitate input, use dropdown menus with modifications of nucleotides from the 'keyboard'.
+    <li>
+        To facilitate input, use dropdown menus with modifications of nucleotides from the 'keyboard'.
+    </li>
 </ul>
 
 <p><strong>Examples:</strong></p>
@@ -65,6 +77,7 @@ OligoShell Calculator is a comprehensive web application designed for calculatin
     <li><strong>RNA:</strong> GUGCGAAGGGACGGUGCGGAGAGGAGAGCAC[GALNAC3-ALN]</li>
     <li><strong>Therapeutic:</strong> +A +Cm +G dT dA dC dG dT dG dG dC dA dG +G +Cm +A</li>
     <li><strong>Therapeutic:</strong> +Cm * +G * +T * dA * dA * dC * dC * dT * dG * dA * dC * dC * dG * +A * +G * +A</li>
+    <li><strong>Therapeutic (PMO): </strong>morC # morC # morT # morC # morC # morG # morG # morT # morT # morC # morT</li>
 </ul>
 <p><strong>Available Nucleotides:</strong></p>
 <ul>
@@ -72,7 +85,7 @@ OligoShell Calculator is a comprehensive web application designed for calculatin
         Deoxynucleotides: dA, dC, dG, dT, dU, dCm
     </li>
     <li>
-        Degenerate deoxinucleotides: dW, dS, dM, dK, dR, dY, dB, dD, dH, dV, dN
+        Degenerate deoxynucleotides: dW, dS, dM, dK, dR, dY, dB, dD, dH, dV, dN
     </li>
     <li>
         Ribonucleotides: rA, rC, rG, rU
@@ -91,6 +104,12 @@ OligoShell Calculator is a comprehensive web application designed for calculatin
     </li>
     <li>
         LNA nucleotides: +A, +Cm, +G, +T
+    </li>
+    <li>
+        Constrained ethyl (cEt) nucleotides: cetA, cetC, cetG, cetU
+    </li>
+    <li>
+        Morpholino nucleosides: morA, morC, morG, morT
     </li>
     <sub>* <b>Cm</b> stands for 5-methylcytosine and <b>T</b> for 5-methyluracil</sub>
 </ul>

@@ -55,12 +55,12 @@ def validate_seq_dna_regex(sequence):
     bracketed sections.
 
     Allowed elements:
-    - Single characters: A, C, G, T, W, S, M, K, R, Y, B, D, H, V, N, *, space
+    - Single characters: A, C, G, T, W, S, M, K, R, Y, B, D, H, V, N, *, #, space
     - Bracketed modifications: e.g., [FAM], [BHQ1], etc.
     - Allowed symbols inside brackets: -, +, ., _, a-z, A-Z, 0-9, space
     """
     # Define the set of allowed single characters
-    allowed_chars = set("ACGTWSMKRYBDHVN* ")
+    allowed_chars = set("ACGTWSMKRYBDHVN*# ")
 
     # Precompile the regex for validating bracket contents
     bracket_content_pattern = re.compile(r'^[-+\._a-zA-Z0-9 ]+$')
@@ -134,12 +134,12 @@ def validate_seq_rna_regex(sequence):
     bracketed sections.
 
     Allowed elements:
-    - Single characters: A, C, G, U, W, S, M, K, R, Y, B, D, H, V, N, *, space
+    - Single characters: A, C, G, U, W, S, M, K, R, Y, B, D, H, V, N, *, #, space
     - Bracketed modifications: e.g., [FAM], [BHQ1], etc.
     - Allowed symbols inside brackets: -, +, ., _, a-z, A-Z, 0-9, space
     """
     # Define the set of allowed single characters
-    allowed_chars = set("ACGUWSMKRYBDHVN* ")
+    allowed_chars = set("ACGUWSMKRYBDHVN*# ")
 
     # Precompile the regex for validating bracket contents
     bracket_content_pattern = re.compile(r'^[-+\._a-zA-Z0-9 ]+$')
@@ -182,7 +182,7 @@ def validate_seq_rna_regex(sequence):
 
 def validate_seq_rna(sequence):
     """
-    Validates a sting of sequence on a right syntax. It is case-sensitive.
+    Validates a string of sequence on a right syntax. It is case-sensitive.
     String should be presented in a format: [FAM]CU*A[moeG]UGAAGCUUUUCGGGGAUC[BHQ1]
     where A, C, G and U are RNA nucleosides. All others non-'ribo' nucleotides and
     modifications are given in square brackets.

@@ -419,132 +419,190 @@
         <div class="tab-content">
           <div class="tab-pane fade show active" id="navs-pills-top-properties" role="tabpanel">
              <div class="row">
-                <!--Sequence properties                 -->
+
+                 <!-- Sequence properties -->
                 <div class="col-md-12">
                   <div class="card">
                     <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-sm table-borderless table-hover" style="table-layout: fixed; width: 100%">
-                                <tr>
-                                    <td width="30%"><strong>Sequence 5'&rarr;3':</strong></td>
-                                    <td style="word-wrap:break-word"> {{ sequence_dna }} </td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Reverse Complement 5'&rarr;3':</strong></td>
-                                    <td style="word-wrap:break-word"> {{ sequence_dna_rev_compl }} </td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Sequence Length:</strong></td>
-                                    <td>{{ length }} <span class="text-muted">nt</span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>GC content:</strong></td>
-                                    <td>
-                                        {% if gc_content >= 0 %}
-                                            {{ gc_content }} <span class="text-muted">%</span>
-                                        {% else %}
-                                            -
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Melt Temp:</strong></td>
-                                    <td>
-                                        {% if melting_t > 0 %}
-                                            {{ melting_t|floatformat:1 }} <span class="text-muted">&deg;C</span>
-                                        {% else %}
-                                            -
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Molecular Formula:</strong></td>
-                                    <td><span class="formula">{{ brutto_formula }}</span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Monoisotopic Mass:</strong></td>
-                                    <td>
-                                        {% if mass_monoisotopic %}
-                                            {{ mass_monoisotopic|floatformat:4 }} <span class="text-muted">Da</span>
-                                        {% else %}
-                                            -
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Molecular Weight:</strong></td>
-                                    <td>
-                                        {{mass_average|floatformat:2}} <span class="text-muted">Da</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Extinction Coefficient, &epsilon;<sub>260</sub>: </strong></td>
-                                    <td>
-                                        {{ epsilon260 }} <span class="text-muted">L&middot;mol<sup>-1</sup>&middot;cm<sup>-1</sup></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><strong>nmol/OD<sub>260</sub>: </strong></td>
-                                    <td>
-                                        {% if nmol_OD260 > 0 %}
-                                            {{ nmol_OD260|floatformat:3 }}
-                                        {% else %}
-                                            -
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><strong>&micro;g/OD<sub>260</sub>: </strong></td>
-                                    <td>
-                                        {% if ug_OD260 > 0 %}
-                                            {{ ug_OD260|floatformat:3 }}
-                                        {% else %}
-                                            -
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Molar Concentration: </strong></td>
-                                    <td>
-                                        {% if concentration_molar > 0 %}
-                                        {{ concentration_molar|floatformat:1 }} <span class="text-muted">&mu;M</span>
-                                        {% else %}
-                                            -
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Mass Concentration: </strong></td>
-                                    <td>
-                                        {% if concentration_mass > 0 %}
-                                            {{ concentration_mass|floatformat:1 }} <span class="text-muted">&mu;g/mL</span>
-                                        {% else %}
-                                            -
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Quantity: </strong></td>
-                                    <td>
-                                        {% if quantity > 0 %}
-                                            {{ quantity|floatformat:1 }} <span class="text-muted">nmol</span>
-                                        {% else %}
-                                            -
-                                        {% endif %}
-                                    </td>
-                                </tr>
 
-                            </table>
-                        </div>
+                      <!-- Copy All button -->
+                      <div class="d-flex justify-content-end mb-2">
+                        <button id="copy-all-btn" class="btn btn-sm btn-outline-secondary" title="Copy all properties">
+                          <i class="bx bx-copy"></i> Copy All
+                        </button>
+                      </div>
 
-            {%comment%}
-            Quantity of degenerate sequences
-            {%endcomment%}
+                      <div class="table-responsive">
+                        <table id="properties-table" class="table table-sm table-borderless table-hover" style="table-layout: fixed; width: 100%">
+                          <tr>
+                            <td width="30%"><strong>Sequence 5'&rarr;3':</strong></td>
+                            <td style="word-wrap:break-word">
+                              <span class="copy-target">{{ sequence_dna }}</span>
+                              <span class="copy-btn" data-copy="{{ sequence_dna|escapejs }}" title="Copy this value" onclick="copyToClipboard(this)">
+                                &emsp;<i class="bx bx-copy"></i>
+                              </span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td><strong>Reverse Complement 5'&rarr;3':</strong></td>
+                            <td style="word-wrap:break-word">
+                              <span class="copy-target">{{ sequence_dna_rev_compl }}</span>
+                              <span class="copy-btn" data-copy="{{ sequence_dna_rev_compl|escapejs }}" title="Copy this value" onclick="copyToClipboard(this)">
+                                &emsp;<i class="bx bx-copy"></i>
+                              </span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td><strong>Sequence Length:</strong></td>
+                            <td>
+                              <span class="copy-target">{{ length }} <span class="text-muted">nt</span></span>
+                              <span class="copy-btn" data-copy="{{ length }}" title="Copy this value" onclick="copyToClipboard(this)">
+                                &emsp;<i class="bx bx-copy"></i>
+                              </span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td><strong>GC content:</strong></td>
+                            <td>
+                              {% if gc_content >= 0 %}
+                                <span class="copy-target">{{ gc_content }} <span class="text-muted">%</span></span>
+                                <span class="copy-btn" data-copy="{{ gc_content|floatformat:2 }}" title="Copy this value" onclick="copyToClipboard(this)">
+                                  &emsp;<i class="bx bx-copy"></i>
+                                </span>
+                              {% else %}
+                                -
+                              {% endif %}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td><strong>Melt Temp:</strong></td>
+                            <td>
+                              {% if melting_t > 0 %}
+                                <span class="copy-target">{{ melting_t|floatformat:1 }} <span class="text-muted">&deg;C</span></span>
+                                <span class="copy-btn" data-copy="{{ melting_t|floatformat:1 }}" title="Copy this value" onclick="copyToClipboard(this)">
+                                  &emsp;<i class="bx bx-copy"></i>
+                                </span>
+                              {% else %}
+                                -
+                              {% endif %}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td><strong>Molecular Formula:</strong></td>
+                            <td>
+                              <span class="formula copy-target">{{ brutto_formula }}</span>
+                              <span class="copy-btn" data-copy="{{ brutto_formula|escapejs }}" title="Copy this value" onclick="copyToClipboard(this)">
+                                &emsp;<i class="bx bx-copy"></i>
+                              </span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td><strong>Monoisotopic Mass:</strong></td>
+                            <td>
+                              {% if mass_monoisotopic %}
+                                <span class="copy-target">{{ mass_monoisotopic|floatformat:4 }} <span class="text-muted">Da</span></span>
+                                <span class="copy-btn" data-copy="{{ mass_monoisotopic|floatformat:4 }}" title="Copy this value" onclick="copyToClipboard(this)">
+                                  &emsp;<i class="bx bx-copy"></i>
+                                </span>
+                              {% else %}
+                                -
+                              {% endif %}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td><strong>Molecular Weight:</strong></td>
+                            <td>
+                              <span class="copy-target">{{ mass_average|floatformat:2 }} <span class="text-muted">Da</span></span>
+                              <span class="copy-btn" data-copy="{{ mass_average|floatformat:2 }}" title="Copy this value" onclick="copyToClipboard(this)">
+                                &emsp;<i class="bx bx-copy"></i>
+                              </span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td><strong>Extinction Coefficient, &epsilon;<sub>260</sub>:</strong></td>
+                            <td>
+                              <span class="copy-target">{{ epsilon260 }} <span class="text-muted">L&middot;mol<sup>-1</sup>&middot;cm<sup>-1</sup></span></span>
+                              <span class="copy-btn" data-copy="{{ epsilon260 }}" title="Copy this value" onclick="copyToClipboard(this)">
+                                &emsp;<i class="bx bx-copy"></i>
+                              </span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td><strong>nmol/OD<sub>260</sub>:</strong></td>
+                            <td>
+                              {% if nmol_OD260 > 0 %}
+                                <span class="copy-target">{{ nmol_OD260|floatformat:3 }}</span>
+                                <span class="copy-btn" data-copy="{{ nmol_OD260|floatformat:3 }}" title="Copy this value" onclick="copyToClipboard(this)">
+                                  &emsp;<i class="bx bx-copy"></i>
+                                </span>
+                              {% else %}
+                                -
+                              {% endif %}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td><strong>&micro;g/OD<sub>260</sub>:</strong></td>
+                            <td>
+                              {% if ug_OD260 > 0 %}
+                                <span class="copy-target">{{ ug_OD260|floatformat:3 }}</span>
+                                <span class="copy-btn" data-copy="{{ ug_OD260|floatformat:3 }}" title="Copy this value" onclick="copyToClipboard(this)">
+                                  &emsp;<i class="bx bx-copy"></i>
+                                </span>
+                              {% else %}
+                                -
+                              {% endif %}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td><strong>Molar Concentration:</strong></td>
+                            <td>
+                              {% if concentration_molar > 0 %}
+                                <span class="copy-target">{{ concentration_molar|floatformat:1 }} <span class="text-muted">&mu;M</span></span>
+                                <span class="copy-btn" data-copy="{{ concentration_molar|floatformat:1 }}" title="Copy this value" onclick="copyToClipboard(this)">
+                                  &emsp;<i class="bx bx-copy"></i>
+                                </span>
+                              {% else %}
+                                -
+                              {% endif %}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td><strong>Mass Concentration:</strong></td>
+                            <td>
+                              {% if concentration_mass > 0 %}
+                                <span class="copy-target">{{ concentration_mass|floatformat:1 }} <span class="text-muted">&mu;g/mL</span></span>
+                                <span class="copy-btn" data-copy="{{ concentration_mass|floatformat:1 }}" title="Copy this value" onclick="copyToClipboard(this)">
+                                  &emsp;<i class="bx bx-copy"></i>
+                                </span>
+                              {% else %}
+                                -
+                              {% endif %}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td><strong>Quantity:</strong></td>
+                            <td>
+                              {% if quantity > 0 %}
+                                <span class="copy-target">{{ quantity|floatformat:1 }} <span class="text-muted">nmol</span></span>
+                                <span class="copy-btn" data-copy="{{ quantity|floatformat:1 }}" title="Copy this value" onclick="copyToClipboard(this)">
+                                  &emsp;<i class="bx bx-copy"></i>
+                                </span>
+                              {% else %}
+                                -
+                              {% endif %}
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+
+                      {% comment %}
+                      Quantity of degenerate sequences
+                      {% endcomment %}
 
                     </div>
                   </div>
                 </div>
-                <!--End of Sequence properties     -->
+                <!-- End of Sequence properties -->
 
              </div>
           </div>
@@ -1106,10 +1164,13 @@
 
 </form>
 
+<!-- General scripts for the page -->
+<script src="{% static 'js/calculator.js'%}"></script>
+
 <!-- Parameter Sets in Calculator form -->
 <script src="{% static 'js/parametersets.js'%}"></script>
 
-<!-- Formatting of formulas -->
+<!-- Formatting formula -->
 <script src="{% static 'js/formula.js'%}"></script>
 
 <!-- Handles nucleotides and modifications -->

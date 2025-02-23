@@ -80,3 +80,17 @@
 .hide {
     display: none;
 }
+
+.copy-btn {
+  color: #8e979f; /* muted gray */
+  display: inline-block;
+  opacity: 0.2;
+  cursor: pointer;
+  transition: transform 0.1s, color 0.1s;
+}
+
+.copy-btn:hover {
+  color: #212529; /* dark on hover */
+   opacity: 1.0;
+}
+

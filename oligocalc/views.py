@@ -26,8 +26,8 @@ class CalcView(MetadataMixin, FormView):
     form_class = forms.CalcForm
     success_url = reverse_lazy('oligocalc:calculator')
     title = 'Oligonucleotide Properties Calculator'
-    description = 'Calculate nucleic acid properties online. Determine melting temperature, molecular weight, extinction coefficient for DNA, RNA and therapeutic oligonucleotides.'
-    keywords = ['oligo calculator', 'oligonucleotide calculator', 'oligocalculator', 'oligo mass calculator', 'oligocalc',
+    description = 'Calculate properties of nucleic acids online. Determine melting temperature, molecular weight, extinction coefficient for DNA, RNA, PMO and therapeutic oligonucleotides.'
+    keywords = ['oligonucleotide properties calculator', 'oligo calculator', 'oligonucleotide calculator', 'oligocalculator', 'oligo mass calculator', 'oligocalc',
                 'oligonucleotide properties', 'nucleic acids', 'melting temperature', 'Tm', 'extinction coefficient',
                 'exact mass', 'molecular weight', 'DNA', 'RNA', 'PMO', 'morpholino', 'modified oligonucleotides', 'therapeutic oligonucleotides',
                 'minor groove binder', 'MGB', 'modifications', 'conjugates', 'bioconjugates']
@@ -330,7 +330,7 @@ class ProfileDetails(MetadataMixin, LoginRequiredMixin, DeleteView):
     title = 'Profile Details'
     description = 'Manage your personal information, associated email addresses, and connected social accounts securely. Update your profile details or delete your account with ease.'
     keywords = ['user profile', 'account management', 'associated emails', 'social accounts', 'manage profile', 'personal information', 'update profile',
-                'oligonucleotide', 'DNA', 'RNA']
+                'oligonucleotide', 'DNA', 'RNA', 'PMO']
 
     def get_object(self, **kwargs):
         return self.request.user

@@ -7,7 +7,7 @@ SPAN = 1
 mass_nucleoside = {'A': 251.10184, 'C': 227.09061, 'G': 267.09675, 'T': 242.09027, 'p': 61.95576}
 mass_probe_dye = {'NO-ANY': 0, 'FAM-MGB': 1656.4748, 'VIC-MGB': 1834.3892, 'JUN-QSY': 1641.494,
                   'FAM-BHQ1': 1091.2867, 'HEX-BHQ1': 1295.053,
-                  'TexRd-BHQ2': 1436.46, 'Cy5-BHQ2': 1088.43}
+                  'TexRd-BHQ2': 1436.46, 'Cy5-BHQ2': 1088.43, 'ATTO647N-BHQ2': 1362.60}
 
 
 def simple_fasta_parser(fasta):

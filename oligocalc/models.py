@@ -32,7 +32,8 @@ class TaqManFind(models.Model):
         ('VIC-MGB', 'VIC - MGB-ECLIPSE (Thermo)'),
         ('JUN-QSY', 'JUN - QSY (Thermo)'),
         ('TexRd-BHQ2', 'TexRd - BHQ2 (IDT)'),
-        ('Cy5-BHQ2', 'Cy5 - BHQ2 (IDT)')
+        ('Cy5-BHQ2', 'Cy5 - BHQ2 (IDT)'),
+        ('ATTO647N-BHQ2', 'ATTO647N - BHQ2 (IDT)'),
     ]
     fasta = models.TextField(verbose_name="Sequence in FASTA format", blank=False, null=False)
     primer1 = models.FloatField(verbose_name='Molecular weight of Primer 1', blank=False, null=False)

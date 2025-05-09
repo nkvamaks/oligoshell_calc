@@ -171,3 +171,19 @@ class CustomLoginForm(LoginForm):
 
     def login(self, *args, **kwargs):
         return super().login(*args, **kwargs)
+
+
+class SirnaScoreForm(forms.ModelForm):
+    def clean_fasta(self):
+        return validators.validate_fasta_RNA(self.cleaned_data['fasta'])
+
+    class Meta:
+        model = models.SirnaScore
+        fields = '__all__'
+
+        widgets = {'fasta': forms.Textarea(attrs={'rows': 5,
+                                                  'placeholder': '>NM_001101.3 Homo sapiens actin beta (ACTB), mRNA\nACCGCCGAGACCGCGTCCGCCCCGCGAGCACAGAGCCTCGCCTTTGCCGATCCGCCGCCCGTCCACACCC\nGCCGCCAGCTCACCATGGATGATGATATCGCCGCGCTCGTCGTCGACAACGGCTCCGGCATGTGCAAGGC\nCGGCTTCGCGGGCGACGATGCCCCCCGGGCCGTCTTCCCCTCCATCGTGGGGCGCCCCAGGCACCAGGGC',
+                                                  'class': 'form-control',
+                                                  'id': 'output',
+                                                  'style': 'font-family: monospace,monospace;'}),
+                   }

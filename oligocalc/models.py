@@ -54,3 +54,14 @@ class TaqManFind(models.Model):
 
     # def __str__(self):
     #     return f'{self.user.username} Profile'
+
+
+class SirnaScore(models.Model):
+    fasta = models.TextField(verbose_name="Sequence in FASTA format", blank=False, null=False)
+    # pos = models.IntegerField(verbose_name="Position in Transcript", blank=True, null=True)
+    # window = models.CharField(verbose_name="Window for siRNA", max_length=100, blank=True, null=True)
+    # sense = models.CharField(verbose_name="Sense, 5'->3'", max_length=100, blank=True, null=True)
+    # antisense = models.CharField(verbose_name="Antisense, 5'->3'", max_length=100, blank=True, null=True)
+
+    def get_absolute_url(self):
+        return reverse('oligocalc:sirna_score')

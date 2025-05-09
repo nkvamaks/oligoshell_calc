@@ -57,6 +57,9 @@
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="{% static 'layout/js/config.js'%}"></script>
+
+    <!-- jQuery Library -->
+    <script src="{% static 'layout/vendor/libs/jquery/jquery.js'%}"></script>
   </head>
 
   <body>
@@ -304,7 +307,7 @@
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
-    <script src="{% static 'layout/vendor/libs/jquery/jquery.js'%}"></script>
+
     <script src="{% static 'layout/vendor/libs/popper/popper.js'%}"></script>
     <script src="{% static 'layout/vendor/js/bootstrap.js'%}"></script>
     <script src="{% static 'layout/vendor/libs/perfect-scrollbar/perfect-scrollbar.js'%}"></script>

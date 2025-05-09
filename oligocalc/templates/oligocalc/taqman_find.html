@@ -2,44 +2,48 @@
 {% load static %}
 
 {% block content %}
-
-<div class="card accordion-item mb-3">
-  <h2 class="accordion-header" id="aboutTaqManFind">
-    <button
-      type="button"
-      class="accordion-button collapsed"
-      data-bs-toggle="collapse"
-      data-bs-target="#accordionTaqManFind"
-      aria-expanded="false"
-      aria-controls="accordionTaqManFind"
-    >
-      How to Use &nbsp;<strong>TaqMan Finder</strong>&nbsp; Tool
-    </button>
-  </h2>
-  <div
-    id="accordionTaqManFind"
-    class="accordion-collapse collapse"
-    aria-labelledby="headingTwo"
-    data-bs-parent="#accordionExample"
-  >
-    <div class="accordion-body">
-        <strong>Please Note: This is <em>not</em> a design tool!</strong><br/>
-        This tool is made to help you find matching primers and probes for TaqMan assays within your specified
-        target sequence. By providing the exact (single isotope) masses of both primers and the probe, the chemical
-        modifications of the probe, the length of the amplicon, and the reference sequence (RefSeq), you can easily
-        identify compatible components of your assay. Ensure all details are accurate for optimal results.<br/>
-        You can test this tool using <a id="actbExample" href="javascript:pasteExample()">this example dataset</a> for the Actin Beta
-        TaqMan assay
-        <a href="https://www.thermofisher.com/order/genome-database/details/gene-expression/Hs99999903_m1" target="_blank">
-            Hs99999903_m1 </a> from Thermo Fisher.
-        Please note, the output of this tool can sometimes be ambiguous, providing several probes with the same mass.
-        For this specific example, the actual sequences can be found in
-        <a href="https://www.doi.org/10.1038/sj.leu.2402880" target="_blank">this</a> publication.
-
+<div class="card mb-4">
+    <div class="card-header  justify-content-between align-items-center">
+        <h2 class="mb-0 text-center">TaqMan Assay Finder</h2>
     </div>
-  </div>
-</div>
 
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="aboutTaqManFind">
+        <button
+          type="button"
+          class="accordion-button collapsed"
+          data-bs-toggle="collapse"
+          data-bs-target="#accordionTaqManFind"
+          aria-expanded="false"
+          aria-controls="accordionTaqManFind"
+        >
+          How to Use &nbsp;<strong>TaqMan Finder</strong>&nbsp; Tool
+        </button>
+      </h2>
+      <div
+        id="accordionTaqManFind"
+        class="accordion-collapse collapse"
+        aria-labelledby="headingTwo"
+        data-bs-parent="#accordionExample"
+      >
+        <div class="accordion-body">
+            <strong>Please Note: This is <em>not</em> a design tool!</strong><br/>
+            This tool is made to help you find matching primers and probes for TaqMan assays within your specified
+            target sequence. By providing the exact (single isotope) masses of both primers and the probe, the chemical
+            modifications of the probe, the length of the amplicon, and the reference sequence (RefSeq), you can easily
+            identify compatible components of your assay. Ensure all details are accurate for optimal results.<br/>
+            You can test this tool using <a id="actbExample" href="javascript:pasteExample()">this example dataset</a> for the Actin Beta
+            TaqMan assay
+            <a href="https://www.thermofisher.com/order/genome-database/details/gene-expression/Hs99999903_m1" target="_blank">
+                Hs99999903_m1 </a> from Thermo Fisher.
+            Please note, the output of this tool can sometimes be ambiguous, providing several probes with the same mass.
+            For this specific example, the actual sequences can be found in
+            <a href="https://www.doi.org/10.1038/sj.leu.2402880" target="_blank">this</a> publication.
+
+        </div>
+      </div>
+    </div>
+</div>
 
 <div class="row">
     <div class="col-md-8">

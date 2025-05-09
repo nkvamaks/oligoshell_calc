@@ -39,12 +39,6 @@ advanced features that meet the needs of researchers and professionals in the fi
     </li>
 </ul>
 <p>
-    <strong>New Tool: TaqMan Finder</strong>
-</p>
-<p>
-    This tool simplifies the process of finding matching primers and probes for TaqMan assays within your specified target sequence. By providing the exact (single isotope) masses of both primers and the probe, chemical modifications of the probe, length of the amplicon, and the reference sequence (RefSeq), you can easily identify compatible components of your assay.
-</p>
-<p>
     <strong>Sequence Input Guidelines:</strong>
 </p>
 <p>
@@ -113,6 +107,25 @@ advanced features that meet the needs of researchers and professionals in the fi
     </li>
     <sub>* <b>Cm</b> stands for 5-methylcytosine and <b>T</b> for 5-methyluracil</sub>
 </ul>
+<p>
+    <strong>TOOLS:</strong>
+</p>
+<p>
+    <strong>New Tool: siRNA Scan & Score</strong>
+</p>
+<p>
+    siRNA Scan & Score is a web-based tool for designing and evaluating siRNA candidates based on sequence input. 
+    It identifies all possible 19- and 21-mer siRNAs from a given mRNA target and computes multiple scoring metrics 
+    including predicted on-target efficacy and off-target potential using independently implemented or published algorithms.
+    The tool provides ranked output, interactive filtering, and detailed scoring breakdowns to support researchers 
+    in selecting potent and specific siRNA sequences for experimental use.
+</p>
+<p>
+    <strong>TaqMan Finder</strong>
+</p>
+<p>
+    This tool simplifies the process of finding matching primers and probes for TaqMan assays within your specified target sequence. By providing the exact (single isotope) masses of both primers and the probe, chemical modifications of the probe, length of the amplicon, and the reference sequence (RefSeq), you can easily identify compatible components of your assay.
+</p>
 
 <p>
 Experience full functionality of the <strong>OligoShell Calculator</strong> online at <a href="https://www.oligoshell.com">www.oligoshell.com</a>

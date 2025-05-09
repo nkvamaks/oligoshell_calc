@@ -1,0 +1,495 @@
+{% extends "layout/basic.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-header  justify-content-between align-items-center">
+                <h2 class="mb-0 text-center">siRNA Scan & Score</h2>
+                <p class="mt-2 small">
+                    The tool allows you to analyze an mRNA transcript and identify potential 19- and 21-mer siRNA
+                    candidates. Paste your RNA sequence (plain text or FASTA format) or fetch using accession number into
+                    the input field and click <em>Scan & Score siRNAs</em>. The tool will generate all possible siRNAs,
+                    evaluate them using multiple scoring systems, and display the results in a sortable, interactive table.
+                    Use the filters to select siRNAs with optimal potency, specificity, and stability for your experiments.
+                </p>
+            </div>
+            <div class="card-body">
+                <!-- Form for fetching RefSeq -->
+                <form method="POST" action="{% url 'oligocalc:sirna_score' %}">
+                    {% csrf_token %}
+                    <div class="row mt-4 mb-3">
+                        <label class="mb-1" for="accInput">Enter an accession number and fetch sequence:</label>
+                        <div class="col-md-7">
+                            <div class="input-group">
+                                <input class="form-control" type="text" id="accInput" placeholder="NM_009417">
+                                <button id="fetchButton" class="btn btn-secondary" name="fetchRefSeq">Fetch RefSeq</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl">
+                            <div id="errorFetchSeq" class="error"></div>
+                        </div>
+                    </div>
+
+                </form>
+
+                <form method="POST" action="{% url 'oligocalc:sirna_score' %}">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-xl">
+                            <label class="mb-1" for="output">
+                                Or paste <b>RNA target sequence</b> as plain text or in FASTA format (both T and U are acceptable):<br/>
+                                <span class="text-muted small">Calculations for longer sequences may take up to one minute to complete. Please be patient.</span>
+                            </label>
+                            {{form.fasta}}
+                        </div>
+                        <div class="mt-1">
+                            {% if form.errors %}
+                                {% for field_error, error in form.errors.items %}
+                                    <div>{{ error }}</div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                <button type="submit" class="mt-3 btn btn-primary submit" name="SirnaScore">Scan & Score siRNAs</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+  #tableSirna19,
+  #tableSirna21{
+    table-layout: fixed;
+    width: 100%;
+  }
+  #tableSirna19 th,
+  #tableSirna19 td,
+  #tableSirna21 th,
+  #tableSirna21 td{
+    text-align: left;
+    padding: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+</style>
+
+{% if sirna_19_list %}
+<div class="row mt-4">
+    <div class="col-xl-12">
+
+        <div class="nav-align-top mb-4">
+            <ul class="nav nav-tabs" role="tablist">
+              <li class="nav-item">
+                <button
+                  type="button"
+                  class="nav-link active"
+                  role="tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#sirna19"
+                  aria-controls="sirna19"
+                  aria-selected="true"
+                >
+                  19-mer siRNA Scores
+                </button>
+              </li>
+
+              {% if sirna_21_list %}
+              <li class="nav-item">
+                <button
+                  type="button"
+                  class="nav-link"
+                  role="tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#sirna21"
+                  aria-controls="sirna21"
+                  aria-selected="false"
+                >
+                  21-mer siRNA Scores
+                </button>
+              </li>
+              {% endif %}
+
+            </ul>
+
+            <div class="tab-content">
+
+                <!-- Content for 19-mer siRNA Table -->
+                <div class="tab-pane fade show active" id="sirna19" role="tabpanel">
+                    <div class="card" style="border-radius: 0%;">
+                        <div class="card-body">
+                            <div class="table-responsive text-nowrap">
+                                <!-- Table with 19-mer siRNA sequences and Scores -->
+                                <table id="tableSirna19" class="table table-sm table-bordered hover compact">
+                                    <thead>
+                                        <tr>
+                                            <th style="text-transform: capitalize;">
+                                                Pos <i class="bx bx-info-circle"
+                                                       data-bs-toggle="tooltip"
+                                                       data-bs-offset="0,5"
+                                                       data-bs-placement="right"
+                                                       data-bs-html="true"
+                                                       title="Start Position in Target">
+                                                    </i>
+                                            </th>
+                                            <th style="text-transform: capitalize;">
+                                                Sense, <span class="text-muted">5'&rarr;3'</span> <i class="bx bx-info-circle"
+                                                                                                data-bs-toggle="tooltip"
+                                                                                                data-bs-offset="0,5"
+                                                                                                data-bs-placement="right"
+                                                                                                data-bs-html="true"
+                                                                                                title="Sense (Passenger) Strand">
+                                                                                             </i>
+                                            </th>
+                                            <th style="text-transform: capitalize;">
+                                                Antisense, <span class="text-muted">5'&rarr;3'</span> <i class="bx bx-info-circle"
+                                                                                                    data-bs-toggle="tooltip"
+                                                                                                    data-bs-offset="0,5"
+                                                                                                    data-bs-placement="right"
+                                                                                                    data-bs-html="true"
+                                                                                                    title="Antisense (Guide) Strand">
+                                                                                                 </i>
+                                            </th>
+                                            <th>
+                                                GC, <span class="text-muted">%</span> <i class="bx bx-info-circle"
+                                                                                         data-bs-toggle="tooltip"
+                                                                                         data-bs-offset="0,5"
+                                                                                         data-bs-placement="right"
+                                                                                         data-bs-html="true"
+                                                                                         title="GC-content">
+                                                                                      </i>
+                                            </th>
+                                            <th style="text-transform: lowercase;">
+                                                i-<span style="text-transform: uppercase;">S</span>core <i class="bx bx-info-circle"
+                                                                                    data-bs-toggle="tooltip"
+                                                                                    data-bs-offset="0,5"
+                                                                                    data-bs-placement="right"
+                                                                                    data-bs-html="true"
+                                                                                    title="i-Score (inhibitory-Score)">
+                                                                                 </i>
+                                            </th>
+                                            <th style="text-transform: capitalize;">
+                                                Katoh <i class="bx bx-info-circle"
+                                                         data-bs-toggle="tooltip"
+                                                         data-bs-offset="0,5"
+                                                         data-bs-placement="right"
+                                                         data-bs-html="true"
+                                                         title="Katoh (siExplorer)">
+                                                      </i>
+                                            </th>
+                                            <th style="text-transform: capitalize;">
+                                                DH-Score <i class="bx bx-info-circle"
+                                                            data-bs-toggle="tooltip"
+                                                            data-bs-offset="0,5"
+                                                            data-bs-placement="right"
+                                                            data-bs-html="true"
+                                                            title="The simulated algorithm accurately reproduces scores of siDESIGN Center of Horizon Discovery / Dharmacon with 99.9% accuracy.">
+                                                         </i>
+                                            </th>
+                                            <th>
+                                                POTS HSA <i class="bx bx-info-circle"
+                                                            data-bs-toggle="tooltip"
+                                                            data-bs-offset="0,5"
+                                                            data-bs-placement="right"
+                                                            data-bs-html="true"
+                                                            title="Potential Off-Targeting Score for Human. Measures the likelihood of an siRNA sequence causing unintended silencing (off-target effects) based on the seed region’s similarity to sequences within Human transcriptome-wide 3′-UTRs.
+                                                                   Choose siRNAs with low POTS values for higher specificity and minimal unintended gene repression.">
+                                                         </i>
+                                            </th>
+                                            <th>
+                                                POTS MMU <i class="bx bx-info-circle"
+                                                            data-bs-toggle="tooltip"
+                                                            data-bs-offset="0,5"
+                                                            data-bs-placement="right"
+                                                            data-bs-html="true"
+                                                            title="Potential Off-Targeting Score for Mouse. Measures the likelihood of an siRNA sequence causing unintended silencing (off-target effects) based on the seed region’s similarity to sequences within Mouse transcriptome-wide 3′-UTRs.
+                                                                   Choose siRNAs with low POTS values for higher specificity and minimal unintended gene repression.">
+                                                         </i>
+                                            </th>
+                                            <th>
+                                                SPS, <span style="text-transform: lowercase;" class="text-muted">kkal/mol</span>
+                                                <i class="bx bx-info-circle"
+                                                   data-bs-toggle="tooltip"
+                                                   data-bs-offset="0,5"
+                                                   data-bs-placement="right"
+                                                   data-bs-html="true"
+                                                   title="SPS (Seed-Pairing Stability) indicates the strength of base-pairing between an siRNA's seed region and its target site. Weak SPS may reduce off-target silencing but can lower siRNA potency.
+                                                          Select siRNAs with weaker absolute SPS values to minimize off-target effects, especially among sequences with similar POTS values.">
+                                                </i>
+                                            </th>
+                                            <th style="text-transform: capitalize;">
+                                                Antisense Seed Tm, <span class="text-muted">&deg;C</span>
+                                                <i class="bx bx-info-circle"
+                                                   data-bs-toggle="tooltip"
+                                                   data-bs-offset="0,5"
+                                                   data-bs-placement="right"
+                                                   data-bs-html="true"
+                                                   title="Reflects the thermodynamic stability of base-pairing between siRNA antisense seed region (positions 2–8) and potential off-target mRNAs. Higher Tm values more than 21.5 &deg;C typically correlate with increased off-target silencing effects."
+                                                >
+                                                </i>
+                                            </th>
+                                            <th style="text-transform: capitalize;">
+                                                Sense Seed Tm, <span class="text-muted">&deg;C</span>
+                                                <i class="bx bx-info-circle"
+                                                   data-bs-toggle="tooltip"
+                                                   data-bs-offset="0,5"
+                                                   data-bs-placement="right"
+                                                   data-bs-html="true"
+                                                   title="Reflects the thermodynamic stability of base-pairing between siRNA sense seed region (positions 2–8) and potential off-target mRNAs. Higher Tm values more than 21.5 &deg;C typically correlate with increased off-target silencing effects."
+                                                >
+                                                </i>
+                                            </th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for pos_19, sense_19, antisense_19, gc_19, iScore, katoh, dharmacon, pots_hsa_19, pots_mmu_19, sps_19, tm_anti_19, tm_sense_19 in sirna_19_list %}
+                                        <tr>
+                                            <td><small>{{pos_19}}</small></td>
+                                            <td><small>{{sense_19}}</small></td>
+                                            <td><small>{{antisense_19}}</small></td>
+                                            <td><small>{{gc_19}}</small></td>
+                                            <td><small>{{iScore|floatformat:1}}</small></td>
+                                            <td><small>{{katoh|floatformat:1}}</small></td>
+                                            <td><small>{{dharmacon|floatformat:1}}</small></td>
+                                            <td><small>{{pots_hsa_19|floatformat:1}}</small></td>
+                                            <td><small>{{pots_mmu_19|floatformat:1}}</small></td>
+                                            <td><small>{{sps_19}}</small></td>
+                                            <td><small>{{tm_anti_19}}</small></td>
+                                            <td><small>{{tm_sense_19}}</small></td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% if sirna_21_list %}
+                <!-- Content for 21-mer siRNA Table -->
+                <div class="tab-pane fade" id="sirna21" role="tabpanel">
+                    <div class="card" style="border-radius: 0%;">
+                        <div class="card-body">
+                            <div class="table-responsive text-nowrap">
+                                <!-- Table with 21-mer siRNA sequences and Scores -->
+                                <table id="tableSirna21" class="table table-sm table-bordered hover compact">
+                                    <thead>
+                                        <tr>
+                                            <th style="text-transform: capitalize;">
+                                                Pos <i class="bx bx-info-circle"
+                                                       data-bs-toggle="tooltip"
+                                                       data-bs-offset="0,5"
+                                                       data-bs-placement="right"
+                                                       data-bs-html="true"
+                                                       title="Start Position in Target">
+                                                    </i>
+                                            </th>
+                                            <th style="text-transform: capitalize;">
+                                                Sense, <span class="text-muted">5'&rarr;3'</span> <i class="bx bx-info-circle"
+                                                                                                data-bs-toggle="tooltip"
+                                                                                                data-bs-offset="0,5"
+                                                                                                data-bs-placement="right"
+                                                                                                data-bs-html="true"
+                                                                                                title="Sense (Passenger) Strand">
+                                                                                             </i>
+                                            </th>
+                                            <th style="text-transform: capitalize;">
+                                                Antisense, <span class="text-muted">5'&rarr;3'</span> <i class="bx bx-info-circle"
+                                                                                                    data-bs-toggle="tooltip"
+                                                                                                    data-bs-offset="0,5"
+                                                                                                    data-bs-placement="right"
+                                                                                                    data-bs-html="true"
+                                                                                                    title="Antisense (Guide) Strand">
+                                                                                                 </i>
+                                            </th>
+                                            <th>
+                                                GC, <span class="text-muted">%</span> <i class="bx bx-info-circle"
+                                                                                         data-bs-toggle="tooltip"
+                                                                                         data-bs-offset="0,5"
+                                                                                         data-bs-placement="right"
+                                                                                         data-bs-html="true"
+                                                                                         title="GC-content">
+                                                                                      </i>
+                                            </th>
+                                            <th>
+                                                DSIR <i class="bx bx-info-circle"
+                                                        data-bs-toggle="tooltip"
+                                                        data-bs-offset="0,5"
+                                                        data-bs-placement="right"
+                                                        data-bs-html="true"
+                                                        title="Designer of Small Interfering RNA">
+                                                     </i>
+                                            </th>
+                                            <th style="text-transform: lowercase;">
+                                                s-<span style="text-transform: uppercase;">B</span>iopredsi <i class="bx bx-info-circle"
+                                                                                        data-bs-toggle="tooltip"
+                                                                                        data-bs-offset="0,5"
+                                                                                        data-bs-placement="right"
+                                                                                        data-bs-html="true"
+                                                                                        title="s-Biopredsi (simulated Biopredsi)">
+                                                                                     </i>
+                                            </th>
+                                            <th>
+                                                POTS HSA <i class="bx bx-info-circle"
+                                                            data-bs-toggle="tooltip"
+                                                            data-bs-offset="0,5"
+                                                            data-bs-placement="right"
+                                                            data-bs-html="true"
+                                                            title="Potential Off-Targeting Score for Human. Measures the likelihood of an siRNA sequence causing unintended silencing (off-target effects) based on the seed region’s similarity to sequences within Human transcriptome-wide 3′-UTRs.
+                                                                   Choose siRNAs with low POTS values for higher specificity and minimal unintended gene repression.">
+                                                         </i>
+                                            </th>
+                                            <th>
+                                                POTS MMU <i class="bx bx-info-circle"
+                                                            data-bs-toggle="tooltip"
+                                                            data-bs-offset="0,5"
+                                                            data-bs-placement="right"
+                                                            data-bs-html="true"
+                                                            title="Potential Off-Targeting Score for Mouse. Measures the likelihood of an siRNA sequence causing unintended silencing (off-target effects) based on the seed region’s similarity to sequences within Mouse transcriptome-wide 3′-UTRs.
+                                                                   Choose siRNAs with low POTS values for higher specificity and minimal unintended gene repression.">
+                                                         </i>
+                                            </th>
+                                            <th>
+                                                SPS, <span style="text-transform: lowercase;" class="text-muted">kkal/mol</span>
+                                                <i class="bx bx-info-circle"
+                                                   data-bs-toggle="tooltip"
+                                                   data-bs-offset="0,5"
+                                                   data-bs-placement="right"
+                                                   data-bs-html="true"
+                                                   title="SPS (Seed-Pairing Stability) indicates the strength of base-pairing between an siRNA's seed region and its target site. Weak SPS may reduce off-target silencing but can lower siRNA potency.
+                                                          Select siRNAs with weaker absolute SPS values to minimize off-target effects, especially among sequences with similar POTS values.">
+                                                </i>
+                                            </th>
+                                            <th style="text-transform: capitalize;">
+                                                Antisense Seed Tm, <span class="text-muted">&deg;C</span>
+                                                <i class="bx bx-info-circle"
+                                                   data-bs-toggle="tooltip"
+                                                   data-bs-offset="0,5"
+                                                   data-bs-placement="right"
+                                                   data-bs-html="true"
+                                                   title="Reflects the thermodynamic stability of base-pairing between siRNA antisense seed region (positions 2–8) and potential off-target mRNAs. Higher Tm values more than 21.5 &deg;C typically correlate with increased off-target silencing effects.">
+                                                </i>
+                                            </th>
+                                            <th style="text-transform: capitalize;">
+                                                Sense Seed Tm, <span class="text-muted">&deg;C</span>
+                                                <i class="bx bx-info-circle"
+                                                   data-bs-toggle="tooltip"
+                                                   data-bs-offset="0,5"
+                                                   data-bs-placement="right"
+                                                   data-bs-html="true"
+                                                   title="Reflects the thermodynamic stability of base-pairing between siRNA sense seed region (positions 2–8) and potential off-target mRNAs. Higher Tm values more than 21.5 &deg;C typically correlate with increased off-target silencing effects.">
+                                                </i>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for pos_21, sense_21, antisense_21, gc_21, DSIR, sBiopredsi, pots_hsa_21, pots_mmu_21, sps_21, tm_anti_21, tm_sense_21 in sirna_21_list %}
+                                        <tr>
+                                            <td><small>{{pos_21}}</small></td>
+                                            <td><small>{{sense_21}}</small></td>
+                                            <td><small>{{antisense_21}}</small></td>
+                                            <td><small>{{gc_21}}</small></td>
+                                            <td><small>{{DSIR|floatformat:1}}</small></td>
+                                            <td><small>{{sBiopredsi|floatformat:3}}</small></td>
+                                            <td><small>{{pots_hsa_21|floatformat:1}}</small></td>
+                                            <td><small>{{pots_mmu_21|floatformat:1}}</small></td>
+                                            <td><small>{{sps_21}}</small></td>
+                                            <td><small>{{tm_anti_21}}</small></td>
+                                            <td><small>{{tm_sense_21}}</small></td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endif %}
+
+<script src="{% static 'js/fetch_fasta.js' %}"></script>
+
+<!-- DataTables Library -->
+<link href="https://cdn.datatables.net/v/dt/jszip-3.10.1/dt-2.2.2/b-3.2.2/b-colvis-3.2.2/b-html5-3.2.2/b-print-3.2.2/sb-1.8.2/datatables.min.css" rel="stylesheet" integrity="sha384-BEswffVYx3uW2dI9dIo9z7teHlNm3Fb5jyzCQFEH1HqVa87GODDL6pud2MCR2E0i" crossorigin="anonymous">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js" integrity="sha384-VFQrHzqBh5qiJIU0uGU5CIW3+OWpdGGJM9LBnGbuIH2mkICcFZ7lPd/AAtI7SNf7" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js" integrity="sha384-/RlQG9uf0M2vcTw3CX7fbqgbj/h8wKxw7C3zu9/GxcBPRKOEcESxaxufwRXqzq6n" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/v/dt/jszip-3.10.1/dt-2.2.2/b-3.2.2/b-colvis-3.2.2/b-html5-3.2.2/b-print-3.2.2/sb-1.8.2/datatables.min.js" integrity="sha384-Z4PhEztR970Nxxh23vumRVJRIC8L/dmPxuUT3AUtShSojbEYv7ZuZnTs20wkrIJN" crossorigin="anonymous"></script>
+
+<!-- DataTable Layout -->
+<script>
+    $(document).ready(function() {
+        $('#tableSirna19').DataTable({
+            language: {
+                searchBuilder: {
+                    button: {
+                        0: 'Filter Data',
+                        _: 'Filter Data (%d)'
+                    }
+                }
+            },
+            layout: {
+                top2Start: {
+                    buttons: [{extend: 'colvis', text: 'Show/Hide'},
+                              {extend: 'copy', text: 'Copy Table'},
+                              {extend: 'csv', text: 'Export to <strong>CSV</strong>'},
+                              {extend: 'excel', text: 'Export to <strong>XLSX</strong>'},
+                              {extend: 'print', text: 'Print'},
+                              'searchBuilder']
+                },
+                topStart: {
+                    pageLength: { menu: [10, 50, 100, 250], className: 'form-control' }
+                },
+                topEnd: {
+                    search: { placeholder: 'Quick Search' }
+                },
+                bottomStart: 'info',
+                bottomEnd: 'paging'
+            }
+        });
+
+        $('#tableSirna21').DataTable({
+            language: {
+                searchBuilder: {
+                    button: {
+                        0: 'Filter Data',
+                        _: 'Filter Data (%d)'
+                    }
+                }
+            },
+            layout: {
+                top2Start: {
+                    buttons: [{extend: 'colvis', text: 'Show/Hide'},
+                              {extend: 'copy', text: 'Copy Table'},
+                              {extend: 'csv', text: 'Export to <strong>CSV</strong>'},
+                              {extend: 'excel', text: 'Export to <strong>XLSX</strong>'},
+                              {extend: 'print', text: 'Print'},
+                              'searchBuilder']
+                },
+                topStart: {
+                    pageLength: { menu: [10, 50, 100, 250] }
+                },
+                topEnd: {
+                    search: { placeholder: 'Quick Search' }
+                },
+                bottomStart: 'info',
+                bottomEnd: 'paging'
+            }
+        });
+    });
+</script>
+
+{% endblock %}

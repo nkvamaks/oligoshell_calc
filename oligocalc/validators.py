@@ -250,6 +250,20 @@ def validate_fasta(fasta):
         return fasta
 
 
+def validate_fasta_RNA(fasta):
+    fasta_seq = taqman_find_utils.simple_fasta_parser(fasta)
+    if len(fasta_seq) > 10000 or len(fasta_seq) < 19:
+        raise ValidationError(message='Allowed sequence length 19 - 10.000 nt')
+    nucleotides = set(fasta_seq)
+    standard_nucleotides = []
+    for nucleotide in nucleotides:
+        standard_nucleotides.append(True if nucleotide in 'AaCcGgTtUu' else False)
+    if not all(standard_nucleotides):
+        raise ValidationError(message='Sequence contains nucleotides other than A/C/G/T/U')
+    else:
+        return fasta
+
+
 def validate_primer1(primer1):
     if 800 <= primer1 <= 20000:
         return primer1

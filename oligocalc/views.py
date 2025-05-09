@@ -1,11 +1,10 @@
 import io
-import numpy as np
 from django.shortcuts import render, redirect
 from django.core.mail import EmailMessage
 from django.conf import settings
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse, reverse_lazy
-from django.views.generic import FormView, DeleteView
+from django.views.generic import FormView, DeleteView, TemplateView
 from django.template.loader import render_to_string
 from meta.views import MetadataMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -19,6 +18,7 @@ from . import utils
 from . import tm
 from . import taqman_find_utils
 from . import metadata
+from . import sirna_score
 
 
 class CalcView(MetadataMixin, FormView):
@@ -350,3 +350,66 @@ class ProfileDetails(MetadataMixin, LoginRequiredMixin, DeleteView):
         else:
             return self.get(request, *args, **kwargs)
 
+
+class SirnaScoreView(MetadataMixin, FormView):
+    template_name = 'oligocalc/sirna_score.html'
+    form_class = forms.SirnaScoreForm
+    title = 'siRNA Scan & Score'
+    description = 'Generate siRNAs from an RNA transcript and calculate on- and off-target scores of the candidates.'
+    keywords = ['siRNA', 'scoring', 'RNA interference', 'knock-down', 'mRNA downregulation', 'oligonucleotide', 'sense strand', 'antisense strand',
+                'duplex', 'overhang', 'bioinformatics', 'Ui-Tei', 'Reynolds', 'Amarzguioui', 'DSIR', 'i-Score', 'Biopredsi', 'sBiopredsi', 'Katoh', 'Huisken', 'Dharmacon',
+                'on-target', 'off-target', 'POTS', 'potential off-target score', 'positional weight matrix']
+
+    def form_valid(self, form):
+        fasta = form.cleaned_data['fasta']
+        fasta_seq = taqman_find_utils.simple_fasta_parser(fasta)
+        pos_list_19, sense_list_19, antisense_list_19 = sirna_score.generate_sirna_candidates(fasta_seq, duplex_len=19,
+                                                                                              sense_ovh5=0, sense_ovh3=0,
+                                                                                              anti_ovh5=0, anti_ovh3=0)
+        iScore_list = map(sirna_score.iScore_score, antisense_list_19)
+        katoh_list = map(sirna_score.katoh_score, sense_list_19)
+        dharmacon_list = map(sirna_score.dharmacon_score, antisense_list_19)
+        pots_hsa_19, pots_mmu_19, sps_19, tm_anti_19 = zip(*map(sirna_score.offtarget_scores, antisense_list_19))
+        _, _, _, tm_sense_19 = zip(*map(sirna_score.offtarget_scores, sense_list_19))
+        gc_anti_19 = map(lambda x: round(x * 100, 1), map(tm.fr_GC, antisense_list_19))
+
+        pos_list_21, sense_list_21, antisense_list_21, gc_anti_21, DSIR_list, sBiopredsi_list, pots_hsa_21, pots_mmu_21, sps_21, tm_anti_21, tm_sense_21 = [], [], [], [], [], [], [], [], [], [], []
+
+
+        if len(fasta_seq) >= 23:
+            pos_list_21, sense_list_21, antisense_list_21 = sirna_score.generate_sirna_candidates(fasta_seq, duplex_len=19,
+                                                                                                  sense_ovh5=0, sense_ovh3=2,
+                                                                                                  anti_ovh5=0, anti_ovh3=2)
+            DSIR_list = map(sirna_score.DSIR_score, antisense_list_21)
+            sBiopredsi_list = map(sirna_score.sBiopredsi_score, antisense_list_21)
+            pots_hsa_21, pots_mmu_21, sps_21, tm_anti_21 = zip(*map(sirna_score.offtarget_scores, antisense_list_21))
+            _, _, _, tm_sense_21 = zip(*map(sirna_score.offtarget_scores, sense_list_21))
+            gc_anti_21 = map(lambda x: round(x * 100, 1), map(tm.fr_GC, antisense_list_21))
+
+        context = self.get_context_data(form=form,
+                                        sirna_19_list=list(zip(pos_list_19, sense_list_19, antisense_list_19, gc_anti_19,
+                                                          iScore_list, katoh_list, dharmacon_list,
+                                                          pots_hsa_19, pots_mmu_19, sps_19, tm_anti_19, tm_sense_19)),
+                                        sirna_21_list=list(zip(pos_list_21, sense_list_21, antisense_list_21, gc_anti_21,
+                                                          DSIR_list, sBiopredsi_list,
+                                                          pots_hsa_21, pots_mmu_21, sps_21, tm_anti_21, tm_sense_21)))
+        return self.render_to_response(context)
+
+    def get_success_url(self):
+        return reverse('oligocalc:sirna_score')
+
+
+class SirnaScoreExplainedView(MetadataMixin, TemplateView):
+    template_name = 'oligocalc/sirna_score_explained.html'
+    title = 'siRNA Scan & Score'
+    description = 'Generate siRNAs from an RNA transcript and calculate on- and off-target scores of the candidates.'
+    keywords = ['siRNA', 'scoring', 'RNA interference', 'knock-down', 'mRNA downregulation', 'oligonucleotide',
+                'sense strand', 'antisense strand',
+                'duplex', 'overhang', 'bioinformatics', 'Ui-Tei', 'Reynolds', 'Amarzguioui', 'DSIR', 'i-Score',
+                'Biopredsi', 'sBiopredsi', 'Katoh', 'Huisken', 'Dharmacon',
+                'on-target', 'off-target', 'POTS', 'potential off-target score', 'positional weight matrix']
+
+    # Optionally override get_context_data to add custom context variables.
+
+    def get_success_url(self):
+        return reverse('oligocalc:sirna_score_explained')

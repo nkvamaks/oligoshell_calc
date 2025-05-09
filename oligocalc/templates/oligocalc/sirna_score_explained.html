@@ -1,0 +1,166 @@
+{% extends "layout/basic.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-header justify-content-between align-items-center">
+                <h2 class="mb-4 mt-4 text-center">siRNA Scoring Explained</h2>
+            </div>
+            <div class="card-body">
+                <h3 class="text-center mb-4">On-Target Efficacy Prediction Methods</h3>
+
+                <h4 class="mt-4"><a href="http://biodev.cea.fr/DSIR/" target="_blank">DSIR</a> (Designer of Small Interfering RNA)</h4>
+                <p>
+                    DSIR was developed by Jean-Philippe Vert et al. on the dataset of Huesken et al. with the LASSO regression method, the associated publication appeared in <a href="https://doi.org/10.1186/1471-2105-7-520" target="_blank">BMC Bioinformatics in 2006</a>.
+                </p>
+                <p>
+                    The DSIR algorithm predicts siRNA efficacy using an interpretable linear regression model built on two core types of sequence-derived features. The first feature set captures <b>position-specific</b> nucleotide preferences
+                    by encoding <b>21-nt antisense</b> (guide) strands as a binary vector. These features reflect well-established findings that certain nucleotides at specific positions are statistically associated with siRNA potency.
+                </p>
+                <p>
+                    Complementing this, DSIR incorporates motif-based features - the spectral representation, which counts the frequency of all possible 1- to 3-mer nucleotide motifs in the siRNA sequence.
+                    This representation captures broader sequence patterns beyond fixed positions, resulting in an 84-dimensional vector based on all possible combinations of 1-mer (4), 2-mer (16), and 3-mer (64) motifs.
+                    The combined feature space enables DSIR to robustly model siRNA efficacy while maintaining biological interpretability and computational efficiency.
+                </p>
+
+                <h4 class="mt-4">i-Score</h4>
+                <p>
+                    <b>i-Score</b> was developed by Masatoshi Ichihara et al. The work was published in <a href="https://doi.org/10.1093/nar/gkm699" target="_blank">Nucleic Acids Research in 2007</a>.
+                    The linear regression model was developed by analyzing <a href="https://doi.org/10.1038/nbt1118" target="_blank">Dieter Huesken dataset</a>, which contains activity data for 2431 siRNAs.
+                    The algorithm's performance was validated using subsets of this data and other independent datasets.
+                </p>
+                <p>
+                    The <b>i-Score</b> (inhibitory-Score) algorithm predicts siRNA activity using a linear regression model.
+                    Its defining characteristic is its simplicity: the model relies exclusively on position-specific nucleotide
+                    preferences within the siRNA sequence. No other parameters, such as sequence motifs or complex thermodynamic
+                    calculations beyond those implicitly captured by nucleotide preference at specific positions, are
+                    incorporated into the core predictive model. It scores 19-mer siRNAs from 0 to 100 by analyzing nucleotide preferences at
+                    each position in the antisense (guide) strand.
+                </p>
+
+                <h4 class="mt-4">s-Biopredsi</h4>
+                <p>
+                    The original BIOPREDsi algorithm was developed by <a href="https://doi.org/10.1038/nbt1118" target="_blank">Huesken et al.</a> by applying an artificial neural network model to 2431 siRNAs.
+                    As the actual parameters of BIOPREDsi are not published anywhere, <a href="https://doi.org/10.1093/nar/gkm699" target="_blank">Ichihara et al.</a> developed a similar scoring system called <b>s-Biopredsi</b>
+                    (simulated Biopredsi), by applying a single-node neural network model on 21-nt siRNAs subset identical to those employed to develop BIOPREDsi. Correlation coefficients between BIOPREDsi and s-Biopredsi were up to 0.9999
+                    for validation datasets.
+                </p>
+
+                <h4 class="mt-4">Katoh (<a href="http://rna.chem.t.u-tokyo.ac.jp/siexplorer.htm" target="_blank">siExplorer</a>)</h4>
+                <p>
+                    This approach was developed by Takayuki Katoh and Tsutomu Suzuki and published in <a href="https://doi.org/10.1093/nar/gkl1120" target="_blank">Nucleic Acids Research in 2007</a>.
+                    The 3-nt periodicity rule was derived from analyzing siRNA activity data, including a dataset of 702 siRNAs targeting a single EGFP gene.
+                    The siExplorer algorithm was validated using siRNAs targeting endogenous human GAPDH gene.
+                </p>
+                <p>
+                    The algorithm proposed by Katoh et al. predicts siRNA activity by decomposing sequence-based effects into two additive components: the <b>macro effect</b> and the <b>micro effect</b>.
+                    The <b>macro effect</b> captures the overall base composition of a <b>sense strand</b> of 19-nt siRNA, reflecting the influence of total nucleotide content (A, U, G, C) on silencing efficiency.
+                    Each nucleotide is assigned a weight that reflects its average contribution to activity, and these are scaled through a linear transformation to produce a macro score that correlates with
+                    measured RNAi activity (ranging from 0 to 100%). This component effectively models general trends in base composition preference across the siRNA.
+                </p>
+                <p>
+                    To refine predictions and account for position-specific variability, the model introduces a <b>micro effect</b>, which represents the contribution of individual nucleotides at specific positions
+                    (1–19) along the siRNA <b>sense</b> strand. By summing the micro effect contributions across all positions, the algorithm captures periodic fluctuations related to sequence context.
+                    Together, the <b>macro</b> and <b>micro</b> components form a linear scoring system that correlates with experimental activity data and provides an interpretable framework for siRNA efficacy prediction.
+                </p>
+
+                <h4 class="mt-4">DH-Score (simulated <a href="https://horizondiscovery.com/en/ordering-and-calculation-tools/sidesign-center" target="_blank">siDESIGN Center</a> scoring algorithm)</h4>
+                <p>
+                    The scoring system used by the <a href="https://horizondiscovery.com/en/ordering-and-calculation-tools/sidesign-center" target="_blank">siDESIGN Center</a> is a proprietary algorithm developed to identify functional siRNAs.
+                    We independently developed a scoring system, referred to here as <b>DH-Score</b>, which closely replicates the behavior and trends of siDESIGN Center's outputs based on publicly available data.
+                    DH-Score was created without access to proprietary algorithms, internal parameters, or non-public datasets, ensuring that it remains an independent and non-affiliated reproduction.
+                </p>
+                <p>
+                    To develop DH-Score, <a href="{% static 'DH-Score_train_test.xlsx' %}" download="DH-Score_train_test.xlsx">a dataset of 1,067 siRNA sequences</a> and their corresponding scores was compiled from siDESIGN Center.
+                    The dataset was split into training and testing subsets in an approximate 80:20 ratio, with all sequences containing homopolymeric stretches of four identical nucleotides (e.g., AAAA, CCCC) assigned to the test set.
+                    No sequences with five or more consecutive identical nucleotides were observed, suggesting that such sequences are filtered and not scored by the siDESIGN Center system.
+                </p>
+                <p>
+                    A linear regression model was trained using antisense strands from the training dataset, resulting in the positional weight matrix shown below.
+                </p>
+                <p class="text-center">
+                    <img src="{% static 'DH_pwm.png' %}"
+                         alt="Positional Weight Matrix used for DH-Score algorithm"
+                         height="500" />
+                </p>
+                <p>
+                    Although the exact data used to originally construct siDESIGN Center's algorithm is unknown, the derived matrix in DH-Score reflects many empirically established principles for designing functional siRNAs,
+                    as described by multiple studies in the RNAi field.
+                </p>
+                <p>
+                    <img src="{% static 'correlation_test.png' %}"
+                         alt="Correlation of siDESIGN Center's score and DH-Score"
+                         height="330"
+                         style="float:left; margin: 7px 7px 7px 0;"/>
+                    During validation, we observed that sequences containing single homopolymeric regions (AAAA, CCCC, GGGG, UUUU) receive consistent penalties.
+                    Incorporating this adjustment into the scoring process, we evaluated the independent test dataset and found a very high correlation between DH-Score and the original siDESIGN Center scores (<i>r<sup>2</sup> = 0.999</i>).
+                </p>
+                <p>
+                    It is important to emphasize that DH-Score is an independently developed simulation based solely on public observations and does not utilize any confidential or proprietary information from siDESIGN Center.
+                    While DH-Score captures the major trends in scoring, it may not account for all the internal filtering or layered criteria of the original tool.
+                    Notably, DH-Score produces theoretical scores for any properly structured antisense siRNA strand, including sequences with five or more homonucleotides,
+                    and provides scores even for siRNAs that would otherwise be excluded (e.g., those scoring below 50 in siDESIGN Center).
+                </p>
+                <p>
+                    DH-Score was developed and validated in March 2025 and demonstrates excellent reproducibility of key scoring patterns observed in siDESIGN Center outputs.
+                </p>
+            </div>
+
+            <div class="card-body">
+                <h3 class="text-center mb-4">Off-Target Effect Assessment Methods</h3>
+                <h4 class="mt-4">Seed Region Melting Temperature (Tm)</h4>
+                <p>
+                    This method involves calculating the melting temperature (Tm) of the short duplex formed between the siRNA strand's seed region (positions 2-8) and a potential complementary site on an mRNA. The Tm
+                    value serves as a quantitative measure of the thermodynamic stability of this specific interaction. The underlying hypothesis is that weaker, less stable interactions between the seed
+                    region and potential off-target sites are less likely to lead to significant off-target gene silencing. Therefore, siRNAs with lower seed region Tm values are generally preferred, as they are predicted
+                    to have a reduced propensity for miRNA-like off-target binding. Some design tools, like <a href="https://sidirect2.rnai.jp/" target="_blank">siDirect 2.0</a>, use specific Tm thresholds; for example, a maximum Tm of 21.5 °C is
+                    suggested as a benchmark to identify sequences that are likely to be largely free of seed-dependent off-target effects. See the reference (<a href="https://doi.org/10.1093/nar/gkn902" target="_blank">Ui-Tei et al., 2008</a>) for detail.
+                </p>
+
+                <h4 class="mt-4">POTS (Potential Off-Target Score)</h4>
+                <p>
+                    POTS was developed as part of the <a href="https://davidsonlabchop.shinyapps.io/sispotrio/" target="_blank">siSPOTR</a> (siRNA Seed Potential of Off-Target Reduction)
+                    algorithm by Ryan L. Boudreau and colleagues in the laboratory of Beverly L. Davidson. The work was
+                    published in <a href="https://doi.org/10.1093/nar/gks797" target="_blank">Nucleic Acids Research in 2012</a>,
+                    source code for standalone version is <a href="https://github.com/DavidsonLabCHOP/siSPOTr-standalone" target="_blank">here</a>.
+                </p>
+                <p>
+                    POTS (Potential Off-Target Score) is a weighted scoring system designed to predict the off-targeting potential of an siRNA based on its seed region (positions 2-8 in antisense strand).
+                    It integrates both the type and frequency of potential seed complement binding sites (8-mer, 7m8, 7A1, and 6-mer) found within the 3'-UTRome (the collection of all
+                    3' UTR sequences in a transcriptome).<br/>
+                    Unlike some earlier methods that might only count hexamer sites, POTS uses a weighted approach based on heptamer seeds (positions 2-8) and distinguishes between different 7-mer and
+                    8-mer site types, acknowledging their differing repressive potentials. This allows for a more nuanced prediction of off-targeting, differentiating between seeds that share the same
+                    6-mer core but differ at position 8, which can significantly impact the number of potent 7m8 and 8-mer sites. The score provides a quantitative ranking of siRNA candidates based on
+                    their predicted off-target liability. While not a strict threshold, the authors note that POTS < 50 was associated with previously validated low off-targeting siRNAs and potentially
+                    better tolerability in cytotoxicity assays.
+                </p>
+
+                <h4 class="mt-4">Seed-Pairing Stability (SPS)</h4>
+                <p>
+                    The concept of thermodynamic stability is fundamental, but its specific role in miRNA/siRNA proficiency, particularly in conjunction with Target-site Abundance (TA), was investigated
+                    in detail by David M. Garcia, David P. Bartel, and colleagues, as published in <a href="https://doi.org/10.1038/nsmb.2115" target="_blank">Nature Structural & Molecular Biology in 2011</a>. Their work built upon earlier observations correlating predicted
+                    SPS with the propensity of siRNAs to repress unintended targets (off-targeting).
+                </p>
+                <p>
+                    Seed-Pairing Stability (SPS) refers to the predicted thermodynamic stability of the duplex formed between the miRNA or siRNA
+                    seed region (typically nucleotides 2-7 or 2-8) and its complementary target mRNA sequence. It is usually quantified by calculating
+                    the predicted Gibbs free energy change (ΔG°) for this interaction, with more negative values indicating stronger, more stable pairing.
+                </p>
+                <p>
+                    The stability of this initial seed pairing is thought to influence the overall targeting proficiency and specificity.
+                    The hypothesis explored is that a certain threshold of stability (SPS) might be required for the miRNA/siRNA to remain associated
+                    with a target long enough to mediate effective repression. Very weak SPS (less negative ΔG°) might lead to lower targeting proficiency
+                    and potentially fewer off-target interactions because the binding is less stable. Conversely, very strong SPS might increase overall
+                    proficiency but could also potentially increase the likelihood or strength of off-target binding.
+                </p>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

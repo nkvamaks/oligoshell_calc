@@ -20,13 +20,19 @@
                 <!-- Form for fetching RefSeq -->
                 <form method="POST" action="{% url 'oligocalc:sirna_score' %}">
                     {% csrf_token %}
-                    <div class="row mt-4 mb-3">
+                    <div class="row">
                         <label class="mb-1" for="accInput">Enter an accession number and fetch sequence:</label>
                         <div class="col-md-7">
                             <div class="input-group">
                                 <input class="form-control" type="text" id="accInput" placeholder="NM_009417">
                                 <button id="fetchButton" class="btn btn-secondary" name="fetchRefSeq">Fetch RefSeq</button>
                             </div>
+                        </div>
+                        <div class="col-md-3 offset-md-2">
+                            <a href="{% url 'oligocalc:sirna_score_explained' %}" target="_blank"
+                               class="btn btn-outline-dark">
+                                Explore available scores
+                            </a>
                         </div>
                     </div>
                     <div class="row">
@@ -39,10 +45,10 @@
 
                 <form method="POST" action="{% url 'oligocalc:sirna_score' %}">
                     {% csrf_token %}
-                    <div class="row">
+                    <div class="row mt-4">
                         <div class="col-xl">
                             <label class="mb-1" for="output">
-                                Or paste <b>RNA target sequence</b> as plain text or in FASTA format (both T and U are acceptable):<br/>
+                                Or paste <b>RNA target sequence</b> as a plain text or in FASTA format (both T and U are acceptable):<br/>
                                 <span class="text-muted small">Calculations for longer sequences may take up to one minute to complete. Please be patient.</span>
                             </label>
                             {{form.fasta}}

@@ -32,6 +32,11 @@ class CalcView(MetadataMixin, FormView):
                 'exact mass', 'molecular weight', 'DNA', 'RNA', 'PMO', 'morpholino', 'modified oligonucleotides', 'therapeutic oligonucleotides',
                 'minor groove binder', 'MGB', 'modifications', 'conjugates', 'bioconjugates']
 
+    def get_meta(self, **kwargs):
+        meta = super().get_meta(**kwargs)
+        meta.subtitle = 'Calculator'
+        return meta
+
     def form_valid(self, form):
         if 'export_excel_neg' in self.request.POST:
             sequence_data = self.calculate_results(form)
@@ -224,6 +229,11 @@ class TaqManFindView(MetadataMixin, FormView):
                 'minor groove binder', 'MGB', 'modifications', 'exact mass', 'TaqMan assay', 'gene expression',
                 'gene expression analysis', 'transcript', 'oligonucleotide', 'DNA', 'RNA']
 
+    def get_meta(self, **kwargs):
+        meta = super().get_meta(**kwargs)
+        meta.subtitle = 'TaqMan Finder'
+        return meta
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form_taqman'] = self.get_form(self.form_class)
@@ -332,6 +342,11 @@ class ProfileDetails(MetadataMixin, LoginRequiredMixin, DeleteView):
     keywords = ['user profile', 'account management', 'associated emails', 'social accounts', 'manage profile', 'personal information', 'update profile',
                 'oligonucleotide', 'DNA', 'RNA', 'PMO']
 
+    def get_meta(self, **kwargs):
+        meta = super().get_meta(**kwargs)
+        meta.subtitle = 'Profile'
+        return meta
+
     def get_object(self, **kwargs):
         return self.request.user
 
@@ -359,6 +374,11 @@ class SirnaScoreView(MetadataMixin, FormView):
     keywords = ['siRNA', 'scoring', 'RNA interference', 'knock-down', 'mRNA downregulation', 'oligonucleotide', 'sense strand', 'antisense strand',
                 'duplex', 'overhang', 'bioinformatics', 'Ui-Tei', 'Reynolds', 'Amarzguioui', 'DSIR', 'i-Score', 'Biopredsi', 'sBiopredsi', 'Katoh', 'Huisken', 'Dharmacon',
                 'on-target', 'off-target', 'POTS', 'potential off-target score', 'positional weight matrix']
+
+    def get_meta(self, **kwargs):
+        meta = super().get_meta(**kwargs)
+        meta.subtitle = 'siRNA Scan & Score'
+        return meta
 
     def form_valid(self, form):
         fasta = form.cleaned_data['fasta']
@@ -409,7 +429,10 @@ class SirnaScoreExplainedView(MetadataMixin, TemplateView):
                 'Biopredsi', 'sBiopredsi', 'Katoh', 'Huisken', 'Dharmacon',
                 'on-target', 'off-target', 'POTS', 'potential off-target score', 'positional weight matrix']
 
-    # Optionally override get_context_data to add custom context variables.
+    def get_meta(self, **kwargs):
+        meta = super().get_meta(**kwargs)
+        meta.subtitle = 'siRNA Scan & Score'
+        return meta
 
     def get_success_url(self):
         return reverse('oligocalc:sirna_score_explained')

@@ -61,7 +61,7 @@ modification_extinction_260 = {
     'DABCYL': 11100, 'BHQ0': 7700, 'BHQ1': 8000, 'BHQ2': 8000, 'BHQ3': 13000,
     'MGB': 37900, 'MGB-ECLIPSE': 44500, 'ECLIPSE': 6600,
 
-    'YAKYEL': 23700, 'TR-CLK': 14400, 'IABK': 44510, 'AF594-CLK': 29400,
+    'YAKYEL': 23700, 'TR-CLK': 14400, 'IABKFQ': 13344, 'ZEN': 13344, 'AF594-CLK': 29400,
 
     'ATTO647N-CLK': 6000,
 
@@ -124,6 +124,7 @@ map_dna2mix = {
     '[CY5-CLK]': 'CY5-CLK', '[CHOL-PRO]': 'CHOL-PRO', '[GALNAC-PRO]': 'GALNAC-PRO', '[GALNAC3-ALN]': 'GALNAC3-ALN',
     '[TR-CLK]': 'TR-CLK', '[AF594-CLK]': 'AF594-CLK', '[ATTO647N-CLK]': 'ATTO647N-CLK',
     '[BHQ1]': 'BHQ1', '[BHQ2]': 'BHQ2', '[MGB]': 'MGB', '[MGB-ECLIPSE]': 'MGB-ECLIPSE', '[ECLIPSE]': 'ECLIPSE',
+    '[IABKFQ]': 'IABKFQ', '[ZEN]': 'ZEN',
     '[MOR-TEG]': 'MOR-TEG',
     '*': '*', '[po]': 'po', '[ps]': 'ps', '[ps2]': 'ps2', '[ms]': 'ms', '#': '#', '[dma]': 'dma',
 }
@@ -145,6 +146,7 @@ map_rna2mix = {
     '[CY5-CLK]': 'CY5-CLK', '[CHOL-PRO]': 'CHOL-PRO', '[GALNAC-PRO]': 'GALNAC-PRO', '[GALNAC3-ALN]': 'GALNAC3-ALN',
     '[TR-CLK]': 'TR-CLK', '[AF594-CLK]': 'AF594-CLK', '[ATTO647N-CLK]': 'ATTO647N-CLK',
     '[BHQ1]': 'BHQ1', '[BHQ2]': 'BHQ2', '[MGB]': 'MGB', '[MGB-ECLIPSE]': 'MGB-ECLIPSE', '[ECLIPSE]': 'ECLIPSE',
+    '[IABKFQ]': 'IABKFQ', '[ZEN]': 'ZEN',
     '[MOR-TEG]': 'MOR-TEG',
     '*': '*', '[po]': 'po', '[ps]': 'ps', '[ps2]': 'ps2', '[ms]': 'ms', '#': '#', '[dma]': 'dma',
 }
@@ -174,18 +176,19 @@ nucleotide_any_position = {
 modification_5_position = {'FAM', 'TET', 'HEX', 'JOE', 'VIC',
                            'TMR-ACH', 'R6G', 'R6G-ACH', 'ROX-CLK', 'TR-CLK', 'AF594-CLK',
                            'CY3-ACH', 'CY5-CLK', 'ATTO647N-CLK',
+                           'IABKFQ',
                            'ALKYNE',
                            'CHOL-PRO', 'GALNAC-PRO',
                            'MOR-TEG',
                            'po'}
 
 # Modifications available only at 3'-position
-modification_3_position = {'BHQ1', 'BHQ2', 'MGB', 'MGB-ECLIPSE', 'ECLIPSE',
+modification_3_position = {'BHQ1', 'BHQ2', 'MGB', 'MGB-ECLIPSE', 'ECLIPSE', 'IABKFQ',
                            'CHOL-PRO', 'GALNAC-PRO', 'GALNAC3-ALN',
                            'po'}
 
 # Modifications available only at internal position
-modification_int_position = {'BHQ1', 'BHQ2', 'ECLIPSE', 'GALNAC-PRO'}
+modification_int_position = {'BHQ1', 'BHQ2', 'ECLIPSE', 'GALNAC-PRO', 'ZEN'}
 
 # Modifications available on phosphate
 modification_phosphorus = {'po', 'ps', '*', 'ps2', 'ms', '#', 'dma'}
@@ -284,6 +287,8 @@ formula = {
     'MGB': {'C': 44, 'H': 47, 'N': 7, 'O': 6},
     'MGB-ECLIPSE': {'C': 57, 'H': 56, 'Cl': 1, 'N': 11, 'O': 8},
     'ECLIPSE': {'C': 22, 'H': 26, 'Cl': 1, 'N': 5, 'O': 5},
+    'IABKFQ': {'C': 20, 'H': 20, 'N': 4, 'O': 4},
+    'ZEN': {'C': 20, 'H': 20, 'N': 4, 'O': 4},
 
     'CHOL-PRO': {'C': 39, 'H': 66, 'N': 2, 'O': 5},
     'GALNAC-PRO': {'C': 24, 'H': 43, 'N': 3, 'O': 10},

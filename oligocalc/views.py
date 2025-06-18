@@ -421,7 +421,7 @@ class SirnaScoreView(MetadataMixin, FormView):
 
 class SirnaScoreExplainedView(MetadataMixin, TemplateView):
     template_name = 'oligocalc/sirna_score_explained.html'
-    title = 'siRNA Scan & Score'
+    title = 'siRNA Scoring Explained'
     description = 'Generate siRNAs from an RNA transcript and calculate on- and off-target scores of the candidates.'
     keywords = ['siRNA', 'scoring', 'RNA interference', 'knock-down', 'mRNA downregulation', 'oligonucleotide',
                 'sense strand', 'antisense strand',

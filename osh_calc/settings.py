@@ -99,9 +99,9 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 ACCOUNT_RATE_LIMITS = {'login_failed': '10/m/ip,5/5m/key'}
 ACCOUNT_LOGOUT_ON_GET = True
-SOCIALACCOUNT_LOGIN_ON_GET=True
-ACCOUNT_CHANGE_EMAIL=True
-ACCOUNT_LOGIN_ON_PASSWORD_RESET=True
+SOCIALACCOUNT_LOGIN_ON_GET = True
+ACCOUNT_CHANGE_EMAIL = True
+ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
 
 
 WSGI_APPLICATION = 'osh_calc.wsgi.application'
@@ -117,8 +117,10 @@ ACCOUNT_FORMS = {
             'signup': 'oligocalc.forms.CustomSignupForm',
 #             'signup': 'allauth.socialaccount.forms.SignupForm'
 }
-RECAPTCHA_PUBLIC_KEY = os.getenv('RECAPTCHA_PUBLIC_KEY')
-RECAPTCHA_PRIVATE_KEY = os.getenv('RECAPTCHA_PRIVATE_KEY')
+# RECAPTCHA_PUBLIC_KEY = os.getenv('RECAPTCHA_PUBLIC_KEY')
+# RECAPTCHA_PRIVATE_KEY = os.getenv('RECAPTCHA_PRIVATE_KEY')
+SILENCED_SYSTEM_CHECKS = ['django_recaptcha.recaptcha_test_key_error']
+
 
 
 # CSRF_COOKIE_SECURE = True
@@ -173,12 +175,13 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # EMAIL CONFIGURATION (for contact form)
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+# Changed for local testing
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = os.getenv('GMAIL_USER_EMAIL')
-EMAIL_HOST_PASSWORD = os.getenv('GMAIL_USER_PASSWORD')
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
-DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
-DEFAULT_REPLY_TO_EMAIL = os.getenv('DEFAULT_REPLY_TO_EMAIL')
+# EMAIL_HOST_PASSWORD = os.getenv('GMAIL_USER_PASSWORD')
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_USE_SSL = False
+# DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
+# DEFAULT_REPLY_TO_EMAIL = os.getenv('DEFAULT_REPLY_TO_EMAIL')

@@ -3,8 +3,8 @@ from django import forms
 from django.contrib.auth.models import User
 # from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from allauth.account.forms import SignupForm, LoginForm
-from django_recaptcha.fields import ReCaptchaField
-from django_recaptcha.widgets import ReCaptchaV2Checkbox
+#from django_recaptcha.fields import ReCaptchaField
+#from django_recaptcha.widgets import ReCaptchaV2Checkbox
 
 from . import models
 from . import validators
@@ -76,7 +76,7 @@ class ContactForm(forms.Form):
                                                            'placeholder': 'Enter your message here...',
                                                            'class': 'form-control'
                                                            }))
-    recaptcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
+    #recaptcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
 
 
 class TaqManFindForm(forms.ModelForm):
@@ -124,7 +124,7 @@ class DeleteAccountForm(forms.Form):
 class CustomSignupForm(SignupForm):
     first_name = forms.CharField(max_length=150, label='First Name', required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'John'}))
     last_name = forms.CharField(max_length=150, label='Last Name', required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Doe'}))
-    recaptcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
+    #recaptcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

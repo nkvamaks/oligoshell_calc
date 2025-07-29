@@ -1,0 +1,11 @@
+Django
+python-dotenv
+django-meta
+django-allauth
+django-recaptcha
+django-widget-tweaks
+requests
+PyJWT
+cryptography
+openpyxl
+numpy

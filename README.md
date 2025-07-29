@@ -1,4 +1,49 @@
-<h4 class="mb-4"> About OligoShell Calculator: </h4>
+<h2 class="mb-4"> About OligoShell Calculator: </h2>
+
+<details>
+<summary><b>Local Installation and Usage</b></summary>
+<br/>
+<ol>
+  <li>
+    <strong>Clone the repository from the <code>joss</code> branch</strong><br>
+    <pre><code>git clone -b joss --single-branch https://github.com/nkvamaks/oligoshell_calc.git
+cd oligoshell_calc</code></pre>
+  </li>
+
+  <li>
+    <strong>Create a virtual environment</strong><br>
+    <pre><code>python3 -m venv venv</code></pre>
+  </li>
+
+  <li>
+    <strong>Activate the virtual environment</strong><br>
+    <pre><code>source ./venv/bin/activate</code></pre>
+  </li>
+
+  <li>
+    <strong>Install required packages</strong><br>
+    <pre><code>pip3 install -r requirements.txt</code></pre>
+  </li>
+
+  <li>
+    <strong>Run migrations</strong><br>
+    <pre><code>python3 manage.py makemigrations
+python3 manage.py migrate</code></pre>
+  </li>
+
+  <li>
+    <strong>Run the development server</strong><br>
+    <pre><code>python3 manage.py runserver</code></pre>
+  </li>
+
+  <li>
+    <strong>Open the application in your browser</strong><br>
+    <pre><code>http://localhost:8000</code></pre>
+  </li>
+</ol>
+</details>
+
+<br/>
 <p>
 OligoShell Calculator is a comprehensive web application designed for calculating various properties of natural (DNA, RNA), 
 modified, therapeutic oligonucleotides, as well as phosphorodiamidate morpholino oligos (PMO), 
@@ -107,12 +152,12 @@ advanced features that meet the needs of researchers and professionals in the fi
     </li>
     <sub>* <b>Cm</b> stands for 5-methylcytosine and <b>T</b> for 5-methyluracil</sub>
 </ul>
-<p>
-    <strong>TOOLS:</strong>
-</p>
-<p>
-    <strong>New Tool: siRNA Scan & Score</strong>
-</p>
+<br/>
+
+<h2>Available Tools:</h2>
+<br/>
+
+<h3>siRNA Scan & Score</h3>
 <p>
     siRNA Scan & Score is a web-based tool for designing and evaluating siRNA candidates based on sequence input. 
     It identifies all possible 19- and 21-mer siRNAs from a given mRNA target and computes multiple scoring metrics 
@@ -120,13 +165,14 @@ advanced features that meet the needs of researchers and professionals in the fi
     The tool provides ranked output, interactive filtering, and detailed scoring breakdowns to support researchers 
     in selecting potent and specific siRNA sequences for experimental use.
 </p>
-<p>
-    <strong>TaqMan Finder</strong>
-</p>
+<br/>
+
+<h3>TaqMan Finder</h3>
 <p>
     This tool simplifies the process of finding matching primers and probes for TaqMan assays within your specified target sequence. By providing the exact (single isotope) masses of both primers and the probe, chemical modifications of the probe, length of the amplicon, and the reference sequence (RefSeq), you can easily identify compatible components of your assay.
 </p>
 
+<br/>
 <p>
 Experience full functionality of the <strong>OligoShell Calculator</strong> online at <a href="https://www.oligoshell.com">www.oligoshell.com</a>
 </p>

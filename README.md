@@ -2,7 +2,7 @@
 
 <details>
 <summary><b>Local Installation and Usage</b></summary>
-<br/>
+
 <ol>
   <li>
     <strong>Clone the repository from the <code>joss</code> branch</strong><br>
@@ -152,10 +152,8 @@ advanced features that meet the needs of researchers and professionals in the fi
     </li>
     <sub>* <b>Cm</b> stands for 5-methylcytosine and <b>T</b> for 5-methyluracil</sub>
 </ul>
-<br/>
 
 <h2>Available Tools:</h2>
-<br/>
 
 <h3>siRNA Scan & Score</h3>
 <p>
@@ -165,14 +163,12 @@ advanced features that meet the needs of researchers and professionals in the fi
     The tool provides ranked output, interactive filtering, and detailed scoring breakdowns to support researchers 
     in selecting potent and specific siRNA sequences for experimental use.
 </p>
-<br/>
 
 <h3>TaqMan Finder</h3>
 <p>
     This tool simplifies the process of finding matching primers and probes for TaqMan assays within your specified target sequence. By providing the exact (single isotope) masses of both primers and the probe, chemical modifications of the probe, length of the amplicon, and the reference sequence (RefSeq), you can easily identify compatible components of your assay.
 </p>
 
-<br/>
 <p>
 Experience full functionality of the <strong>OligoShell Calculator</strong> online at <a href="https://www.oligoshell.com">www.oligoshell.com</a>
 </p>

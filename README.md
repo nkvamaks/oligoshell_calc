@@ -103,8 +103,11 @@ advanced features that meet the needs of researchers and professionals in the fi
         Constrained ethyl (cEt) nucleotides: cetA, cetC, cetG, cetU
     </li>
     <li>
-        Morpholino nucleosides: morA, morC, morG, morT
+        Morpholino nucleotides: morA, morC, morG, morT
     </li>
+    <li>
+        GalNAc-modified amino-diethoxymethoxy (adem) nucleotides: ademA, ademC, ademG
+    </li>>
     <sub>* <b>Cm</b> stands for 5-methylcytosine and <b>T</b> for 5-methyluracil</sub>
 </ul>
 <p>

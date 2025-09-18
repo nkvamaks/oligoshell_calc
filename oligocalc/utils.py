@@ -29,6 +29,7 @@ nucleotide_extinction_260 = {'dA': 15400, 'dC': 7400,  'dG': 11500, 'dT': 8700, 
                              'cetA': 15400, 'cetC': 7200, 'cetG': 11500, 'cetU': 9900,
                              'moeA': 15400, 'moeCm': 7200, 'moeG': 11500, 'moeT': 8700,
                              'morA': 15400, 'morC': 7200, 'morG': 11500, 'morT': 8700,
+                             'ademA': 15400, 'ademC': 7200, 'ademG': 11500,
                              'A': 15400, 'C': 7400, 'G': 11500, 'T': 8700, 'U': 9900}
 
 # Michael J. Cavaluzzi and Philip N. Borer. Revised UV extinction coefficients for nucleoside-5′-monophosphates
@@ -52,6 +53,8 @@ dinucleotide_extinction_260 = {'AA': 27400, 'AC': 21200, 'AG': 25000, 'AT': 2280
 
 # Extinction coefficients at 260 nm of popular modifications:
 modification_extinction_260 = {
+    'mop4mU': 9900,
+
     'FAM': 21000, 'TET': 16300, 'HEX': 31600, 'JOE': 12000, 'VIC': 7200,
     'TMR-ACH': 32300, 'R6G': 18000, 'R6G-ACH': 18000, 'ROX-CLK': 22600,
 
@@ -69,7 +72,7 @@ modification_extinction_260 = {
 
     'MOR-TEG': 0,
 
-    'po': 0, 'ps': 0, '*': 0, 'ps2': 0, 'ms': 0, '#': 0, 'dma': 0
+    'po': 0, 'ps': 0, '*': 0, 'ps2': 0, 'ms': 0, '#': 0, 'dma': 0,
 }
 
 map_compl = {
@@ -86,6 +89,8 @@ map_nucleoside = {
     'moeA': 'A', 'moeCm': 'C', 'moeG': 'G', 'moeT': 'T',
     'morA': 'A', 'morC': 'C', 'morG': 'G', 'morT': 'T',
     'cetA': 'A', 'cetC': 'C', 'cetG': 'G', 'cetU': 'U',
+    'mop4mU': 'U',
+    'ademA': 'A', 'ademC': 'C', 'ademG': 'G',
 }
 
 map_deg_nucleoside = {
@@ -103,6 +108,8 @@ map_nucleobase = {
     '+A': 'baseA', '+Cm': 'baseCm', '+G': 'baseG', '+T': 'baseT',
     'moeA': 'baseA', 'moeCm': 'baseCm', 'moeG': 'baseG', 'moeT': 'baseT',
     'cetA': 'baseA', 'cetC': 'baseC', 'cetG': 'baseG', 'cetU': 'baseU',
+    'mop4mU': 'baseU',
+    'ademA': 'baseA', 'ademC': 'baseC', 'ademG': 'baseG',
 }
 
 map_backbone = {'#': 'NMe2', 'dma': 'NMe2'}
@@ -125,6 +132,8 @@ map_dna2mix = {
     '[TR-CLK]': 'TR-CLK', '[AF594-CLK]': 'AF594-CLK', '[ATTO647N-CLK]': 'ATTO647N-CLK',
     '[BHQ1]': 'BHQ1', '[BHQ2]': 'BHQ2', '[MGB]': 'MGB', '[MGB-ECLIPSE]': 'MGB-ECLIPSE', '[ECLIPSE]': 'ECLIPSE',
     '[IABKFQ]': 'IABKFQ', '[ZEN]': 'ZEN',
+    '[mop4mU]': 'mop4mU',
+    '[ademA]': 'ademA', '[ademC]': 'ademC', '[ademG]': 'ademG',
     '[MOR-TEG]': 'MOR-TEG',
     '*': '*', '[po]': 'po', '[ps]': 'ps', '[ps2]': 'ps2', '[ms]': 'ms', '#': '#', '[dma]': 'dma',
 }
@@ -147,6 +156,8 @@ map_rna2mix = {
     '[TR-CLK]': 'TR-CLK', '[AF594-CLK]': 'AF594-CLK', '[ATTO647N-CLK]': 'ATTO647N-CLK',
     '[BHQ1]': 'BHQ1', '[BHQ2]': 'BHQ2', '[MGB]': 'MGB', '[MGB-ECLIPSE]': 'MGB-ECLIPSE', '[ECLIPSE]': 'ECLIPSE',
     '[IABKFQ]': 'IABKFQ', '[ZEN]': 'ZEN',
+    '[mop4mU]': 'mop4mU',
+    '[ademA]': 'ademA', '[ademC]': 'ademC', '[ademG]': 'ademG',
     '[MOR-TEG]': 'MOR-TEG',
     '*': '*', '[po]': 'po', '[ps]': 'ps', '[ps2]': 'ps2', '[ms]': 'ms', '#': '#', '[dma]': 'dma',
 }
@@ -170,6 +181,7 @@ nucleotide_any_position = {
     'moeA', 'moeCm', 'moeG', 'moeT',
     'morA', 'morC', 'morG', 'morT',
     'cetA', 'cetC', 'cetG', 'cetU',
+    'ademA', 'ademC', 'ademG',
 }
 
 # Modifications available only at 5'-position
@@ -180,7 +192,8 @@ modification_5_position = {'FAM', 'TET', 'HEX', 'JOE', 'VIC',
                            'ALKYNE',
                            'CHOL-PRO', 'GALNAC-PRO',
                            'MOR-TEG',
-                           'po'}
+                           'mop4mU',
+                           'po',}
 
 # Modifications available only at 3'-position
 modification_3_position = {'BHQ1', 'BHQ2', 'MGB', 'MGB-ECLIPSE', 'ECLIPSE', 'IABKFQ',
@@ -191,7 +204,7 @@ modification_3_position = {'BHQ1', 'BHQ2', 'MGB', 'MGB-ECLIPSE', 'ECLIPSE', 'IAB
 modification_int_position = {'BHQ1', 'BHQ2', 'ECLIPSE', 'GALNAC-PRO', 'ZEN'}
 
 # Modifications available on phosphate
-modification_phosphorus = {'po', 'ps', '*', 'ps2', 'ms', '#', 'dma'}
+modification_phosphorus = {'po', 'ps', '*', 'ps2', 'ms', '#', 'dma',}
 
 degenerate_nucleotide = {'dW', 'dS', 'dM', 'dK', 'dR', 'dY', 'dB', 'dD', 'dH', 'dV', 'dN',
                          'rW', 'rS', 'rM', 'rK', 'rR', 'rY', 'rB', 'rD', 'rH', 'rV', 'rN'}
@@ -265,6 +278,12 @@ formula = {
     'morC': {'C': 9, 'H': 14, 'N': 4, 'O': 3},
     'morG': {'C': 10, 'H': 14, 'N': 6, 'O': 3},
     'morT': {'C': 10, 'H': 15, 'N': 3, 'O': 4},
+
+    'mop4mU': {'C': 11, 'H': 17, 'N': 2, 'O': 9, 'P': 1},
+
+    'ademA': {'C': 28, 'H': 45, 'N': 7, 'O': 13},
+    'ademC': {'C': 27, 'H': 45, 'N': 5, 'O': 14},
+    'ademG': {'C': 28, 'H': 45, 'N': 7, 'O': 14},
 
     'ALKYNE': {'C': 12, 'H': 19, 'N': 1, 'O': 2},
     'FAM': {'C': 27, 'H': 25, 'N': 1, 'O': 7},

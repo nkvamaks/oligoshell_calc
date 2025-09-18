@@ -1,7 +1,7 @@
 .calc-grid-container {
   display: grid;
   grid-template-columns: repeat(6, 55px);
-  grid-template-rows: repeat(9, 29px);
+  grid-template-rows: repeat(10, 29px);
   grid-column-gap: 2px;
   grid-row-gap: 2px;
   -webkit-user-select: none; /* Safari */

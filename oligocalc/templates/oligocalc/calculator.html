@@ -91,6 +91,8 @@
                             <li><a class="dropdown-item" data-value-DNA="[IABKFQ]" data-value-RNA="[IABKFQ]" data-value-MIX="IABKFQ" href="javascript:void(0);"><strong style="color:brown;">IABKFQ</strong>&emsp;Iowa Black FQ</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" data-value-DNA="[po]" data-value-RNA="[po]" data-value-MIX="po" href="javascript:void(0);"><strong>po</strong>&emsp;Phosphate</a></li>
+                            <li><a class="dropdown-item" data-value-DNA="[mop4mU]" data-value-RNA="[mop4mU]" data-value-MIX="mop4mU" href="javascript:void(0);"><strong>mop-4O-mU</strong>&emsp;Methylphosphonate-4O-2'-OMe-Uridine</a></li>
+
                             <li><a class="dropdown-item" data-value-DNA="[ALKYNE]" data-value-RNA="[ALKYNE]" data-value-MIX="ALKYNE" href="javascript:void(0);"><strong>ALKYNE</strong>&emsp;5'-terminal alkyne, aminocyclohexanol linker</a></li>
                             <li><a class="dropdown-item" data-value-DNA="[CHOL-PRO]" data-value-RNA="[CHOL-PRO]" data-value-MIX="CHOL-PRO" href="javascript:void(0);"><strong>CHOL-PRO</strong>&emsp;Cholesterol, hydroxyprolinol linker</a></li>
                             <li><a class="dropdown-item" data-value-DNA="[GALNAC-PRO]" data-value-RNA="[GALNAC-PRO]" data-value-MIX="GALNAC-PRO" href="javascript:void(0);"><strong>GALNAC-PRO</strong>&emsp;Monomer GalNAc, hydroxyprolinol linker</a></li>
@@ -297,6 +299,15 @@
                                data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>Morpholino T</small>">morT</div>
                           <div class="calc-item-invis"></div>
                           <div class="calc-item-invis"></div>
+                          <div class="calc-item" data-value-DNA="[ademA]" data-value-RNA="[ademA]" data-value-MIX="ademA"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>AdemA-GalNAc</small>">ademA</div>
+                          <div class="calc-item" data-value-DNA="[ademC]" data-value-RNA="[ademC]" data-value-MIX="ademC"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>AdemC-GalNAc</small>">ademC</div>
+                          <div class="calc-item" data-value-DNA="[ademG]" data-value-RNA="[ademG]" data-value-MIX="ademG"
+                               data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>AdemG-GalNAc</small>">ademG</div>
+                          <div class="calc-item-invis"></div>
+                          <div class="calc-item-invis"></div>
+                          <div class="calc-item-invis"></div>
                           <div class="calc-item-backbone" data-value-DNA="*" data-value-RNA="*" data-value-MIX="*"
                                data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>Phosphorothioate backbone<br/>PS</small>">* / ps</div>
                           <div class="calc-item-backbone" data-value-DNA="[ps2]" data-value-RNA="[ps2]" data-value-MIX="ps2"
@@ -335,7 +346,7 @@
                           <div class="calc-item" data-value-DNA="N" data-value-RNA="N" data-value-MIX=""
                                data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="bottom" data-bs-html="true" title="<small>A+C+G+T/U</small>">N</div>
 
-                          {% for _ in 35|times %}
+                          {% for _ in 41|times %}
                               <div class="calc-item-invis"></div>
                           {% endfor %}
 

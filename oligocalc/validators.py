@@ -252,8 +252,8 @@ def validate_fasta(fasta):
 
 def validate_fasta_RNA(fasta):
     fasta_seq = taqman_find_utils.simple_fasta_parser(fasta)
-    if len(fasta_seq) > 10000 or len(fasta_seq) < 19:
-        raise ValidationError(message='Allowed sequence length 19 - 10.000 nt')
+    if len(fasta_seq) > 15000 or len(fasta_seq) < 19:
+        raise ValidationError(message='Allowed sequence length 19 - 15.000 nt')
     nucleotides = set(fasta_seq)
     standard_nucleotides = []
     for nucleotide in nucleotides:
